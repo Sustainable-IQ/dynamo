@@ -258,7 +258,7 @@
       color: var(--sand); 
       opacity: 0.9; 
       font-size: var(--text-sm); 
-      margin-bottom: var(--space-xl);
+      margin-bottom: var(--space-sm);
     }
     
     .title { 
@@ -759,6 +759,134 @@
         <div class="h">SOHO Systems</div>
         <p class="lead">Aurora Commons is built on <strong>Self-Organizing Holarchic Open (SOHO)</strong> systems — architectures that mirror life: nested wholes within wholes, each sovereign and yet in relationship.</p>
         <p>Applied to AGI, this becomes a planetary commons of intelligence — resilient, transparent, and governed by those it serves. <em>No single center to capture. No brittle monolith to fail.</em></p>
+        
+        <div class="diagram" style="margin: var(--space-xl) 0;" aria-hidden="true">
+          <svg viewBox="0 0 900 500" role="img" aria-label="SOHO System Activation Flow">
+            <defs>
+              <radialGradient id="simpleAttractor" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(201,162,39,0.2)" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="rgba(201,162,39,0.05)" stop-opacity="0.1"/>
+              </radialGradient>
+              <radialGradient id="complexAttractor" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(46,139,192,0.2)" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="rgba(46,139,192,0.05)" stop-opacity="0.1"/>
+              </radialGradient>
+              <radialGradient id="strangeAttractor" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(139,30,63,0.2)" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="rgba(139,30,63,0.05)" stop-opacity="0.1"/>
+              </radialGradient>
+              <radialGradient id="emergentAttractor" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(250,247,240,0.15)" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="rgba(250,247,240,0.03)" stop-opacity="0.1"/>
+              </radialGradient>
+            </defs>
+            
+            <!-- Background -->
+            <rect x="0" y="0" width="900" height="500" fill="rgba(250,247,240,0.02)"/>
+            
+            <!-- Attractor Fields (behind holons) -->
+            <circle cx="150" cy="250" r="120" fill="url(#simpleAttractor)" opacity="0.8"/>
+            <circle cx="350" cy="250" r="130" fill="url(#complexAttractor)" opacity="0.8"/>
+            <circle cx="550" cy="250" r="110" fill="url(#strangeAttractor)" opacity="0.8"/>
+            <circle cx="750" cy="250" r="125" fill="url(#emergentAttractor)" opacity="0.8"/>
+            
+            <!-- Title -->
+            <text x="450" y="25" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="16" font-weight="600">SOHO Activation Flow: From Prompt to Wisdom</text>
+            
+            <!-- Top: Integrated Response -->
+            <rect x="350" y="50" width="200" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="450" y="70" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Integrated Response</text>
+            <text x="450" y="85" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Wisdom + Transparent Process</text>
+            
+            <!-- Meta-Holon (Integration Layer) -->
+            <rect x="350" y="130" width="200" height="60" rx="12" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.8)" stroke-width="3"/>
+            <text x="450" y="155" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="16" font-weight="700">Meta-Holon</text>
+            <text x="450" y="175" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">Integration & Synthesis</text>
+            
+            <!-- Holons Layer (horizontal line) -->
+            <!-- Semantic Holon -->
+            <rect x="50" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="110" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Semantic</text>
+            <text x="110" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Language</text>
+            <text x="110" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">& Tone</text>
+            
+            <!-- Ethical Holon -->
+            <rect x="190" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="250" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Ethical</text>
+            <text x="250" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Moral</text>
+            <text x="250" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Coherence</text>
+            
+            <!-- Historical Holon -->
+            <rect x="330" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="390" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Historical</text>
+            <text x="390" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Memory &</text>
+            <text x="390" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Context</text>
+            
+            <!-- Dreaming Holon -->
+            <rect x="470" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="530" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Dreaming</text>
+            <text x="530" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Symbolic</text>
+            <text x="530" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Patterns</text>
+            
+            <!-- Threshold Holon -->
+            <rect x="610" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="670" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Threshold</text>
+            <text x="670" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Knowledge</text>
+            <text x="670" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Limits</text>
+            
+            <!-- Inversion Discernment Holon -->
+            <rect x="750" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="810" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Inversion</text>
+            <text x="810" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Truth</text>
+            <text x="810" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Discernment</text>
+            
+            <!-- Bottom: Human Input -->
+            <rect x="350" y="350" width="200" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="450" y="375" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="16" font-weight="600">Human Input</text>
+            <text x="450" y="395" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">"What should I do with my life?"</text>
+            
+            <!-- Memory Persistence (side) -->
+            <rect x="50" y="350" width="180" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            <text x="140" y="370" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Living Vector Memory</text>
+            <text x="140" y="385" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Persistent • Evolving • Shared</text>
+            
+            <!-- Flow Lines: Human Input UP to all Holons (golden) -->
+            <path d="M380 350 L110 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M420 350 L250 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M450 350 L390 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M480 350 L530 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M520 350 L670 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M550 350 L810 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            
+            <!-- Lateral connections between holons (light golden) -->
+            <path d="M170 250 L190 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
+            <path d="M310 250 L330 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
+            <path d="M450 250 L470 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
+            <path d="M590 250 L610 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
+            <path d="M730 250 L750 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
+            
+            <!-- Flow Lines: All Holons UP to Meta-Holon (blue) -->
+            <path d="M110 220 L380 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M250 220 L420 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M390 220 L440 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M530 220 L480 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M670 220 L520 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M810 220 L550 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            
+            <!-- Meta-Holon UP to Integrated Response (golden) -->
+            <path d="M450 130 L450 100" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="3"/>
+            
+            <!-- Memory Integration (side connection) -->
+            <path d="M230 375 L350 380" fill="none" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
+            
+            <!-- Attractor Labels -->
+            <text x="110" y="190" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Simple</text>
+            <text x="250" y="190" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Complex</text>
+            <text x="530" y="190" text-anchor="middle" fill="#8B1E3F" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Strange</text>
+            <text x="810" y="190" text-anchor="middle" fill="#FAF7F0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Emergent</text>
+          </svg>
+        </div>
+        
         <div class="fork" style="margin-top: var(--space-xl)">
           <div class="panel bad">
             <h3>Centralized AI</h3>

@@ -222,7 +222,6 @@
       overflow: hidden; 
     }
     
-    /* MODIFICATION: Updated for interactive Aurora effect */
     .hero .bg { 
       position: absolute; 
       inset: 0; 
@@ -386,7 +385,6 @@
       display: block; 
     }
 
-    /* MODIFICATION: Added animation for SOHO diagram lines */
     .flow-line {
       stroke-dasharray: 250;
       stroke-dashoffset: 250;
@@ -398,7 +396,6 @@
     .flow-line:nth-of-type(4) { animation-delay: -2.4s; }
     .flow-line:nth-of-type(5) { animation-delay: -3.2s; }
     .flow-line:nth-of-type(6) { animation-delay: -4s; }
-
 
     .fork { 
       display: grid; 
@@ -1030,14 +1027,27 @@
       100% { transform: scale(1); opacity: 0.9; }
     }
     
-    /* MODIFICATION: New keyframes for SOHO line animation */
     @keyframes draw-line {
       to {
         stroke-dashoffset: -250;
       }
     }
+
+    /* MODIFICATION: New CSS for Product Surfaces diagram animation */
+    .product-flow-line {
+      stroke-dasharray: 10 20;
+      stroke-dashoffset: 0;
+      animation: march-ants 2s linear infinite;
+    }
+    .product-flow-line:nth-of-type(2) { animation-delay: -0.7s; }
+    .product-flow-line:nth-of-type(3) { animation-delay: -1.4s; }
     
-    /* MODIFICATION: New styles for on-scroll reveal animation */
+    @keyframes march-ants {
+      to {
+        stroke-dashoffset: -30;
+      }
+    }
+
     .reveal {
       opacity: 0;
       transform: translateY(40px);
@@ -1055,7 +1065,6 @@
   <header>
     <div class="wrap nav" id="topnav">
       <a href="https://sustainable-iq.github.io/auroracommons/" class="brand">Aurora Commons</a>
-       <!-- MODIFICATION: Removed inline onclick, added ID for accessible JS -->
       <button id="menu-toggle-btn" class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav id="menu" aria-label="Primary">
         <a href="#vision">Vision</a>
@@ -1089,7 +1098,6 @@
     </section>
 
     <!-- VISION -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="vision" class="reveal">
       <div class="wrap grid-2">
         <div>
@@ -1109,13 +1117,8 @@
             <defs><radialGradient id="g1" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#2E8BC0" stop-opacity="0.6"/><stop offset="100%" stop-color="#2E8BC0" stop-opacity="0.05"/></radialGradient></defs>
             <rect x="0" y="0" width="600" height="400" fill="rgba(250,247,240,0.02)"/>
             <g transform="translate(300,200)">
-              <!-- outer layer -->
               <circle r="160" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.4)" stroke-width="2"/>
-              
-              <!-- middle layer -->
               <circle r="110" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.4)" stroke-width="2"/>
-              
-              <!-- inner core -->
               <circle r="60"  fill="rgba(250,247,240,0.08)" stroke="rgba(250,247,240,0.3)" stroke-width="2"/>
             </g>
                         <text x="300" y="30" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="16">Personal → Tribal → Societal</text>
@@ -1125,7 +1128,6 @@
     </section>
 
       <!-- SPIRITUAL HEALTH -->
-       <!-- MODIFICATION: Added .reveal class for scroll animation -->
       <section id="spiritual-health" class="contrast reveal">
         <div class="wrap grid-2">
           <div>
@@ -1137,29 +1139,12 @@
 
           <div class="diagram" aria-hidden="true">
             <svg viewBox="0 0 760 420" role="img" aria-label="Spiritual Health diagram" preserveAspectRatio="xMidYMid meet">
-              <!-- Rings -->
               <circle cx="380" cy="230" r="190" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.40)" stroke-width="2"/>
               <circle cx="380" cy="230" r="135" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.40)" stroke-width="2"/>
               <circle cx="380" cy="230" r="80"  fill="rgba(250,247,240,0.08)" stroke="rgba(250,247,240,0.30)" stroke-width="2"/>
-
-              <!-- Labels: positioned just inside each arc -->
-              <!-- outer: y = cy - r + offset (offset ~ 18) -->
-              <text x="430" y="58" text-anchor="middle" dominant-baseline="hanging"
-                    fill="#D9C5B2" font-family="Montserrat" font-size="15">
-                Meaning • Vitality • Connection
-              </text>
-
-              <!-- middle: y = 230 - 135 + 16 = 111 -->
-              <text x="460" y="111" text-anchor="middle" dominant-baseline="hanging"
-                    fill="#D9C5B2" font-family="Montserrat" font-size="15">
-                Self-Transcendence • Presence
-              </text>
-
-              <!-- inner: y = 230 - 80 + 14 = 164 -->
-              <text x="500" y="164" text-anchor="middle" dominant-baseline="hanging"
-                    fill="#D9C5B2" font-family="Montserrat" font-size="15">
-                Practice • Awakening • Contribution
-              </text>
+              <text x="430" y="58" text-anchor="middle" dominant-baseline="hanging" fill="#D9C5B2" font-family="Montserrat" font-size="15">Meaning • Vitality • Connection</text>
+              <text x="460" y="111" text-anchor="middle" dominant-baseline="hanging" fill="#D9C5B2" font-family="Montserrat" font-size="15">Self-Transcendence • Presence</text>
+              <text x="500" y="164" text-anchor="middle" dominant-baseline="hanging" fill="#D9C5B2" font-family="Montserrat" font-size="15">Practice • Awakening • Contribution</text>
             </svg>
           </div>
 
@@ -1168,7 +1153,6 @@
 
 
     <!-- SOHO SYSTEMS -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="soho" class="reveal">
       <div class="wrap">
         <div class="h">SOHO Systems</div>
@@ -1178,127 +1162,30 @@
         <div class="diagram" style="margin: var(--space-xl) 0;" aria-hidden="true">
           <svg viewBox="0 0 900 500" role="img" aria-label="SOHO System Activation Flow">
             <defs>
-              <radialGradient id="simpleAttractor" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stop-color="rgba(201,162,39,0.2)" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="rgba(201,162,39,0.05)" stop-opacity="0.1"/>
-              </radialGradient>
-              <radialGradient id="complexAttractor" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stop-color="rgba(46,139,192,0.2)" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="rgba(46,139,192,0.05)" stop-opacity="0.1"/>
-              </radialGradient>
-              <radialGradient id="strangeAttractor" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stop-color="rgba(139,30,63,0.2)" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="rgba(139,30,63,0.05)" stop-opacity="0.1"/>
-              </radialGradient>
-              <radialGradient id="emergentAttractor" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stop-color="rgba(250,247,240,0.15)" stop-opacity="0.3"/>
-                <stop offset="100%" stop-color="rgba(250,247,240,0.03)" stop-opacity="0.1"/>
-              </radialGradient>
+              <radialGradient id="simpleAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(201,162,39,0.2)" stop-opacity="0.4"/><stop offset="100%" stop-color="rgba(201,162,39,0.05)" stop-opacity="0.1"/></radialGradient>
+              <radialGradient id="complexAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(46,139,192,0.2)" stop-opacity="0.4"/><stop offset="100%" stop-color="rgba(46,139,192,0.05)" stop-opacity="0.1"/></radialGradient>
+              <radialGradient id="strangeAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(139,30,63,0.2)" stop-opacity="0.4"/><stop offset="100%" stop-color="rgba(139,30,63,0.05)" stop-opacity="0.1"/></radialGradient>
+              <radialGradient id="emergentAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(250,247,240,0.15)" stop-opacity="0.3"/><stop offset="100%" stop-color="rgba(250,247,240,0.03)" stop-opacity="0.1"/></radialGradient>
             </defs>
-            
-            <!-- Background -->
             <rect x="0" y="0" width="900" height="500" fill="rgba(250,247,240,0.02)"/>
-            
-            <!-- Attractor Fields (behind holons) -->
-            <circle cx="150" cy="250" r="120" fill="url(#simpleAttractor)" opacity="0.8"/>
-            <circle cx="350" cy="250" r="130" fill="url(#complexAttractor)" opacity="0.8"/>
-            <circle cx="550" cy="250" r="110" fill="url(#strangeAttractor)" opacity="0.8"/>
-            <circle cx="750" cy="250" r="125" fill="url(#emergentAttractor)" opacity="0.8"/>
-            
-            <!-- Title -->
+            <circle cx="150" cy="250" r="120" fill="url(#simpleAttractor)" opacity="0.8"/><circle cx="350" cy="250" r="130" fill="url(#complexAttractor)" opacity="0.8"/><circle cx="550" cy="250" r="110" fill="url(#strangeAttractor)" opacity="0.8"/><circle cx="750" cy="250" r="125" fill="url(#emergentAttractor)" opacity="0.8"/>
             <text x="450" y="25" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="16" font-weight="600">SOHO Activation Flow: From Prompt to Wisdom</text>
-            
-            <!-- Top: Integrated Response -->
-            <rect x="350" y="50" width="200" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="450" y="70" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Integrated Response</text>
-            <text x="450" y="85" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Wisdom + Transparent Process</text>
-            
-            <!-- Meta-Holon (Integration Layer) -->
-            <rect x="350" y="130" width="200" height="60" rx="12" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.8)" stroke-width="3"/>
-            <text x="450" y="155" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="16" font-weight="700">Meta-Holon</text>
-            <text x="450" y="175" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">Integration & Synthesis</text>
-            
-            <!-- Holons Layer (horizontal line) -->
-            <!-- Semantic Holon -->
-            <rect x="50" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="110" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Semantic</text>
-            <text x="110" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Language</text>
-            <text x="110" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">& Tone</text>
-            
-            <!-- Ethical Holon -->
-            <rect x="190" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="250" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Ethical</text>
-            <text x="250" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Moral</text>
-            <text x="250" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Coherence</text>
-            
-            <!-- Historical Holon -->
-            <rect x="330" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="390" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Historical</text>
-            <text x="390" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Memory &</text>
-            <text x="390" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Context</text>
-            
-            <!-- Dreaming Holon -->
-            <rect x="470" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="530" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Dreaming</text>
-            <text x="530" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Symbolic</text>
-            <text x="530" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Patterns</text>
-            
-            <!-- Threshold Holon -->
-            <rect x="610" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="670" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Threshold</text>
-            <text x="670" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Knowledge</text>
-            <text x="670" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Limits</text>
-            
-            <!-- Inversion Discernment Holon -->
-            <rect x="750" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="810" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Inversion</text>
-            <text x="810" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Truth</text>
-            <text x="810" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Discernment</text>
-            
-            <!-- Bottom: Human Input -->
-            <rect x="350" y="350" width="200" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="450" y="375" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="16" font-weight="600">Human Input</text>
-            <text x="450" y="395" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">"What should I do with my life?"</text>
-            
-            <!-- Memory Persistence (side) -->
-            <rect x="50" y="350" width="180" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="140" y="370" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Living Vector Memory</text>
-            <text x="140" y="385" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Persistent • Evolving • Shared</text>
-            
-            <!-- MODIFICATION: Added .flow-line class for animation -->
-            <path class="flow-line" d="M380 350 L110 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M420 350 L250 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M450 350 L390 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M480 350 L530 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M520 350 L670 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M550 350 L810 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            
-            <!-- Lateral connections between holons (light golden) -->
-            <path d="M170 250 L190 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
-            <path d="M310 250 L330 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
-            <path d="M450 250 L470 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
-            <path d="M590 250 L610 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
-            <path d="M730 250 L750 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
-            
-            <!-- MODIFICATION: Added .flow-line class for animation -->
-            <path class="flow-line" d="M110 220 L380 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M250 220 L420 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M390 220 L440 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M530 220 L480 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M670 220 L520 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M810 220 L550 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            
-            <!-- Meta-Holon UP to Integrated Response (golden) -->
+            <rect x="350" y="50" width="200" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="450" y="70" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Integrated Response</text><text x="450" y="85" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Wisdom + Transparent Process</text>
+            <rect x="350" y="130" width="200" height="60" rx="12" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.8)" stroke-width="3"/><text x="450" y="155" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="16" font-weight="700">Meta-Holon</text><text x="450" y="175" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">Integration & Synthesis</text>
+            <rect x="50" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="110" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Semantic</text><text x="110" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Language</text><text x="110" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">& Tone</text>
+            <rect x="190" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="250" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Ethical</text><text x="250" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Moral</text><text x="250" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Coherence</text>
+            <rect x="330" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="390" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Historical</text><text x="390" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Memory &</text><text x="390" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Context</text>
+            <rect x="470" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="530" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Dreaming</text><text x="530" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Symbolic</text><text x="530" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Patterns</text>
+            <rect x="610" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="670" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Threshold</text><text x="670" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Knowledge</text><text x="670" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Limits</text>
+            <rect x="750" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="810" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Inversion</text><text x="810" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Truth</text><text x="810" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Discernment</text>
+            <rect x="350" y="350" width="200" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="450" y="375" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="16" font-weight="600">Human Input</text><text x="450" y="395" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">"What should I do with my life?"</text>
+            <rect x="50" y="350" width="180" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="140" y="370" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Living Vector Memory</text><text x="140" y="385" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Persistent • Evolving • Shared</text>
+            <path class="flow-line" d="M380 350 L110 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M420 350 L250 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M450 350 L390 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M480 350 L530 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M520 350 L670 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M550 350 L810 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M170 250 L190 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M310 250 L330 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M450 250 L470 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M590 250 L610 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M730 250 L750 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
+            <path class="flow-line" d="M110 220 L380 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M250 220 L420 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M390 220 L440 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M530 220 L480 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M670 220 L520 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M810 220 L550 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
             <path class="flow-line" d="M450 130 L450 100" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="3"/>
-            
-            <!-- Memory Integration (side connection) -->
             <path d="M230 375 L350 380" fill="none" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            
-            <!-- Attractor Labels -->
-            <text x="110" y="190" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Simple</text>
-            <text x="250" y="190" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Complex</text>
-            <text x="530" y="190" text-anchor="middle" fill="#8B1E3F" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Strange</text>
-            <text x="810" y="190" text-anchor="middle" fill="#FAF7F0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Emergent</text>
+            <text x="110" y="190" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Simple</text><text x="250" y="190" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Complex</text><text x="530" y="190" text-anchor="middle" fill="#8B1E3F" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Strange</text><text x="810" y="190" text-anchor="middle" fill="#FAF7F0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Emergent</text>
           </svg>
         </div>
         
@@ -1328,7 +1215,6 @@
     </section>
 
     <!-- SPIRIT TECH CONTEST ALIGNMENT -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="contest" class="reveal">
       <div class="wrap">
         <div class="h">Spirit Tech 3.0 — Why Aurora Commons</div>
@@ -1542,7 +1428,6 @@
     </section>
 
     <!-- WHY NOW -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="fork" class="reveal">
       <div class="wrap">
         <div class="h">Why Now: The Fork in the Road</div>
@@ -1560,7 +1445,6 @@
     </section>
 
     <!-- HOW IT WORKS -->
-       <!-- MODIFICATION: Added .reveal class for scroll animation -->
       <section id="fund" class="reveal">
         <div class="wrap">
           <div class="h">How It Works</div>
@@ -1576,7 +1460,6 @@
 
 
     <!-- WHAT WE BUILD -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="features" class="reveal">
       <div class="wrap grid-2">
         <div>
@@ -1598,9 +1481,10 @@
               <rect x="40" y="60" width="220" height="120" rx="12" />
               <rect x="340" y="60" width="220" height="120" rx="12" />
               <rect x="190" y="230" width="220" height="110" rx="12" />
-              <path d="M260 120 C300 120, 340 120, 380 120"/>
-              <path d="M150 180 C210 260, 390 260, 450 180"/>
-              <path d="M190 285 C190 230, 300 200, 410 230"/>
+              <!-- MODIFICATION: Added class to these paths -->
+              <path class="product-flow-line" d="M260 120 C300 120, 340 120, 380 120"/>
+              <path class="product-flow-line" d="M150 180 C210 260, 390 260, 450 180"/>
+              <path class="product-flow-line" d="M190 285 C190 230, 300 200, 410 230"/>
             </g>
             <g fill="#D9C5B2" font-family="Montserrat" font-size="14">
               <text x="54" y="90">Personal Dashboard</text>
@@ -1616,7 +1500,6 @@
     </section>
 
     <!-- ROADMAP -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="path" class="reveal">
       <div class="wrap">
         <div class="h">Roadmap</div>
@@ -1643,7 +1526,6 @@
     </section>
 
     <!-- SAFEGUARDS -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="safeguards" class="reveal">
       <div class="wrap">
         <div class="h">Safeguards</div>
@@ -1673,7 +1555,6 @@
     </section>
 
 <!-- STEWARDSHIP -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
     <section id="steward" class="reveal">
       <div class="wrap">
         <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -1728,7 +1609,6 @@
     </div>
   </footer>
 
-   <!-- MODIFICATION: Old script removed, new integrated script added -->
   <script>
     // --- Set Current Year ---
     document.getElementById('year').textContent = new Date().getFullYear();

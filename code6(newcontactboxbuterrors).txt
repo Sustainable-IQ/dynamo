@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aurora Commons · An Inter-Human Consciousness System (LLM + SOHO)</title>
+  <title>Aurora Commons · An Inter-Human Consciousness System (LLM + SOHO System)</title>
   <meta name="description" content="Aurora Commons is an inter-human consciousness organizing app. It archives conversations as vectors with meta-tags, recalls them through SOHO holarchic architecture, and grows coherence across time and community. Built for Spirit Tech 3.0." />
-  <link rel="canonical" href="https://sustainable-iq.github.io/auroracommons/" />
+  <link rel="canonical" href="https://sustainable-iq.github.io/aurora/" />
   <meta name="theme-color" content="#0F3D3E" />
 
   <!-- Open Graph / Twitter -->
@@ -13,12 +13,12 @@
   <meta property="og:site_name" content="Aurora Commons" />
   <meta property="og:title" content="Aurora Commons · A Living Memory Architecture" />
   <meta property="og:description" content="Conversations become living memory. Vectors + meta-tags + SOHO holarchies for sovereign, uncapturable intelligence. Built for Spirit Tech 3.0." />
-  <meta property="og:url" content="https://sustainable-iq.github.io/auroracommons/" />
-  <meta property="og:image" content="https://sustainable-iq.github.io/auroracommons/og-image.jpg" />
+  <meta property="og:url" content="https://sustainable-iq.github.io/aurora/" />
+  <meta property="og:image" content="https://sustainable-iq.github.io/aurora/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Aurora Commons" />
   <meta name="twitter:description" content="Inter-human consciousness system built on LLMs with SOHO architecture. Spirit Tech 3.0 ready." />
-  <meta name="twitter:image" content="https://sustainable-iq.github.io/auroracommons/og-image.jpg" />
+  <meta name="twitter:image" content="https://sustainable-iq.github.io/aurora/og-image.jpg" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,13 +30,8 @@
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Aurora Commons",
-    "url": "https://sustainable-iq.github.io/auroracommons/",
-    "description": "An inter-human consciousness organizing app: LLM chat with vector memory, meta-tags, and SOHO holarchic architecture. Spirit Tech 3.0 ready.",
-    "contactPoint": [{
-      "@type": "ContactPoint",
-      "email": "sustainableIQ@gmail.com",
-      "contactType": "inquiries"
-    }]
+    "url": "https://sustainable-iq.github.io/aurora/",
+    "description": "An inter-human consciousness organizing app: LLM chat with vector memory, meta-tags, and SOHO holarchic architecture. Spirit Tech 3.0 ready."
   }
   </script>
 
@@ -222,15 +217,13 @@
       overflow: hidden; 
     }
     
-    /* MODIFICATION: Updated for interactive Aurora effect */
     .hero .bg { 
       position: absolute; 
       inset: 0; 
-      background: radial-gradient(1000px 500px at var(--x, 20%) var(--y, 30%), rgba(46,139,192,0.35), transparent 60%),
-                  radial-gradient(800px 500px at calc(100% - var(--x, 20%)) calc(100% - var(--y, 30%)), rgba(201,162,39,0.2), transparent 60%),
+      background: radial-gradient(1200px 600px at 20% 30%, rgba(46,139,192,0.35), transparent 60%),
+                  radial-gradient(900px 600px at 80% 70%, rgba(201,162,39,0.2), transparent 60%),
                   linear-gradient(180deg, rgba(15,61,62,0.9), rgba(15,61,62,0.98)); 
       animation: subtleShift 8s ease-in-out infinite alternate;
-      transition: background 0.2s linear;
     }
     
     .hero .mesh { 
@@ -253,15 +246,28 @@
       animation: fadeInUp 1s ease-out;
     }
     
-    .kicker { 
+    .kicker {
       font-family: "Montserrat", system-ui, sans-serif; 
       letter-spacing: 0.08em; 
       text-transform: uppercase; 
       color: var(--sand); 
       opacity: 0.9; 
       font-size: var(--text-sm); 
-      margin-bottom: var(--space-2xl);
-      animation: pulsate-animation 3s infinite ease-in-out;
+      margin-bottom: var(--space-xl);
+
+      /* heartbeat animation */
+      display: inline-block;
+      transform-origin: center;
+      animation: heartbeat 2.2s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%   { transform: scale(1); }
+      10%  { transform: scale(1.12); }
+      20%  { transform: scale(1); }
+      30%  { transform: scale(1.06); }
+      40%  { transform: scale(1); }
+      100% { transform: scale(1); }
     }
     
     .title { 
@@ -340,7 +346,7 @@
     
     section p { 
       color: rgba(250,247,240,0.92); 
-      max-width: 75ch;
+      max-width: 75ch; 
       margin-bottom: var(--space-lg);
       font-size: var(--text-lg);
       line-height: 1.7;
@@ -385,20 +391,6 @@
       height: auto; 
       display: block; 
     }
-
-    /* MODIFICATION: Added animation for SOHO diagram lines */
-    .flow-line {
-      stroke-dasharray: 250;
-      stroke-dashoffset: 250;
-      animation: draw-line 5s linear infinite;
-    }
-
-    .flow-line:nth-of-type(2) { animation-delay: -0.8s; }
-    .flow-line:nth-of-type(3) { animation-delay: -1.6s; }
-    .flow-line:nth-of-type(4) { animation-delay: -2.4s; }
-    .flow-line:nth-of-type(5) { animation-delay: -3.2s; }
-    .flow-line:nth-of-type(6) { animation-delay: -4s; }
-
 
     .fork { 
       display: grid; 
@@ -493,21 +485,36 @@
       } 
     }
 
-    .timeline { 
-      position: relative; 
-      margin-top: var(--space-md); 
+    .timeline {
+      position: relative; /* anchor for ::before/::after */
+      padding-top: 28px;  /* create space so the line sits above the cards */
     }
-    
-    .timeline:before { 
-      content: ""; 
-      position: absolute; 
-      left: 0; 
-      right: 0; 
-      top: 18px; 
-      height: 3px; 
-      background: linear-gradient(90deg, rgba(201,162,39,0.2), rgba(46,139,192,0.4)); 
-      border-radius: 3px; 
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 28px; /* leave room for arrowhead */
+      top: 8px;    /* vertical position of line */
+      height: 3px;
+      background: linear-gradient(90deg, rgba(201,162,39,0.25), rgba(46,139,192,0.45));
+      border-radius: 3px;
+      z-index: 3;
     }
+
+    .timeline::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 1px; /* centers arrow with the 3px line */
+      width: 0;
+      height: 0;
+      border-left: 14px solid rgba(46,139,192,0.6); /* arrow color */
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      z-index: 3;
+    }
+
     
     .milestones { 
       display: grid; 
@@ -997,6 +1004,13 @@
       margin-top: var(--space-xl);
     }
 
+    footer { 
+      padding: var(--space-xl) 0; 
+      border-top: 1px solid rgba(201,162,39,0.18); 
+      font-size: var(--text-sm); 
+      color: rgba(250,247,240,0.75); 
+    }
+
     /* Animations */
     @keyframes floaty { 
       from { transform: translateY(0px); } 
@@ -1023,40 +1037,14 @@
         transform: translateY(0);
       }
     }
-
-    @keyframes pulsate-animation {
-      0% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.03); opacity: 1; }
-      100% { transform: scale(1); opacity: 0.9; }
-    }
-    
-    /* MODIFICATION: New keyframes for SOHO line animation */
-    @keyframes draw-line {
-      to {
-        stroke-dashoffset: -250;
-      }
-    }
-    
-    /* MODIFICATION: New styles for on-scroll reveal animation */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
   </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header>
     <div class="wrap nav" id="topnav">
-      <a href="https://sustainable-iq.github.io/auroracommons/" class="brand">Aurora Commons</a>
-       <!-- MODIFICATION: Removed inline onclick, added ID for accessible JS -->
-      <button id="menu-toggle-btn" class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
+      <a href="https://sustainable-iq.github.io/soho/" class="brand">Aurora Commons</a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="menu" onclick="toggleMenu()">Menu</button>
       <nav id="menu" aria-label="Primary">
         <a href="#vision">Vision</a>
         <a href="#spiritual-health">Spiritual Health</a>
@@ -1067,7 +1055,7 @@
         <a href="#features">What We Build</a>
         <a href="#path">Roadmap</a>
         <a href="#safeguards">Safeguards</a>
-        <a href="#steward">Stewardship</a>
+        <a href="#invite">Stewardship</a>
       </nav>
     </div>
   </header>
@@ -1083,14 +1071,13 @@
         <p class="subtitle">Aurora Commons archives dialogue as vectors with meta-tags, retrieves them through a SOHO holarchic architecture, and weaves coherence across time, people, and communities.</p>
         <div class="cta">
           <a class="btn primary" href="#contest">See Spirit Tech 3.0 Fit</a>
-          <a class="btn ghost" href="#steward">Join as a Steward</a>
+          <a class="btn ghost" href="#invite">Join as a Steward</a>
         </div>
       </div>
     </section>
 
     <!-- VISION -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="vision" class="reveal">
+    <section id="vision">
       <div class="wrap grid-2">
         <div>
           <div class="h">The Vision</div>
@@ -1109,67 +1096,42 @@
             <defs><radialGradient id="g1" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#2E8BC0" stop-opacity="0.6"/><stop offset="100%" stop-color="#2E8BC0" stop-opacity="0.05"/></radialGradient></defs>
             <rect x="0" y="0" width="600" height="400" fill="rgba(250,247,240,0.02)"/>
             <g transform="translate(300,200)">
-              <!-- outer layer -->
-              <circle r="160" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.4)" stroke-width="2"/>
-              
-              <!-- middle layer -->
-              <circle r="110" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.4)" stroke-width="2"/>
-              
-              <!-- inner core -->
-              <circle r="60"  fill="rgba(250,247,240,0.08)" stroke="rgba(250,247,240,0.3)" stroke-width="2"/>
+              <circle r="160" fill="url(#g1)" stroke="rgba(201,162,39,0.35)"/>
+              <circle r="115" fill="none" stroke="rgba(201,162,39,0.35)"/>
+              <circle r="75"  fill="none" stroke="rgba(201,162,39,0.35)"/>
+              <circle r="38"  fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.6)"/>
             </g>
-                        <text x="300" y="30" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="16">Personal → Tribal → Societal</text>
+            <text x="300" y="30" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="16">Personal → Tribal → Societal</text>
           </svg>
         </div>
       </div>
     </section>
 
-      <!-- SPIRITUAL HEALTH -->
-       <!-- MODIFICATION: Added .reveal class for scroll animation -->
-      <section id="spiritual-health" class="contrast reveal">
-        <div class="wrap grid-2">
-          <div>
-            <div class="h">Spiritual Health</div>
-            <p class="lead">Aurora Commons is designed not just for information, but for <strong>spiritual health</strong> — a living condition of meaning, vitality, and connection.</p>
-            <p>We define spiritual health as the deep sense of meaning, vitality, and connection that emerges from self-transcendence and expanded present-moment awareness. It transcends, yet is supported by, our physical, mental, and emotional wellbeing and is cultivated through spiritual development — a continuous journey of exploration, practice, awakening, and contribution.</p>
-            <p>Our architecture embeds this definition into memory and design. Every session is not just a dialogue, but a step in a deeper practice of awakening and contribution, weaving together self, community, and cosmos.</p>
-          </div>
-
-          <div class="diagram" aria-hidden="true">
-            <svg viewBox="0 0 760 420" role="img" aria-label="Spiritual Health diagram" preserveAspectRatio="xMidYMid meet">
-              <!-- Rings -->
-              <circle cx="380" cy="230" r="190" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.40)" stroke-width="2"/>
-              <circle cx="380" cy="230" r="135" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.40)" stroke-width="2"/>
-              <circle cx="380" cy="230" r="80"  fill="rgba(250,247,240,0.08)" stroke="rgba(250,247,240,0.30)" stroke-width="2"/>
-
-              <!-- Labels: positioned just inside each arc -->
-              <!-- outer: y = cy - r + offset (offset ~ 18) -->
-              <text x="430" y="58" text-anchor="middle" dominant-baseline="hanging"
-                    fill="#D9C5B2" font-family="Montserrat" font-size="15">
-                Meaning • Vitality • Connection
-              </text>
-
-              <!-- middle: y = 230 - 135 + 16 = 111 -->
-              <text x="460" y="111" text-anchor="middle" dominant-baseline="hanging"
-                    fill="#D9C5B2" font-family="Montserrat" font-size="15">
-                Self-Transcendence • Presence
-              </text>
-
-              <!-- inner: y = 230 - 80 + 14 = 164 -->
-              <text x="500" y="164" text-anchor="middle" dominant-baseline="hanging"
-                    fill="#D9C5B2" font-family="Montserrat" font-size="15">
-                Practice • Awakening • Contribution
-              </text>
-            </svg>
-          </div>
-
+    <!-- SPIRITUAL HEALTH -->
+    <section id="spiritual-health" class="contrast">
+      <div class="wrap grid-2">
+        <div>
+          <div class="h">Spiritual Health</div>
+          <p class="lead">Aurora Commons is designed not just for information, but for <strong>spiritual health</strong> — a living condition of meaning, vitality, and connection.</p>
+          <p>We define spiritual health as the deep sense of meaning, vitality, and connection that emerges from self-transcendence and expanded present-moment awareness. It transcends, yet is supported by, our physical, mental, and emotional wellbeing and is cultivated through spiritual development — a continuous journey of exploration, practice, awakening, and contribution.</p>
+          <p>Our architecture embeds this definition into memory and design. Every session is not just a dialogue, but a step in a deeper practice of awakening and contribution, weaving together self, community, and cosmos.</p>
         </div>
-      </section>
-
+        <div class="diagram" aria-hidden="true">
+          <svg viewBox="0 0 600 400">
+            <circle cx="200" cy="200" r="160" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.4)" stroke-width="2"/>
+            <circle cx="200" cy="200" r="110" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.4)" stroke-width="2"/>
+            <circle cx="200" cy="200" r="60"  fill="rgba(250,247,240,0.08)" stroke="rgba(250,247,240,0.3)" stroke-width="2"/>
+            <text x="200" y="70" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="14">Spiritual Health</text>
+            <text x="410" y="160" fill="#D9C5B2" font-family="Montserrat" font-size="14">Meaning • Vitality • Connection</text>
+            <text x="420" y="190" fill="#D9C5B2" font-family="Montserrat" font-size="14">Self-Transcendence • Presence</text>
+            <text x="430" y="220" fill="#D9C5B2" font-family="Montserrat" font-size="14">Practice • Awakening • Contribution</text>
+          </svg>
+        </div>
+      </div>
+    </section>
 
     <!-- SOHO SYSTEMS -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="soho" class="reveal">
+    <section id="soho">
       <div class="wrap">
         <div class="h">SOHO Systems</div>
         <p class="lead">Aurora Commons is built on <strong>Self-Organizing Holarchic Open (SOHO)</strong> systems — architectures that mirror life: nested wholes within wholes, each sovereign and yet in relationship.</p>
@@ -1265,13 +1227,13 @@
             <text x="140" y="370" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Living Vector Memory</text>
             <text x="140" y="385" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Persistent • Evolving • Shared</text>
             
-            <!-- MODIFICATION: Added .flow-line class for animation -->
-            <path class="flow-line" d="M380 350 L110 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M420 350 L250 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M450 350 L390 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M480 350 L530 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M520 350 L670 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M550 350 L810 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <!-- Flow Lines: Human Input UP to all Holons (golden) -->
+            <path d="M380 350 L110 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M420 350 L250 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M450 350 L390 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M480 350 L530 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M520 350 L670 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
+            <path d="M550 350 L810 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
             
             <!-- Lateral connections between holons (light golden) -->
             <path d="M170 250 L190 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
@@ -1280,16 +1242,16 @@
             <path d="M590 250 L610 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
             <path d="M730 250 L750 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
             
-            <!-- MODIFICATION: Added .flow-line class for animation -->
-            <path class="flow-line" d="M110 220 L380 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M250 220 L420 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M390 220 L440 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M530 220 L480 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M670 220 L520 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M810 220 L550 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <!-- Flow Lines: All Holons UP to Meta-Holon (blue) -->
+            <path d="M110 220 L380 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M250 220 L420 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M390 220 L440 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M530 220 L480 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M670 220 L520 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
+            <path d="M810 220 L550 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
             
             <!-- Meta-Holon UP to Integrated Response (golden) -->
-            <path class="flow-line" d="M450 130 L450 100" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="3"/>
+            <path d="M450 130 L450 100" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="3"/>
             
             <!-- Memory Integration (side connection) -->
             <path d="M230 375 L350 380" fill="none" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
@@ -1328,8 +1290,7 @@
     </section>
 
     <!-- SPIRIT TECH CONTEST ALIGNMENT -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="contest" class="reveal">
+    <section id="contest">
       <div class="wrap">
         <div class="h">Spirit Tech 3.0 — Why Aurora Commons</div>
         <p class="lead">We are at an inflection point. Spirit Tech 3.0 is emerging. The way we engage technology for our inner life will change more in the next five years than in the last fifty.</p>
@@ -1542,8 +1503,7 @@
     </section>
 
     <!-- WHY NOW -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="fork" class="reveal">
+    <section id="fork">
       <div class="wrap">
         <div class="h">Why Now: The Fork in the Road</div>
         <div class="fork">
@@ -1560,24 +1520,21 @@
     </section>
 
     <!-- HOW IT WORKS -->
-       <!-- MODIFICATION: Added .reveal class for scroll animation -->
-      <section id="fund" class="reveal">
-        <div class="wrap">
-          <div class="h">How It Works</div>
-          <div class="flow" aria-label="Conversation-to-memory flow">
-            <div class="card"><strong>Converse</strong><br/>Human asks, the LLM responds within ritual UX (Pause, Signal Check…).</div>
-            <div class="card"><strong>Embed</strong><br/>Turns are vectorized and tagged (topic, intent, entities, state, ritual layer, confidence).</div>
-            <div class="card"><strong>Archive</strong><br/>Memories persist with versioning and traceability (SpecSync lineage).</div>
-            <div class="card"><strong>Recall</strong><br/>Future prompts retrieve the right vectors and show sources (personal + communal RAG).</div>
-            <div class="card"><strong>Grow</strong><br/>Conflicts are reconciled; coherence compounds across sessions &amp; people.</div>
-          </div>
+    <section id="fund">
+      <div class="wrap">
+        <div class="h">How It Works</div>
+        <div class="flow" aria-label="Conversation-to-memory flow">
+          <div class="card"><strong>Converse</strong><br/>Human asks, the LLM responds within ritual UX (Pause, Signal Check…).</div>
+          <div class="card"><strong>Embed</strong><br/>Turns are vectorized and tagged (topic, intent, entities, state, ritual layer, confidence).</div>
+          <div class="card"><strong>Archive</strong><br/>Memories persist with versioning and traceability (SpecSync lineage).</div>
+          <div class="card"><strong>Recall</strong><br/>Future prompts retrieve the right vectors and show sources (personal + communal RAG).</div>
+          <div class="card"><strong>Grow</strong><br/>Conflicts are reconciled; coherence compounds across sessions &amp; people.</div>
         </div>
-      </section>
-
+      </div>
+    </section>
 
     <!-- WHAT WE BUILD -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="features" class="reveal">
+    <section id="features">
       <div class="wrap grid-2">
         <div>
           <div class="h">Product Surfaces</div>
@@ -1616,8 +1573,7 @@
     </section>
 
     <!-- ROADMAP -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="path" class="reveal">
+    <section id="path">
       <div class="wrap">
         <div class="h">Roadmap</div>
         <div class="timeline">
@@ -1643,8 +1599,7 @@
     </section>
 
     <!-- SAFEGUARDS -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="safeguards" class="reveal">
+    <section id="safeguards">
       <div class="wrap">
         <div class="h">Safeguards</div>
         <div class="shields">
@@ -1673,8 +1628,7 @@
     </section>
 
 <!-- STEWARDSHIP -->
-     <!-- MODIFICATION: Added .reveal class for scroll animation -->
-    <section id="steward" class="reveal">
+    <section id="steward">
       <div class="wrap">
         <div style="text-align: center; margin-bottom: var(--space-2xl);">
           <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.8rem, 3vw, 3rem); color: var(--ivory); margin-bottom: var(--space-2xl); max-width: 20ch; margin-left: auto; margin-right: auto; line-height: 1.3;">We are not shipping another app. We are seeding a living memory that serves truth, beauty, and liberation.</h2>
@@ -1718,6 +1672,12 @@
             </div>
           </form>
         </div>
+
+        <div style="text-align: center; margin-top: var(--space-xl);">
+          <div class="cta">
+            <a class="btn ghost" href="#" onclick="alert('Secure channels: Signal available on request. Email: sustainableIQ@gmail.com'); return false;">Secure Channels</a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -1728,49 +1688,14 @@
     </div>
   </footer>
 
-   <!-- MODIFICATION: Old script removed, new integrated script added -->
   <script>
-    // --- Set Current Year ---
+    function toggleMenu(){
+      const n = document.getElementById('topnav');
+      const btn = n.querySelector('.menu-btn');
+      const open = n.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // --- 1. Accessible Mobile Menu ---
-    const topnav = document.getElementById('topnav');
-    const menuButton = document.getElementById('menu-toggle-btn');
-    if (menuButton) {
-      menuButton.addEventListener('click', () => {
-        const isOpen = topnav.classList.toggle('open');
-        menuButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      });
-    }
-
-    // --- 2. On-Scroll Reveal Animations ---
-    const revealElements = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target); // Stop observing once visible
-        }
-      });
-    }, {
-      threshold: 0.1 // Trigger when 10% of the element is visible
-    });
-    revealElements.forEach(element => {
-      observer.observe(element);
-    });
-
-    // --- 3. Interactive Aurora Hero Background ---
-    const heroSection = document.querySelector('.hero');
-    if (heroSection) {
-      heroSection.addEventListener('mousemove', (e) => {
-        const { clientX, clientY } = e;
-        const { offsetWidth, offsetHeight } = heroSection;
-        const xPercent = (clientX / offsetWidth) * 100;
-        const yPercent = (clientY / offsetHeight) * 100;
-        heroSection.style.setProperty('--x', `${xPercent}%`);
-        heroSection.style.setProperty('--y', `${yPercent}%`);
-      });
-    }
   </script>
 </body>
 </html>

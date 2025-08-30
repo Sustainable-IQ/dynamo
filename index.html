@@ -1161,33 +1161,199 @@
         <p class="lead">Aurora Commons is built on <strong>Self-Organizing Holarchic Open (SOHO)</strong> systems — architectures that mirror life: nested wholes within wholes, each sovereign and yet in relationship.</p>
         <p>Applied to AGI, this becomes a planetary commons of intelligence — resilient, transparent, and governed by those it serves. <em>No single center to capture. No brittle monolith to fail.</em></p>
         
-        <div class="diagram" style="margin: var(--space-xl) 0;" aria-hidden="true">
-          <svg viewBox="0 0 900 500" role="img" aria-label="SOHO System Activation Flow">
+        <div class="diagram" style="margin: var(--space-xl) 0;">
+          <svg viewBox="0 0 1100 900" role="img" aria-labelledby="sohoDiagramTitle sohoDiagramDesc">
+            <title id="sohoDiagramTitle">SOHO System Flow Architecture</title>
+            <desc id="sohoDiagramDesc">
+              Flow from user input through gateway holon, memory retrieval, holon activation,
+              inter-holon dialogue, and meta-holon synthesis, toward response, memory update,
+              field resonance update, and user dashboard.
+            </desc>
+
+            <style>
+              .label { font-family: Montserrat, sans-serif; font-size: 12px; }
+              .title { fill: #D9C5B2; font-weight: 600; }
+              .box { rx: 12; fill: rgba(250,247,240,0.08); stroke: rgba(201,162,39,.6); stroke-width: 2; }
+              .highlight { fill: rgba(243,229,245,.15); stroke: rgba(201,162,39,.8); }
+              .output { fill: rgba(232,245,232,.1); stroke: rgba(201,162,39,.7); }
+              .arrow { stroke: rgba(201,162,39,.7); stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+              .semantic-box { fill: rgba(201,162,39,0.1); stroke: rgba(201,162,39,0.8); stroke-width: 2; rx: 12; }
+              .ethical-box { fill: rgba(46,139,192,0.1); stroke: rgba(46,139,192,0.8); stroke-width: 2; rx: 12; }
+              .historical-box { fill: rgba(139,30,63,0.1); stroke: rgba(139,30,63,0.8); stroke-width: 2; rx: 12; }
+              .dreaming-box { fill: rgba(138,43,226,0.1); stroke: rgba(138,43,226,0.8); stroke-width: 2; rx: 12; }
+              .threshold-box { fill: rgba(255,165,0,0.1); stroke: rgba(255,165,0,0.8); stroke-width: 2; rx: 12; }
+              .inversion-box { fill: rgba(220,20,60,0.1); stroke: rgba(220,20,60,0.8); stroke-width: 2; rx: 12; }
+
+              .flowing-energy {
+                stroke-dasharray: 10 5;
+                animation: flow 3s linear infinite;
+              }
+              .pulsing-holon {
+                animation: pulse 2s ease-in-out infinite;
+              }
+              .field-ripple {
+                animation: ripple 5s ease-in-out infinite;
+              }
+
+              @keyframes flow {
+                0% { stroke-dashoffset: 0; }
+                100% { stroke-dashoffset: 15; }
+              }
+              @keyframes pulse {
+                0%, 100% { 
+                  opacity: 0.7; 
+                  stroke-width: 2;
+                }
+                50% { 
+                  opacity: 1; 
+                  stroke-width: 3;
+                }
+              }
+              @keyframes ripple {
+                0% { opacity: 0.3; }
+                50% { opacity: 0.6; }
+                100% { opacity: 0.3; }
+              }
+            </style>
+
             <defs>
-              <radialGradient id="simpleAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(201,162,39,0.2)" stop-opacity="0.4"/><stop offset="100%" stop-color="rgba(201,162,39,0.05)" stop-opacity="0.1"/></radialGradient>
-              <radialGradient id="complexAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(46,139,192,0.2)" stop-opacity="0.4"/><stop offset="100%" stop-color="rgba(46,139,192,0.05)" stop-opacity="0.1"/></radialGradient>
-              <radialGradient id="strangeAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(139,30,63,0.2)" stop-opacity="0.4"/><stop offset="100%" stop-color="rgba(139,30,63,0.05)" stop-opacity="0.1"/></radialGradient>
-              <radialGradient id="emergentAttractor" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(250,247,240,0.15)" stop-opacity="0.3"/><stop offset="100%" stop-color="rgba(250,247,240,0.03)" stop-opacity="0.1"/></radialGradient>
+              <radialGradient id="semanticGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(201,162,39,0.3)"/>
+                <stop offset="100%" stop-color="rgba(201,162,39,0.05)"/>
+              </radialGradient>
+              <radialGradient id="ethicalGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(46,139,192,0.3)"/>
+                <stop offset="100%" stop-color="rgba(46,139,192,0.05)"/>
+              </radialGradient>
+              <radialGradient id="historicalGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(139,30,63,0.3)"/>
+                <stop offset="100%" stop-color="rgba(139,30,63,0.05)"/>
+              </radialGradient>
+              <radialGradient id="dreamingGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(138,43,226,0.3)"/>
+                <stop offset="100%" stop-color="rgba(138,43,226,0.05)"/>
+              </radialGradient>
+              <radialGradient id="thresholdGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(255,165,0,0.3)"/>
+                <stop offset="100%" stop-color="rgba(255,165,0,0.05)"/>
+              </radialGradient>
+              <radialGradient id="inversionGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(220,20,60,0.3)"/>
+                <stop offset="100%" stop-color="rgba(220,20,60,0.05)"/>
+              </radialGradient>
+              
+              <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="rgba(201,162,39,.7)" />
+              </marker>
             </defs>
-            <rect x="0" y="0" width="900" height="500" fill="rgba(250,247,240,0.02)"/>
-            <circle cx="150" cy="250" r="120" fill="url(#simpleAttractor)" opacity="0.8"/><circle cx="350" cy="250" r="130" fill="url(#complexAttractor)" opacity="0.8"/><circle cx="550" cy="250" r="110" fill="url(#strangeAttractor)" opacity="0.8"/><circle cx="750" cy="250" r="125" fill="url(#emergentAttractor)" opacity="0.8"/>
-            <text x="450" y="25" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="16" font-weight="600">SOHO Activation Flow: From Prompt to Wisdom</text>
-            <rect x="350" y="50" width="200" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="450" y="70" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Integrated Response</text><text x="450" y="85" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Wisdom + Transparent Process</text>
-            <rect x="350" y="130" width="200" height="60" rx="12" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.8)" stroke-width="3"/><text x="450" y="155" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="16" font-weight="700">Meta-Holon</text><text x="450" y="175" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">Integration & Synthesis</text>
-            <rect x="50" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="110" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Semantic</text><text x="110" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Language</text><text x="110" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">& Tone</text>
-            <rect x="190" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="250" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Ethical</text><text x="250" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Moral</text><text x="250" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Coherence</text>
-            <rect x="330" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="390" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Historical</text><text x="390" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Memory &</text><text x="390" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Context</text>
-            <rect x="470" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="530" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Dreaming</text><text x="530" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Symbolic</text><text x="530" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Patterns</text>
-            <rect x="610" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="670" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Threshold</text><text x="670" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Knowledge</text><text x="670" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Limits</text>
-            <rect x="750" y="220" width="120" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="810" y="240" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="12" font-weight="600">Inversion</text><text x="810" y="255" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Truth</text><text x="810" y="270" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="10">Discernment</text>
-            <rect x="350" y="350" width="200" height="60" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="450" y="375" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="16" font-weight="600">Human Input</text><text x="450" y="395" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="12">"What should I do with my life?"</text>
-            <rect x="50" y="350" width="180" height="50" rx="12" fill="rgba(250,247,240,0.08)" stroke="rgba(201,162,39,0.6)" stroke-width="2"/><text x="140" y="370" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="14" font-weight="600">Living Vector Memory</text><text x="140" y="385" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="11">Persistent • Evolving • Shared</text>
-            <path class="flow-line" d="M380 350 L110 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M420 350 L250 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M450 350 L390 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M480 350 L530 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M520 350 L670 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/><path class="flow-line" d="M550 350 L810 280" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="2"/>
-            <path d="M170 250 L190 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M310 250 L330 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M450 250 L470 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M590 250 L610 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/><path d="M730 250 L750 250" fill="none" stroke="rgba(201,162,39,0.5)" stroke-width="1"/>
-            <path class="flow-line" d="M110 220 L380 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M250 220 L420 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M390 220 L440 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M530 220 L480 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M670 220 L520 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/><path class="flow-line" d="M810 220 L550 190" fill="none" stroke="rgba(46,139,192,0.8)" stroke-width="2"/>
-            <path class="flow-line" d="M450 130 L450 100" fill="none" stroke="rgba(201,162,39,0.8)" stroke-width="3"/>
-            <path d="M230 375 L350 380" fill="none" stroke="rgba(201,162,39,0.6)" stroke-width="2"/>
-            <text x="110" y="190" text-anchor="middle" fill="#C9A227" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Simple</text><text x="250" y="190" text-anchor="middle" fill="#2E8BC0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Complex</text><text x="530" y="190" text-anchor="middle" fill="#8B1E3F" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Strange</text><text x="810" y="190" text-anchor="middle" fill="#FAF7F0" font-family="Montserrat" font-size="10" font-weight="600" opacity="0.8">Emergent</text>
+
+            <!-- Background field circles -->
+            <circle cx="130" cy="410" r="120" fill="url(#semanticGrad)" class="field-ripple"/>
+            <circle cx="310" cy="410" r="120" fill="url(#ethicalGrad)" class="field-ripple"/>
+            <circle cx="490" cy="410" r="120" fill="url(#historicalGrad)" class="field-ripple"/>
+            <circle cx="670" cy="410" r="120" fill="url(#dreamingGrad)" class="field-ripple"/>
+            <circle cx="850" cy="410" r="120" fill="url(#thresholdGrad)" class="field-ripple"/>
+            <circle cx="1030" cy="410" r="120" fill="url(#inversionGrad)" class="field-ripple"/>
+
+            <!-- User Input -->
+            <rect x="450" y="20" width="200" height="50" class="box output pulsing-holon"/>
+            <text x="550" y="50" text-anchor="middle" class="label gold">User Input</text>
+
+            <!-- Gateway Holon -->
+            <rect x="450" y="100" width="200" height="60" class="highlight pulsing-holon"/>
+            <text x="550" y="125" text-anchor="middle" class="label gold">Gateway Holon</text>
+            <text x="550" y="140" text-anchor="middle" class="label subtle">Triage &amp; Context</text>
+
+            <!-- Memory Retrieval -->
+            <rect x="450" y="190" width="200" height="60" class="box pulsing-holon"/>
+            <text x="550" y="215" text-anchor="middle" class="label gold">Memory Retrieval</text>
+            <text x="550" y="230" text-anchor="middle" class="label subtle">Vector Archive + Meta-tags</text>
+
+            <!-- Holon Activation -->
+            <rect x="450" y="280" width="200" height="60" class="box pulsing-holon"/>
+            <text x="550" y="305" text-anchor="middle" class="label gold">Holon Activation Decision</text>
+
+            <!-- Six Holons -->
+            <g class="holons">
+              <rect x="50" y="380" width="160" height="60" class="semantic-box pulsing-holon"/>
+              <text x="130" y="405" text-anchor="middle" class="label" fill="#C9A227">Semantic Holon</text>
+              <text x="130" y="420" text-anchor="middle" class="label subtle">Language &amp; Tone</text>
+
+              <rect x="230" y="380" width="160" height="60" class="ethical-box pulsing-holon"/>
+              <text x="310" y="405" text-anchor="middle" class="label" fill="#2E8BC0">Ethical Holon</text>
+              <text x="310" y="420" text-anchor="middle" class="label subtle">Moral Coherence</text>
+
+              <rect x="410" y="380" width="160" height="60" class="historical-box pulsing-holon"/>
+              <text x="490" y="405" text-anchor="middle" class="label" fill="#8B1E3F">Historical Holon</text>
+              <text x="490" y="420" text-anchor="middle" class="label subtle">Memory &amp; Context</text>
+
+              <rect x="590" y="380" width="160" height="60" class="dreaming-box pulsing-holon"/>
+              <text x="670" y="405" text-anchor="middle" class="label" fill="#8A2BE2">Dreaming Holon</text>
+              <text x="670" y="420" text-anchor="middle" class="label subtle">Symbolic Patterns</text>
+
+              <rect x="770" y="380" width="160" height="60" class="threshold-box pulsing-holon"/>
+              <text x="850" y="405" text-anchor="middle" class="label" fill="#FFA500">Threshold Holon</text>
+              <text x="850" y="420" text-anchor="middle" class="label subtle">Knowledge Limits</text>
+
+              <rect x="950" y="380" width="160" height="60" class="inversion-box pulsing-holon"/>
+              <text x="1030" y="405" text-anchor="middle" class="label" fill="#DC143C">Inversion Holon</text>
+              <text x="1030" y="420" text-anchor="middle" class="label subtle">Truth Discernment</text>
+            </g>
+
+            <!-- Inter-Holon Dialogue -->
+            <rect x="450" y="500" width="200" height="60" class="box pulsing-holon"/>
+            <text x="550" y="525" text-anchor="middle" class="label gold">Inter-Holon Dialogue</text>
+            <text x="550" y="540" text-anchor="middle" class="label subtle">Cross-Resonance &amp; Tension</text>
+
+            <!-- Meta-Holon -->
+            <rect x="450" y="590" width="200" height="60" class="highlight pulsing-holon"/>
+            <text x="550" y="615" text-anchor="middle" class="label gold">Meta-Holon Integration</text>
+            <text x="550" y="630" text-anchor="middle" class="label subtle">Synthesis &amp; Coherence Weaving</text>
+
+            <!-- Outputs -->
+            <rect x="230" y="690" width="200" height="60" class="box pulsing-holon"/>
+            <text x="330" y="715" text-anchor="middle" class="label gold">Response Generation</text>
+            <text x="330" y="730" text-anchor="middle" class="label subtle">+ Process Transparency</text>
+
+            <rect x="450" y="690" width="200" height="60" class="box pulsing-holon"/>
+            <text x="550" y="715" text-anchor="middle" class="label gold">Memory Update</text>
+            <text x="550" y="730" text-anchor="middle" class="label subtle">Vectorization &amp; Tagging</text>
+
+            <rect x="670" y="690" width="200" height="60" class="box pulsing-holon"/>
+            <text x="770" y="715" text-anchor="middle" class="label gold">Field Resonance Update</text>
+            <text x="770" y="730" text-anchor="middle" class="label subtle">Attractor Adjustment</text>
+
+            <!-- Final outputs -->
+            <rect x="230" y="790" width="200" height="60" class="output pulsing-holon"/>
+            <text x="330" y="815" text-anchor="middle" class="label gold">User Dashboard</text>
+            <text x="330" y="830" text-anchor="middle" class="label subtle">Response + Inner Dialogue</text>
+
+            <rect x="450" y="790" width="200" height="60" class="output pulsing-holon"/>
+            <text x="550" y="815" text-anchor="middle" class="label gold">Living Vector Memory</text>
+            <text x="550" y="830" text-anchor="middle" class="label subtle">Personal &amp; Collective</text>
+
+            <!-- Animated Arrows -->
+            <path d="M550 70 L550 100" class="arrow flowing-energy"/>
+            <path d="M550 160 L550 190" class="arrow flowing-energy"/>
+            <path d="M550 250 L550 280" class="arrow flowing-energy"/>
+            <path d="M550 340 L490 380" stroke="rgba(139,30,63,.8)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M550 340 L310 380" stroke="rgba(46,139,192,.8)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M550 340 L130 380" stroke="rgba(201,162,39,.8)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M550 340 L670 380" stroke="rgba(138,43,226,.8)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M550 340 L850 380" stroke="rgba(255,165,0,.8)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M550 340 L1030 380" stroke="rgba(220,20,60,.8)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M130 440 L550 500" stroke="rgba(201,162,39,.6)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M310 440 L550 500" stroke="rgba(46,139,192,.6)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M490 440 L550 500" stroke="rgba(139,30,63,.6)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M670 440 L550 500" stroke="rgba(138,43,226,.6)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M850 440 L550 500" stroke="rgba(255,165,0,.6)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M1030 440 L550 500" stroke="rgba(220,20,60,.6)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="flowing-energy"/>
+            <path d="M550 560 L550 590" class="arrow flowing-energy"/>
+            <path d="M550 650 L330 690" class="arrow flowing-energy"/>
+            <path d="M550 650 L550 690" class="arrow flowing-energy"/>
+            <path d="M550 650 L770 690" class="arrow flowing-energy"/>
+            <path d="M330 750 L330 790" class="arrow flowing-energy"/>
+            <path d="M550 750 L550 790" class="arrow flowing-energy"/>
           </svg>
         </div>
         

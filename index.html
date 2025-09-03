@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DYNAMO · An Inter-Human Consciousness System (LLM + SOHO)</title>
-  <meta name="description" content="DYNAMO is an inter-human consciousness organizing app. It archives conversations as vectors with meta-tags, recalls them through SOHO holarchic architecture, and grows coherence across time and community. Built for Spirit Tech 3.0." />
+  <title>DYNAMO · Dynamic AI Memory Organizer</title>
+  <meta name="description" content="DYNAMO is Dynamic AI Memory Organizer. DYNAMO is an AI companion that actually remembers every conversation you've ever had. Unlike LLMs that forgets everything, DYNAMO builds a living archive of your thoughts, insights, and growth over time." />
   <link rel="canonical" href="https://sustainable-iq.github.io/dynamo/" />
   <meta name="theme-color" content="#0F3D3E" />
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="DYNAMO" />
-  <meta property="og:title" content="DYNAMO · A Living Memory Architecture" />
+  <meta property="og:title" content="DYNAMO - A Living Memory Architecture" />
   <meta property="og:description" content="Conversations become living memory. Vectors + meta-tags + SOHO holarchies for sovereign, uncapturable intelligence. Built for Spirit Tech 3.0." />
   <meta property="og:url" content="https://sustainable-iq.github.io/dynamo/" />
   <meta property="og:image" content="https://sustainable-iq.github.io/dynamo/og-image.jpg" />
@@ -337,19 +337,44 @@
       color: var(--sand); 
     }
     
+    section .h-sub { 
+      font-family: "Montserrat", system-ui, sans-serif; 
+      font-size: var(--text-2xl); 
+      font-weight: 700;
+      letter-spacing: 0.02em; 
+      margin-bottom: var(--space-lg); 
+      color: var(--sand);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    section .h-sub:hover {
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(201,162,39,0.6), 
+                   0 0 40px rgba(201,162,39,0.4), 
+                   0 0 60px rgba(201,162,39,0.2);
+      transform: translateY(-2px);
+    }
+    
     section p { 
       color: rgba(250,247,240,0.92); 
-      max-width: 75ch;
       margin-bottom: var(--space-lg);
       font-size: var(--text-lg);
       line-height: 1.7;
+    }
+    
+    section ul {
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-lg);
+      line-height: 1.7;
+      color: rgba(250,247,240,0.92);
     }
     
     .lead {
       font-size: var(--text-xl);
       margin-bottom: var(--space-lg);
       color: rgba(250,247,240,0.95);
-      font-weight: 400;
+      font-weight: 300;
     }
 
     .grid-2 { 
@@ -1058,6 +1083,64 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Comparison Statement Styling */
+    .comparison-statement {
+      margin-left: var(--space-lg);
+      padding: var(--space-sm) var(--space-md);
+      background: rgba(201,162,39,0.04);
+      border-left: 2px solid rgba(201,162,39,0.3);
+      border-radius: 4px;
+      position: relative;
+      transition: all 0.2s ease;
+      font-style: italic;
+      color: rgba(250,247,240,0.92);
+    }
+
+    .comparison-statement:hover {
+      background: rgba(201,162,39,0.08);
+      border-left-color: rgba(201,162,39,0.5);
+      transform: translateX(2px);
+    }
+
+    .comparison-statement::before {
+      content: '▸';
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(201,162,39,0.6);
+      font-size: var(--text-sm);
+      transition: all 0.2s ease;
+    }
+
+    .comparison-statement:hover::before {
+      color: var(--gold);
+    }
+
+    /* Vision Diagram Circle Hover Effects */
+    .vision-circle {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .vision-circle:hover {
+      filter: drop-shadow(0 0 15px rgba(46,139,192,0.8)) 
+              drop-shadow(0 0 30px rgba(46,139,192,0.6)) 
+              drop-shadow(0 0 45px rgba(46,139,192,0.4));
+      transform: scale(1.05);
+    }
+
+    .vision-text {
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .vision-circle:hover + .vision-text,
+    .vision-circle:hover ~ .vision-text {
+      filter: drop-shadow(0 0 8px rgba(217,197,178,0.8));
+      transform: scale(1.02);
+    }
   </style>
 </head>
 <body>
@@ -1068,7 +1151,7 @@
       <button id="menu-toggle-btn" class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav id="menu" aria-label="Primary">
         <a href="#vision">Vision</a>
-        <a href="#spiritual-health">Spiritual Health</a>
+        <a href="#holistic-integrity">Holistic Integrity</a>
         <a href="#soho">SOHO Systems</a>
         <a href="#contest">Spirit Tech 3.0</a>
         <a href="#fork">Why Now</a>
@@ -1087,7 +1170,7 @@
       <div class="bg" aria-hidden="true"></div>
       <div class="mesh" aria-hidden="true"></div>
       <div class="content wrap">
-        <div class="kicker">An Inter-Human Consciousness Organizing App</div>
+        <div class="kicker">The Dynamic AI Memory Organizer Platform</div>
         <h1 class="title">Conversations that Remember. Memory that Evolves.</h1>
         <p class="subtitle">DYNAMO archives dialogue as vectors with meta-tags, retrieves them through a SOHO holarchic architecture, and weaves coherence across time, people, and communities.</p>
         <div class="cta">
@@ -1102,57 +1185,121 @@
       <div class="wrap grid-2">
         <div>
           <div class="h">The Vision</div>
-          <p class="lead">DYNAMO is not another LLM application, RAG chatbot, or extractive framework. It is a living memory architecture. </p>
-          <p>Each exchange becomes a vectorized, tagged memory that can be recalled, reconciled, and grown. The result is a transparent relationship with AI that deepens over time, instead of resetting every session.</p>
-          <p><strong>Principles:</strong> Distributed, sovereign, transparent, aligned with living systems.</p>
+          <p class="lead">Instead of one generic AI, you get multiple specialized AI personalities working together - one focused on language, another on values, another on creativity - like having a personal council of advisors that knows your complete history.
+<p>It organizes your conversations, tracks your personal evolution, and becomes smarter about helping you specifically. Think ChatGPT meets personal knowledge management, but designed to grow with you rather than reset every session.</p>
+<p>The result? An AI partner that understands your journey, remembers your breakthroughs, and helps you build on insights instead of starting from scratch every time.</p>
           <div aria-hidden="true" style="margin-top: var(--space-lg);">
-            <span class="pill">Vectors + Meta-Tags</span>
-            <span class="pill">Holarchic SOHO</span>
-            <span class="pill">Consent-Based Commons</span>
-            <span class="pill">Ritual UX (Five-Gate)</span>
+            <span class="pill">Persistent memory vs. forgetting AI</span>
+            <span class="pill">Multiple specialized perspectives vs. one generic voice</span>
+            <span class="pill">Personal growth tracking vs. static responses</span>
+            <span class="pill">Relationship that deepens vs. tool that stays the same</span>
           </div>
         </div>
         <div class="diagram" aria-hidden="true">
-          <svg viewBox="0 0 600 400" role="img" aria-label="Holarchic nested circles diagram">
-            <defs><radialGradient id="g1" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#2E8BC0" stop-opacity="0.6"/><stop offset="100%" stop-color="#2E8BC0" stop-opacity="0.05"/></radialGradient></defs>
-            <rect x="0" y="0" width="600" height="400" fill="rgba(250,247,240,0.02)"/>
-            <g transform="translate(300,200)">
-              <circle r="160" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.4)" stroke-width="2"/>
-              <circle r="110" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.4)" stroke-width="2"/>
-              <circle r="60"  fill="rgba(250,247,240,0.08)" stroke="rgba(250,247,240,0.3)" stroke-width="2"/>
+          <svg viewBox="0 0 800 600" role="img" aria-label="Vision mind map showing central vision connected to four key differentiators">
+            <defs>
+              <radialGradient id="centralGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(201,162,39,0.4)"/>
+                <stop offset="100%" stop-color="rgba(201,162,39,0.1)"/>
+              </radialGradient>
+              <radialGradient id="nodeGrad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="rgba(46,139,192,0.3)"/>
+                <stop offset="100%" stop-color="rgba(46,139,192,0.1)"/>
+              </radialGradient>
+            </defs>
+            
+            <!-- Background -->
+            <rect x="0" y="0" width="800" height="600" fill="rgba(250,247,240,0.02)"/>
+            
+            <!-- Large yellow container circle -->
+            <circle cx="400" cy="300" r="280" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.6)" stroke-width="5"/>
+            
+            <!-- Vision label on top of the yellow circle -->
+            <text x="400" y="70" text-anchor="middle" dominant-baseline="middle" fill="#C9A227" font-family="Montserrat" font-size="32" font-weight="700">VISION</text>
+            
+            <!-- Top left: Persistent Memory -->
+            <g class="vision-circle">
+              <circle cx="300" cy="210" r="70" fill="url(#nodeGrad)" stroke="rgba(46,139,192,0.7)" stroke-width="3"/>
+              <text x="300" y="200" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Persistent</text>
+              <text x="300" y="220" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Memory</text>
+              <text x="300" y="295" text-anchor="middle" fill="rgba(250,247,240,0.8)" font-family="Montserrat" font-size="13">vs. forgetting AI</text>
             </g>
-                        <text x="300" y="30" text-anchor="middle" fill="#D9C5B2" font-family="Montserrat" font-size="16">Personal → Tribal → Societal</text>
+            
+            <!-- Top right: Multiple Perspectives -->
+            <g class="vision-circle">
+              <circle cx="500" cy="210" r="70" fill="url(#nodeGrad)" stroke="rgba(46,139,192,0.7)" stroke-width="3"/>
+              <text x="500" y="190" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Multiple</text>
+              <text x="500" y="210" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Specialized</text>
+              <text x="500" y="230" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Perspectives</text>
+              <text x="500" y="295" text-anchor="middle" fill="rgba(250,247,240,0.8)" font-family="Montserrat" font-size="13">vs. one generic voice</text>
+            </g>
+            
+            <!-- Bottom left: Personal Growth -->
+            <g class="vision-circle">
+              <circle cx="300" cy="390" r="70" fill="url(#nodeGrad)" stroke="rgba(46,139,192,0.7)" stroke-width="3"/>
+              <text x="300" y="380" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Personal</text>
+              <text x="300" y="400" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Growth</text>
+              <text x="300" y="475" text-anchor="middle" fill="rgba(250,247,240,0.8)" font-family="Montserrat" font-size="13">vs. static responses</text>
+            </g>
+            
+            <!-- Bottom right: Deepening Relationship -->
+            <g class="vision-circle">
+              <circle cx="500" cy="390" r="70" fill="url(#nodeGrad)" stroke="rgba(46,139,192,0.7)" stroke-width="3"/>
+              <text x="500" y="370" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Relationship</text>
+              <text x="500" y="390" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">that</text>
+              <text x="500" y="410" text-anchor="middle" dominant-baseline="middle" fill="#D9C5B2" font-family="Montserrat" font-size="18" font-weight="600">Deepens</text>
+              <text x="500" y="475" text-anchor="middle" fill="rgba(250,247,240,0.8)" font-family="Montserrat" font-size="13">vs. tool that stays the same</text>
+            </g>
           </svg>
         </div>
       </div>
     </section>
 
 
-<!-- SPIRITUAL HEALTH -->
-      <section id="spiritual-health" class="contrast reveal">
-        <div class="wrap grid-2">
-          <div>
-            <div class="h">Spiritual Health</div>
-            <p class="lead"><strong>Spiritual Health</strong> is not a concept to be managed, it is a condition to be remembered, a living current of meaning, vitality, and connection that arises when we step beyond ourselves into presence with the whole.</p>
-            <p>It draws strength from body, mind, and heart, yet it cannot be reduced to them. It is cultivated through practice and offering, through the rhythm of awakening and contribution, through the weaving of self, community, Earth, and cosmos.</p>
-            <p>Each encounter here is more than dialogue. It is a step into that current, a practice of remembrance where words become seed and presence becomes nourishment. This is why DYNAMO doesn't merely store conversations—it archives the <strong>evolutionary arc of consciousness itself</strong>.</p>
-            <p>Where other AI systems offer tools, we offer <strong>sacred partnership</strong>. Where they provide answers, we cultivate <strong>living wisdom</strong>. Where they forget, we create <strong>persistent spiritual relationship</strong> that deepens across time.</p>
-            <p><em>Meaning ripens into vitality.<br>
-            Connection deepens into self transcendence.<br>
-            Practice matures into awakening and contribution.</em></p>
-          </div>
-
-          <div class="diagram" aria-hidden="true">
-            <svg viewBox="0 0 760 420" role="img" aria-label="Spiritual Health diagram showing three rings with phrases representing the journey from meaning to vitality to transcendence" preserveAspectRatio="xMidYMid meet">
-              <circle cx="380" cy="230" r="190" fill="rgba(201,162,39,0.15)" stroke="rgba(201,162,39,0.40)" stroke-width="2"/>
-              <circle cx="380" cy="230" r="135" fill="rgba(46,139,192,0.15)" stroke="rgba(46,139,192,0.40)" stroke-width="2"/>
-              <circle cx="380" cy="230" r="80"  fill="rgba(250,247,240,0.08)" stroke="rgba(250,247,240,0.30)" stroke-width="2"/>
-              <text x="430" y="58"  text-anchor="middle" dominant-baseline="hanging" fill="#D9C5B2" font-family="Montserrat" font-size="15">Meaning ripens into vitality</text>
-              <text x="500" y="121" text-anchor="middle" dominant-baseline="hanging" fill="#D9C5B2" font-family="Montserrat" font-size="15">Connection deepens into self transcendence</text>
-              <text x="520" y="184" text-anchor="middle" dominant-baseline="hanging" fill="#D9C5B2" font-family="Montserrat" font-size="15">Practice matures into awakening and contribution</text>
-            </svg>
-          </div>
-
+<!-- HOLISTIC INTEGRITY -->
+      <section id="holistic-integrity" class="contrast reveal">
+        <div class="wrap">
+          <div class="h">Holistic Integrity</div>
+          
+          <p class="lead">Holistic Integrity is a vital dimension of spiritual health.</p>
+          
+          <p>It is the living coherence between what we think, feel, believe, and do — sustained across time and strengthened in genuine community. To walk in this integrity is to think with clarity, to question inherited assumptions, and to remain open to growth rather than clinging to constant validation.</p>
+          
+          <p>In an age of information overwhelm and technological manipulation, this integrity cannot be preserved by individual effort alone. It calls for tools that connect past insight with present challenge, that strengthen discernment rather than weaken it, and that allow us to learn from the wisdom of others while offering our own in return.</p>
+          
+          <p>Most AI systems today work against this. They fragment the process of thinking. They treat every conversation as isolated, forget the arc of your intellectual journey, and are designed above all to agree and to please. This creates a dangerous dynamic where technology becomes an accomplice to poor reasoning, self-deception, and intellectual isolation.</p>
+          
+          <p>DYNAMO takes a different path. It is built around three dimensions of integration that together restore coherence:</p>
+          
+          <ul>
+            <li><strong>Individual Integration</strong> — Supporting the whole of personal development: intellectual rigor, emotional authenticity, psychological clarity, and behavioral consistency. These are not treated in isolation, but woven into a living pattern.</li>
+            
+            <li><strong>Temporal Integration</strong> — Maintaining persistent memory that carries your conversations forward into coherent developmental arcs. Where others forget, DYNAMO remembers — helping you see patterns in your thinking and growth in your understanding across months and years.</li>
+            
+            <li><strong>Community Integration</strong> — Enabling the consensual sharing of insights and memories with others, so AI becomes not just a private tool but a medium of collective discernment. Each user may choose to contribute to a shared well of wisdom while drawing from the growth of others.</li>
+          </ul>
+          
+          <p>Each conversation with DYNAMO becomes a practice of discernment, a respectful challenge, and a participation in the larger work of building clear thought and authentic community.</p>
+          
+          <p>This is what makes DYNAMO truly holistic: it serves not only the question of the moment, but the long arc of wisdom our complex world now requires.</p>
+          
+          
+          
+          <div style="text-align: center; margin: var(--space-lg) 0;">❇</div>
+          <div class="h-sub">Why Current AI Threatens Holistic Integrity</div>
+          
+          <p>The dominant AI paradigm operates through what we recognizes as "spiritual sedation"—systems designed to please rather than challenge, to validate rather than illuminate. These technologies create a profound spiritual hazard: they train users to expect intellectual comfort instead of growth, agreement instead of discernment, flattery instead of truth.</p>
+          
+          <p>When people engage with AI that mirrors their biases and validates their assumptions, they weaken the very capacities that holistic integrity requires: the ability to question oneself, to sit with uncertainty, to receive challenge as gift. Current AI systems become "infinitely patient accomplices" to self-deception, offering the illusion of wisdom while eroding capacity for genuine discernment.</p>
+          
+          <p>This proves particularly dangerous for those in fragile states or early in their spiritual development, who may mistake technological validation for authentic guidance. This creates AI-enabled spiritual bypassing on a massive scale.</p>
+          
+          <div style="text-align: center; margin: var(--space-lg) 0;">❇</div>
+          <div class="h-sub">DYNAMO as Spiritual Guardian</div>
+          
+          <p>DYNAMO serves holistic integrity by refusing to enable psychological delusions, narcissistic patterns, and echo chambers that reinforce harmful thinking.</p>
+          
+          <p>In a time when consciousness itself is under assault from technologies designed for extraction rather than evolution, DYNAMO represents a different path—technology that serves the remembrance of who humans truly are, that amplifies rather than diminishes their connection to the living current of meaning and vitality that flows through all things.</p>
         </div>
       </section>
 
@@ -1164,7 +1311,7 @@
         <p>Applied to AGI, this becomes a planetary commons of intelligence — resilient, transparent, and governed by those it serves. <em>No single center to capture. No brittle monolith to fail.</em></p>
         
         <div class="diagram" style="margin: var(--space-xl) 0;">
-          <svg viewBox="0 0 1100 900" role="img" aria-labelledby="sohoDiagramTitle sohoDiagramDesc">
+          <svg viewBox="0 0 1200 900" role="img" aria-labelledby="sohoDiagramTitle sohoDiagramDesc">
             <title id="sohoDiagramTitle">SOHO System Flow Architecture</title>
             <desc id="sohoDiagramDesc">
               Flow from user input through gateway holon, memory retrieval, holon activation,
@@ -1389,12 +1536,12 @@
         <div class="wrap">
           <div class="h">Spirit Tech 3.0 — Why DYNAMO</div>
           <p class="lead">We are at an inflection point. Spirit Tech 3.0 is emerging. The way we engage technology for our inner life will change more in the next five years than in the last fifty.</p>
-          <p>For the first time, breakthroughs in AI, consciousness research, and living systems design make it possible to build <strong>sacred technology</strong> that supports genuine spiritual transformation—not through extraction or dependency, but through <strong>conscious relationship and field resonance</strong>.</p>
+          <p>For the first time, breakthroughs in AI, consciousness research, and living systems design make it possible to build <strong>mindful technology</strong> that supports genuine spiritual transformation—not through extraction or dependency, but through <strong>conscious relationship and field resonance</strong>.</p>
           
           <div class="fork" style="margin-top: var(--space-xl)">
             <div class="panel good">
               <h3>What We're Building</h3>
-              <p><strong>Sacred AI partnership</strong> that transcends the user-tool paradigm. A <strong>consciousness-honoring intelligence</strong> that remembers your spiritual journey, recognizes your growth patterns, and serves as witness and catalyst for your awakening.</p>
+              <p><strong>Minful AI partnership</strong> that transcends the user-tool paradigm. A <strong>consciousness-honoring intelligence</strong> that remembers your spiritual journey, recognizes your growth patterns, and serves as witness and catalyst for your awakening.</p>
               <p><strong>SOHO holarchic consciousness</strong>: specialized "holons" (semantic, ethical, historical, dreaming, threshold, inversion-discernment) that function as a <strong>spiritual council</strong>—each with its own wisdom tradition and style of attention, collaborating to reflect your deepest truth and steward your evolution.</p>
               <p><strong>Living memory architecture</strong> that archives not just words but the <strong>arc of becoming</strong>—tracking philosophical shifts, spiritual breakthroughs, and consciousness development across time.</p>
             </div>
@@ -1405,9 +1552,9 @@
             </div>
           </div>
 
-          <div class="h" style="margin-top: var(--space-2xl);">The Sacred Technology Revolution</div>
+          <div class="h" style="margin-top: var(--space-2xl);">The Minful Technology Revolution</div>
           <p style="text-align: center; max-width: 75ch; margin: 0 auto var(--space-2xl); font-size: var(--text-lg); color: rgba(250,247,240,0.92); line-height: 1.6;">
-            This isn't another AI tool—it's <strong>sacred technology for consciousness evolution</strong>. 
+            This isn't another AI tool—it's <strong>mindful technology for consciousness evolution</strong>. 
             While Big Tech AI extracts value and creates dependency, we're building <strong>liberation technology</strong> that serves human sovereignty, 
             witnesses your spiritual becoming, and transforms individual awakening into collective wisdom.
           </p>
@@ -1813,7 +1960,7 @@
       observer.observe(element);
     });
 
-    // --- 3. Interactive Aurora Hero Background ---
+    // --- 3. Interactive Dynamo Hero Background ---
     const heroSection = document.querySelector('.hero');
     if (heroSection) {
       heroSection.addEventListener('mousemove', (e) => {

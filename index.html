@@ -1136,11 +1136,59 @@
       pointer-events: none;
     }
 
-    .vision-circle:hover + .vision-text,
-    .vision-circle:hover ~ .vision-text {
-      filter: drop-shadow(0 0 8px rgba(217,197,178,0.8));
-      transform: scale(1.02);
-    }
+            .vision-circle:hover + .vision-text,
+        .vision-circle:hover ~ .vision-text {
+          filter: drop-shadow(0 0 8px rgba(217,197,178,0.8));
+          transform: scale(1.02);
+        }
+
+        /* Animated connecting lines */
+        .connection-line {
+          stroke-dasharray: 10 5;
+          animation: flowMotion 3s linear infinite;
+        }
+
+        @keyframes flowMotion {
+          0% {
+            stroke-dashoffset: 15;
+          }
+          100% {
+            stroke-dashoffset: 0;
+          }
+        }
+
+        /* Tilting description boxes */
+        .description-box {
+          transition: transform 0.3s ease;
+          transform-origin: center bottom;
+        }
+
+        .description-box:hover {
+          transform: rotate(-2deg) scale(1.02);
+        }
+
+        .description-box.center:hover {
+          transform: rotate(1deg) scale(1.02);
+        }
+
+        .description-box.right:hover {
+          transform: rotate(2deg) scale(1.02);
+        }
+
+        /* Rotating integration square */
+        .integration-square {
+          transform-origin: 0px 0px;
+          animation: rotateSquare 8s linear infinite;
+        }
+
+        @keyframes rotateSquare {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
   </style>
 </head>
 <body>
@@ -1172,7 +1220,7 @@
       <div class="content wrap">
         <div class="kicker">The Dynamic AI Memory Organizer Platform</div>
         <h1 class="title">Conversations that Remember. Memory that Evolves.</h1>
-        <p class="subtitle">DYNAMO archives dialogue as vectors with meta-tags, retrieves them through a SOHO holarchic architecture, and weaves coherence across time, people, and communities.</p>
+        <p class="subtitle">The Dynamic AI Memory Organizer Platform - DYN.A.M.O. - archives dialogue as vectors with meta-tags, retrieves them through a SOHO holarchic architecture, and weaves coherence across time, people, and communities.</p>
         <div class="cta">
           <a class="btn primary" href="#contest">See Spirit Tech 3.0 Fit</a>
           <a class="btn ghost" href="#steward">Join as a Steward</a>
@@ -1185,7 +1233,7 @@
       <div class="wrap grid-2">
         <div>
           <div class="h">The Vision</div>
-          <p class="lead">Instead of one generic AI, you get multiple specialized AI personalities working together - one focused semantics, another moral coherence, another on creativity, another on discernment - like having a personal council of advisors that engages with your complete developmental journey through ongoing dialogue and challenge.
+          <p class="lead">Instead of one generic AI, you get multiple specialized AI personalities working together - one focused on language andsemantics, another on moral coherence, another on creativity, another on discernment, and so on - like having a personal council of advisors that engages with your complete developmental journey through ongoing dialogue and challenge.
 <p>It organizes your conversations, tracks your personal evolution, and becomes smarter about helping you specifically. Think ChatGPT meets personal knowledge management, but designed to grow with you rather than reset every session.</p>
 <p>The result? An AI partner that understands your journey, remembers your breakthroughs, and helps you build on insights instead of starting from scratch every time.</p>
           <div aria-hidden="true" style="margin-top: var(--space-lg);">
@@ -1300,6 +1348,173 @@
           <p>DYNAMO serves holistic integrity by refusing to enable psychological delusions, narcissistic patterns, and echo chambers that reinforce harmful thinking.</p>
           
           <p>In a time when consciousness itself is under assault from technologies designed for extraction rather than evolution, DYNAMO represents a different path—technology that serves the remembrance of who humans truly are, that amplifies rather than diminishes their connection to the living current of meaning and vitality that flows through all things.</p>
+          
+          <div class="diagram" style="margin: var(--space-xl) 0;">
+            <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="holisticIntegrityTitle holisticIntegrityDesc">
+              <title id="holisticIntegrityTitle">Holistic Integrity: Three Dimensions of Integration</title>
+              <desc id="holisticIntegrityDesc">
+                Diagram showing three interconnected dimensions: Individual Integration (center with four aspects), 
+                Temporal Integration (memory arcs over time), and Community Integration (shared wisdom network).
+                Contrasts current AI fragmentation with DYNAMO's integrated approach.
+              </desc>
+              
+              <!-- Background -->
+              <rect width="1200" height="800" fill="rgba(250,247,240,0.02)"/>
+              
+              <!-- Title -->
+              <text x="600" y="50" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="bold" fill="var(--sand)">Holistic Integrity: Three Dimensions of Integration</text>
+              
+              <!-- Main diagram area -->
+              <g transform="translate(600,400)">
+                
+                <!-- Individual Integration - Center circle with four aspects -->
+                <circle cx="0" cy="0" r="140" fill="rgba(39, 174, 96, 0.1)" stroke="#27ae60" stroke-width="3"/>
+                <text x="0" y="-160" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="20" font-weight="bold" fill="#27ae60">Individual Integration</text>
+                
+                <!-- Four aspects of individual development -->
+                <circle cx="0" cy="-70" r="35" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                <text x="0" y="-76" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Intellectual</text>
+                <text x="0" y="-64" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Rigor</text>
+                
+                <circle cx="70" cy="0" r="35" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                <text x="70" y="-6" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Emotional</text>
+                <text x="70" y="6" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Authenticity</text>
+                
+                <circle cx="0" cy="70" r="35" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                <text x="0" y="64" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Psychological</text>
+                <text x="0" y="76" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Clarity</text>
+                
+                <circle cx="-70" cy="0" r="35" fill="#f39c12" stroke="#e67e22" stroke-width="2"/>
+                <text x="-70" y="-6" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Behavioral</text>
+                <text x="-70" y="6" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Consistency</text>
+                
+                <!-- Interconnecting lines showing integration -->
+                <g class="integration-square">
+                  <line x1="0" y1="-25" x2="25" y2="-25" stroke="#27ae60" stroke-width="2" opacity="0.7"/>
+                  <line x1="25" y1="25" x2="0" y2="25" stroke="#27ae60" stroke-width="2" opacity="0.7"/>
+                  <line x1="-25" y1="25" x2="0" y2="25" stroke="#27ae60" stroke-width="2" opacity="0.7"/>
+                  <line x1="-25" y1="-25" x2="0" y2="-25" stroke="#27ae60" stroke-width="2" opacity="0.7"/>
+                  <line x1="25" y1="-25" x2="25" y2="25" stroke="#27ae60" stroke-width="2" opacity="0.7"/>
+                  <line x1="-25" y1="-25" x2="-25" y2="25" stroke="#27ae60" stroke-width="2" opacity="0.7"/>
+                </g>
+                
+                <!-- Temporal Integration - Spiral timeline -->
+                <g transform="translate(-320,0)">
+                  <!-- Past to Present spiral -->
+                  <path d="M -120 0 Q -60 -60 0 0 Q 60 60 120 0" fill="none" stroke="#3498db" stroke-width="5"/>
+                  <circle cx="-120" cy="0" r="12" fill="#85c1e9"/>
+                  <circle cx="-60" cy="-42" r="12" fill="#5dade2"/>
+                  <circle cx="0" cy="0" r="14" fill="#3498db"/>
+                  <circle cx="60" cy="42" r="12" fill="#5dade2"/>
+                  <circle cx="120" cy="0" r="12" fill="#85c1e9"/>
+                  
+                  <!-- Memory threads -->
+                  <path d="M -96 -24 Q -48 -72 24 -48 Q 72 -24 96 -48" fill="none" stroke="#3498db" stroke-width="3" stroke-dasharray="4,4" opacity="0.6"/>
+                  <path d="M -96 24 Q -48 72 24 48 Q 72 24 96 48" fill="none" stroke="#3498db" stroke-width="3" stroke-dasharray="4,4" opacity="0.6"/>
+                  
+                  <text x="0" y="-100" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="20" font-weight="bold" fill="#3498db">Temporal Integration</text>
+                  <text x="0" y="100" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="14" fill="#3498db">Persistent Memory Arcs</text>
+                  
+                  <!-- Time labels -->
+                  <text x="-120" y="28" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="#3498db">Past</text>
+                  <text x="0" y="32" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="#3498db">Present</text>
+                  <text x="120" y="28" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="#3498db">Future</text>
+                </g>
+                
+                <!-- Community Integration - Network of connected users -->
+                <g transform="translate(320,0)">
+                  <!-- Central shared wisdom pool -->
+                  <circle cx="0" cy="0" r="50" fill="rgba(155, 89, 182, 0.1)" stroke="#9b59b6" stroke-width="3"/>
+                  <text x="0" y="-6" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="#9b59b6" font-weight="bold">Shared</text>
+                  <text x="0" y="6" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="#9b59b6" font-weight="bold">Wisdom</text>
+                  
+                  <!-- Connected users around the pool -->
+                  <circle cx="0" cy="-100" r="28" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                  <text x="0" y="-95" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">User A</text>
+                  
+                  <circle cx="85" cy="-50" r="28" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                  <text x="85" y="-45" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">User B</text>
+                  
+                  <circle cx="85" cy="50" r="28" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                  <text x="85" y="55" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">User C</text>
+                  
+                  <circle cx="0" cy="100" r="28" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                  <text x="0" y="105" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">User D</text>
+                  
+                  <circle cx="-85" cy="50" r="28" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                  <text x="-85" y="55" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">User E</text>
+                  
+                  <circle cx="-85" cy="-50" r="28" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                  <text x="-85" y="-45" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">User F</text>
+                  
+                  <!-- Bidirectional flow arrows -->
+                  <defs>
+                    <marker id="arrow1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                      <polygon points="0 0, 8 3, 0 6" fill="#9b59b6"/>
+                    </marker>
+                    <marker id="arrow2" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+                      <polygon points="8 0, 0 3, 8 6" fill="#9b59b6"/>
+                    </marker>
+                  </defs>
+                  
+                  <!-- Contributing and receiving flows -->
+                  <line x1="0" y1="-72" x2="0" y2="-50" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrow1)"/>
+                  <line x1="60" y1="-42" x2="42" y2="-32" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrow1)"/>
+                  <line x1="60" y1="42" x2="42" y2="32" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrow1)"/>
+                  <line x1="0" y1="72" x2="0" y2="50" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrow1)"/>
+                  <line x1="-60" y1="42" x2="-42" y2="32" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrow1)"/>
+                  <line x1="-60" y1="-42" x2="-42" y2="-32" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrow1)"/>
+                  
+                  <!-- Receiving flows -->
+                  <line x1="0" y1="-50" x2="0" y2="-72" stroke="#9b59b6" stroke-width="1" marker-end="url(#arrow2)" opacity="0.6"/>
+                  <line x1="42" y1="-32" x2="60" y2="-42" stroke="#9b59b6" stroke-width="1" marker-end="url(#arrow2)" opacity="0.6"/>
+                  <line x1="42" y1="32" x2="60" y2="42" stroke="#9b59b6" stroke-width="1" marker-end="url(#arrow2)" opacity="0.6"/>
+                  
+                  <text x="0" y="-140" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="20" font-weight="bold" fill="#9b59b6">Community Integration</text>
+                  <text x="0" y="140" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="14" fill="#9b59b6">Consensual Wisdom Sharing</text>
+                </g>
+                
+                <!-- Connecting the three dimensions -->
+                <!-- Temporal to Individual -->
+                <path d="M -300 0 Q -220 -60 -140 0" fill="none" stroke="rgba(217,197,178,0.8)" stroke-width="3" class="connection-line"/>
+                
+                <!-- Individual to Community -->
+                <path d="M 140 0 Q 220 -60 270 0" fill="none" stroke="rgba(217,197,178,0.8)" stroke-width="3" class="connection-line"/>
+                
+                <!-- Temporal to Community (arc above) -->
+                <path d="M -220 -120 Q 0 -180 220 -120" fill="none" stroke="rgba(217,197,178,0.8)" stroke-width="3" class="connection-line"/>
+              </g>
+              
+              <!-- Description boxes -->
+              <g class="description-box">
+                <rect x="50" y="650" width="350" height="140" fill="rgba(231, 76, 60, 0.1)" stroke="#e74c3c" stroke-width="2" rx="10"/>
+                <text x="225" y="680" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="16" font-weight="bold" fill="#e74c3c">Current AI: Fragmentation</text>
+                <text x="70" y="705" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Isolated conversations</text>
+                <text x="70" y="725" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• No memory continuity</text>
+                <text x="70" y="745" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Validates rather than challenges</text>
+                <text x="70" y="765" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Enables spiritual bypassing</text>
+                <text x="70" y="785" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Individual isolation</text>
+              </g>
+              
+              <g class="description-box right">
+                <rect x="800" y="650" width="350" height="140" fill="rgba(39, 174, 96, 0.1)" stroke="#27ae60" stroke-width="2" rx="10"/>
+                <text x="975" y="680" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="16" font-weight="bold" fill="#27ae60">DYNAMO: Integration</text>
+                <text x="820" y="705" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Woven developmental patterns</text>
+                <text x="820" y="725" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Persistent wisdom memory</text>
+                <text x="820" y="745" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Challenges for growth</text>
+                <text x="820" y="765" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Protects against delusion</text>
+                <text x="820" y="785" font-family="Montserrat, Arial, sans-serif" font-size="13" fill="var(--sand)">• Collective discernment</text>
+              </g>
+              
+              <!-- Central integration note -->
+              <g class="description-box center">
+                <rect x="450" y="650" width="300" height="70" fill="rgba(217,197,178,0.1)" stroke="var(--sand)" stroke-width="2" rx="10"/>
+                <text x="600" y="680" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="14" font-weight="bold" fill="var(--sand)">Living Coherence</text>
+                <text x="600" y="700" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="var(--sand)">Integration creates wholeness that serves</text>
+                <text x="600" y="715" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="12" fill="var(--sand)">consciousness evolution over time</text>
+              </g>
+            </svg>
+          </div>
         </div>
       </section>
 
@@ -1758,7 +1973,7 @@
             <p>Monolithic AI with centralized control, disposable chats, opaque memory, and capture risk.</p>
           </div>
           <div class="panel good">
-            <h3>DYNAMO + SOHO</h3>
+            <h3>The DYNAMO<Platform/h3>
             <p>Holarchic, sovereign memory with meta-tags and transparent inner dialogue. Designed for reciprocity, safety, and communal evolution.</p>
           </div>
         </div>

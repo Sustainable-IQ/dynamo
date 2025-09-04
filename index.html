@@ -973,6 +973,20 @@
         color: rgba(250,247,240,0.95); /* Increase text contrast */
         line-height: 1.6; /* Improve readability */
       }
+      
+      /* Fix reveal animation issues on mobile */
+      .reveal {
+        opacity: 1 !important; /* Force visibility on mobile */
+        transform: translateY(0) !important; /* Remove transform on mobile */
+      }
+      
+      /* Ensure Spirit Tech section is always visible on mobile */
+      #contest {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        display: block !important;
+        visibility: visible !important;
+      }
     }
 
     /* Contact Form Styles - REPLACE THE EXISTING SECTION WITH THIS */
@@ -2206,7 +2220,8 @@
         }
       });
     }, {
-      threshold: 0.1 // Trigger when 10% of the element is visible
+      threshold: window.innerWidth <= 768 ? 0.05 : 0.1, // Lower threshold for mobile
+      rootMargin: '50px' // Start animation 50px before element enters viewport
     });
     revealElements.forEach(element => {
       observer.observe(element);

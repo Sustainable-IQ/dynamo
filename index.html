@@ -1625,6 +1625,8 @@
             <style>
               .label { font-family: Montserrat, sans-serif; font-size: 12px; }
               .title { fill: #D9C5B2; font-weight: 600; }
+              .gold { fill: #C9A227; font-weight: 600; }
+              .subtle { fill: #D9C5B2; font-weight: 400; }
               .box { rx: 12; fill: rgba(250,247,240,0.08); stroke: rgba(201,162,39,.6); stroke-width: 2; }
               .highlight { fill: rgba(243,229,245,.15); stroke: rgba(201,162,39,.8); }
               .output { fill: rgba(232,245,232,.1); stroke: rgba(201,162,39,.7); }
@@ -1635,6 +1637,63 @@
               .dreaming-box { fill: rgba(138,43,226,0.1); stroke: rgba(138,43,226,0.8); stroke-width: 2; rx: 12; }
               .threshold-box { fill: rgba(255,165,0,0.1); stroke: rgba(255,165,0,0.8); stroke-width: 2; rx: 12; }
               .inversion-box { fill: rgba(220,20,60,0.1); stroke: rgba(220,20,60,0.8); stroke-width: 2; rx: 12; }
+
+              /* Pure GLOW effects for all boxes - no movement */
+              .box:hover, .highlight:hover, .output:hover {
+                filter: drop-shadow(0 0 25px rgba(201,162,39,1))
+                        drop-shadow(0 0 50px rgba(201,162,39,0.8))
+                        drop-shadow(0 0 75px rgba(201,162,39,0.6));
+                stroke-width: 4;
+                transition: all 0.2s ease;
+              }
+              
+              .semantic-box:hover {
+                filter: drop-shadow(0 0 25px rgba(201,162,39,1))
+                        drop-shadow(0 0 50px rgba(201,162,39,0.8))
+                        drop-shadow(0 0 75px rgba(201,162,39,0.6));
+                stroke-width: 4;
+                transition: all 0.2s ease;
+              }
+              
+              .ethical-box:hover {
+                filter: drop-shadow(0 0 25px rgba(46,139,192,1))
+                        drop-shadow(0 0 50px rgba(46,139,192,0.8))
+                        drop-shadow(0 0 75px rgba(46,139,192,0.6));
+                stroke-width: 4;
+                transition: all 0.2s ease;
+              }
+              
+              .historical-box:hover {
+                filter: drop-shadow(0 0 25px rgba(139,30,63,1))
+                        drop-shadow(0 0 50px rgba(139,30,63,0.8))
+                        drop-shadow(0 0 75px rgba(139,30,63,0.6));
+                stroke-width: 4;
+                transition: all 0.2s ease;
+              }
+              
+              .dreaming-box:hover {
+                filter: drop-shadow(0 0 25px rgba(138,43,226,1))
+                        drop-shadow(0 0 50px rgba(138,43,226,0.8))
+                        drop-shadow(0 0 75px rgba(138,43,226,0.6));
+                stroke-width: 4;
+                transition: all 0.2s ease;
+              }
+              
+              .threshold-box:hover {
+                filter: drop-shadow(0 0 25px rgba(255,165,0,1))
+                        drop-shadow(0 0 50px rgba(255,165,0,0.8))
+                        drop-shadow(0 0 75px rgba(255,165,0,0.6));
+                stroke-width: 4;
+                transition: all 0.2s ease;
+              }
+              
+              .inversion-box:hover {
+                filter: drop-shadow(0 0 25px rgba(220,20,60,1))
+                        drop-shadow(0 0 50px rgba(220,20,60,0.8))
+                        drop-shadow(0 0 75px rgba(220,20,60,0.6));
+                stroke-width: 4;
+                transition: all 0.2s ease;
+              }
 
               .flowing-energy {
                 stroke-dasharray: 10 5;

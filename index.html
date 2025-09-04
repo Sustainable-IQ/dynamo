@@ -936,6 +936,43 @@
       .idea-number {
         align-self: flex-start;
       }
+      
+      /* Mobile-specific improvements for ideas section */
+      .ideas-container {
+        gap: var(--space-lg); /* Reduce gap between items on mobile */
+      }
+      
+      .idea-item {
+        /* Increase contrast and visibility on mobile */
+        background: linear-gradient(135deg, rgba(250,247,240,0.15), rgba(250,247,240,0.08));
+        border: 1px solid rgba(250,247,240,0.3);
+        padding: var(--space-lg); /* Reduce padding on mobile */
+        margin-bottom: var(--space-md); /* Add bottom margin for better separation */
+      }
+      
+      .idea-content {
+        gap: var(--space-md); /* Reduce internal spacing */
+      }
+      
+      .problem-solution {
+        gap: var(--space-md); /* Tighter spacing between problem/solution */
+      }
+      
+      .benefits {
+        margin-top: var(--space-md); /* Reduce top margin */
+      }
+      
+      /* Ensure text is readable on mobile */
+      .idea-item h3,
+      .idea-item h4 {
+        color: var(--ivory); /* Ensure headings are bright enough */
+      }
+      
+      .idea-item p,
+      .idea-item li {
+        color: rgba(250,247,240,0.95); /* Increase text contrast */
+        line-height: 1.6; /* Improve readability */
+      }
     }
 
     /* Contact Form Styles - REPLACE THE EXISTING SECTION WITH THIS */

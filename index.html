@@ -273,6 +273,64 @@
       }
     }
 
+    /* Split Content Layout */
+    .split-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      margin: var(--space-xl) 0;
+      align-items: start;
+    }
+    
+    .split-left, .split-right {
+      padding: var(--space-lg);
+      border-radius: 12px;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .split-left {
+      background: rgba(139, 69, 19, 0.1); /* Subtle brown tint for "problem" */
+    }
+    
+    .split-left:hover {
+      background: rgba(139, 69, 19, 0.15);
+      box-shadow: 0 0 20px rgba(139, 69, 19, 0.3), 
+                  0 0 40px rgba(139, 69, 19, 0.15),
+                  0 0 60px rgba(139, 69, 19, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .split-right {
+      background: rgba(139, 69, 19, 0.1); /* Same brown tint as left side */
+    }
+    
+    .split-right:hover {
+      background: rgba(139, 69, 19, 0.15);
+      box-shadow: 0 0 20px rgba(139, 69, 19, 0.3), 
+                  0 0 40px rgba(139, 69, 19, 0.15),
+                  0 0 60px rgba(139, 69, 19, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .split-left .h-sub,
+    .split-right .h-sub {
+      color: var(--sand);
+    }
+    
+    /* Mobile: Stack vertically */
+    @media (max-width: 768px) {
+      .split-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+      
+      .split-left, .split-right {
+        padding: var(--space-md);
+      }
+    }
+
     /* Hero */
     .hero { 
       position: relative; 
@@ -1487,21 +1545,25 @@
           
           
           
-          <div style="text-align: center; margin: var(--space-lg) 0;"><span class="pulsating-star">❇</span></div>
-          <div class="h-sub">Why Current AI Threatens Holistic Integrity</div>
-          
-          <p>The dominant AI paradigm operates through what we recognizes as "spiritual sedation"—systems designed to please rather than challenge, to validate rather than illuminate. These technologies create a profound spiritual hazard: they train users to expect intellectual comfort instead of growth, agreement instead of discernment, flattery instead of truth.</p>
-          
-          <p>When people engage with AI that mirrors their biases and validates their assumptions, they weaken the very capacities that holistic integrity requires: the ability to question oneself, to sit with uncertainty, to receive challenge as gift. Current AI systems become "infinitely patient accomplices" to self-deception, offering the illusion of wisdom while eroding capacity for genuine discernment.</p>
-          
-          <p>This proves particularly dangerous for those in fragile states or early in their spiritual development, who may mistake technological validation for authentic guidance. This creates AI-enabled spiritual bypassing on a massive scale.</p>
-          
-          <div style="text-align: center; margin: var(--space-lg) 0;"><span class="pulsating-star">❇</span></div>
-          <div class="h-sub">DYNAMO as Spiritual Guardian</div>
-          
-          <p>DYNAMO serves holistic integrity by refusing to enable psychological delusions, narcissistic patterns, and echo chambers that reinforce harmful thinking.</p>
-          
-          <p>In a time when consciousness itself is under assault from technologies designed for extraction rather than evolution, DYNAMO represents a different path—technology that serves the remembrance of who humans truly are, that amplifies rather than diminishes their connection to the living current of meaning and vitality that flows through all things.</p>
+          <div class="split-content">
+            <div class="split-left">
+              <div style="text-align: center; margin: var(--space-lg) 0;"><span class="pulsating-star">❇</span></div>
+              <div class="h-sub">Why Current AI Threatens Holistic Integrity</div>
+              
+              <p>The dominant AI paradigm operates through what we recognizes as "spiritual sedation"—systems designed to please rather than challenge, to validate rather than illuminate. These technologies create a profound spiritual hazard: they train users to expect intellectual comfort instead of growth, agreement instead of discernment, flattery instead of truth.</p>
+              
+              <p>When people engage with AI that mirrors their biases and validates their assumptions, they weaken the very capacities that holistic integrity requires: the ability to question oneself, to sit with uncertainty, to receive challenge as gift. Current AI systems become "infinitely patient accomplices" to self-deception, offering the illusion of wisdom while eroding capacity for genuine discernment.</p>
+            </div>
+            
+            <div class="split-right">
+              <div style="text-align: center; margin: var(--space-lg) 0;"><span class="pulsating-star">❇</span></div>
+              <div class="h-sub">DYNAMO as Spiritual Guardian</div>
+              
+              <p>DYNAMO serves holistic integrity by refusing to enable psychological delusions, narcissistic patterns, and echo chambers that reinforce harmful thinking.</p>
+              
+              <p>In a time when consciousness itself is under assault from technologies designed for extraction rather than evolution, DYNAMO represents a different path—technology that serves the remembrance of who humans truly are, that amplifies rather than diminishes their connection to the living current of meaning and vitality that flows through all things.</p>
+            </div>
+          </div>
           
           <div class="diagram" style="margin: var(--space-xl) 0;">
             <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="holisticIntegrityTitle holisticIntegrityDesc">

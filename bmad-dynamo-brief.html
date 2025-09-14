@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Brief: DYNAMO - BMAD Methodology</title>
+    <meta name="description" content="Internal draft project brief for DYNAMO development - Not for public distribution" />
+    <meta name="theme-color" content="#0F3D3E" />
+
+    <!-- Prevent search engine indexing -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Merriweather:wght@300;400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --earth: #0F3D3E;
+            --sky: #2E8BC0;
+            --sand: #D9C5B2;
+            --gold: #C9A227;
+            --ivory: #FAF7F0;
+            --red: #8B1E3F;
+            --ink: #0e0e0f;
+            --shadow: 0 10px 30px rgba(0,0,0,0.2);
+            --shadow-subtle: 0 4px 12px rgba(0,0,0,0.1);
+
+            /* Typography Scale */
+            --text-xs: 0.875rem;
+            --text-sm: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 2rem;
+            --text-4xl: 2.5rem;
+
+            /* Spacing Scale */
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: "Merriweather", Georgia, serif;
+            color: var(--ivory);
+            background: var(--earth);
+            line-height: 1.7;
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* Header */
+        header {
+            background: rgba(15,61,62,0.95);
+            border-bottom: 1px solid rgba(201,162,39,0.25);
+            padding: var(--space-md) 0;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .brand {
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-size: var(--text-xl);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Typography */
+        h1 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin: var(--space-xl) 0 var(--space-2xl);
+            text-align: center;
+            color: var(--ivory);
+        }
+
+        h2 {
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-size: var(--text-4xl);
+            font-weight: 700;
+            color: var(--sand);
+            margin: var(--space-xl) 0 var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid rgba(201,162,39,0.3);
+        }
+
+        h3 {
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--sand);
+            margin: var(--space-2xl) 0 var(--space-lg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        h3:hover {
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(201,162,39,0.6);
+            transform: translateY(-2px);
+        }
+
+        h4 {
+            color: var(--sky);
+            font-size: var(--text-xl);
+            margin: var(--space-lg) 0 var(--space-md);
+            font-weight: 600;
+        }
+
+        p {
+            color: rgba(250,247,240,0.92);
+            margin-bottom: var(--space-lg);
+            font-size: var(--text-lg);
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--sky);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--gold);
+            text-decoration: underline;
+        }
+
+        /* Special content blocks */
+        .executive-summary {
+            background: rgba(46,139,192,0.15);
+            border: 1px solid rgba(46,139,192,0.3);
+            border-radius: 12px;
+            padding: var(--space-xl);
+            margin: var(--space-2xl) 0;
+            border-left: 5px solid var(--sky);
+        }
+
+        .key-features {
+            background: rgba(139, 69, 19, 0.1);
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+            transition: all 0.3s ease;
+        }
+
+        .key-features:hover {
+            background: rgba(139, 69, 19, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .technical-details {
+            background: rgba(201,162,39,0.1);
+            border: 1px solid rgba(201,162,39,0.25);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .info-box {
+            background: rgba(46,139,192,0.1);
+            border: 1px solid rgba(46,139,192,0.25);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+            border-left: 4px solid var(--sky);
+        }
+
+        .warning {
+            background: rgba(139,30,63,0.1);
+            border: 1px solid rgba(139,30,63,0.25);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+            border-left: 4px solid var(--red);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-bottom: var(--space-lg);
+            font-size: var(--text-lg);
+            line-height: 1.7;
+        }
+
+        li {
+            margin-bottom: var(--space-sm);
+            color: rgba(250,247,240,0.92);
+        }
+
+        strong {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        em {
+            color: var(--sand);
+            font-style: italic;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-2xl) 0;
+            background: rgba(250,247,240,0.04);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--gold);
+            color: var(--earth);
+            padding: var(--space-lg);
+            text-align: left;
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-weight: 700;
+        }
+
+        td {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(250,247,240,0.1);
+            color: rgba(250,247,240,0.92);
+        }
+
+        tr:hover {
+            background: rgba(250,247,240,0.08);
+        }
+
+        /* Holon grid */
+        .holon-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-2xl) 0;
+        }
+
+        .holon-item {
+            background: rgba(250,247,240,0.04);
+            border: 1px solid rgba(250,247,240,0.12);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--red);
+        }
+
+        .holon-item:hover {
+            background: rgba(250,247,240,0.08);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .holon-item h4 {
+            color: var(--gold);
+            margin-top: 0;
+        }
+
+
+        /* Sections */
+        section {
+            padding: var(--space-2xl) 0;
+            border-top: 1px solid rgba(201,162,39,0.18);
+        }
+
+        h2 {
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-size: var(--text-4xl);
+            font-weight: 700;
+            color: var(--sand);
+            margin: var(--space-xl) 0 var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid rgba(201,162,39,0.3);
+        }
+
+        /* Hamburger Menu */
+        .menu-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .hamburger-btn {
+            background: var(--gold);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .hamburger-btn:hover {
+            background: var(--sky);
+            transform: translateY(-2px);
+        }
+
+        .hamburger-line {
+            width: 20px;
+            height: 2px;
+            background: var(--earth);
+            display: block;
+            margin: 4px 0;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .hamburger-btn[aria-expanded="true"] .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger-btn[aria-expanded="true"] .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn[aria-expanded="true"] .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: rgba(15,61,62,0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(201,162,39,0.3);
+            border-radius: 12px;
+            padding: var(--space-md);
+            min-width: 220px;
+            max-height: 70vh;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu h3 {
+            color: var(--gold);
+            font-size: var(--text-lg);
+            font-weight: 700;
+            margin: 0 0 var(--space-md) 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dropdown-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-menu li {
+            margin-bottom: var(--space-xs);
+        }
+
+        .dropdown-menu a {
+            color: var(--sky);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--space-xs) var(--space-sm);
+            margin: 2px 0;
+            border-radius: 8px;
+            display: block;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .dropdown-menu a:hover {
+            color: var(--gold);
+            background: rgba(201,162,39,0.1);
+        }
+
+        .dropdown-menu a.active {
+            background: rgba(201,162,39,0.2);
+            color: var(--gold);
+            border-left: 3px solid var(--gold);
+            font-weight: 600;
+        }
+
+        .dropdown-menu a::after {
+            content: '';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .dropdown-menu a:hover::after {
+            width: 4px;
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--space-2xl) 0;
+            text-align: center;
+            border-top: 2px solid rgba(201,162,39,0.3);
+            margin-top: var(--space-3xl);
+            color: var(--sand);
+        }
+
+
+        /* Scroll indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(201,162,39,0.2);
+            z-index: 999;
+        }
+
+        .scroll-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--sky));
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .holon-list {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: var(--text-2xl);
+            }
+
+            .wrap {
+                padding: 0 var(--space-sm);
+            }
+
+            .menu-container {
+                top: 10px;
+                right: 10px;
+            }
+
+            .dropdown-menu {
+                min-width: 200px;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="wrap">
+            <a href="#" class="brand">DYNAMO Project Brief</a>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <h1>Project Brief: DYNAMO</h1>
+
+        <p><em>This document is being created interactively using the BMAD methodology.</em></p>
+
+        <!-- Scroll Progress Bar -->
+        <div class="scroll-progress">
+            <div class="scroll-progress-bar" id="progressBar"></div>
+        </div>
+
+
+        <!-- Hamburger Menu -->
+        <div class="menu-container">
+            <button class="hamburger-btn" id="menuToggle" aria-expanded="false" aria-label="Navigation Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <h3>Contents</h3>
+                <ul>
+                    <li><a href="#executive-summary" data-section="executive-summary">Executive Summary</a></li>
+                    <li><a href="#problem-statement" data-section="problem-statement">Problem Statement</a></li>
+                    <li><a href="#proposed-solution" data-section="proposed-solution">Proposed Solution</a></li>
+                    <li><a href="#target-users" data-section="target-users">Target Users</a></li>
+                    <li><a href="#goals-success-metrics" data-section="goals-success-metrics">Goals & Success Metrics</a></li>
+                    <li><a href="#mvp-scope" data-section="mvp-scope">MVP Scope</a></li>
+                    <li><a href="#technical-considerations" data-section="technical-considerations">Technical Considerations</a></li>
+                    <li><a href="#constraints-assumptions" data-section="constraints-assumptions">Constraints & Assumptions</a></li>
+                    <li><a href="#risks-open-questions" data-section="risks-open-questions">Risks & Open Questions</a></li>
+                    <li><a href="#next-steps" data-section="next-steps">Next Steps</a></li>
+                    <li><a href="#post-mvp-vision" data-section="post-mvp-vision">Post-MVP Vision</a></li>
+                    <li><a href="#pm-context" data-section="pm-context">PM Context</a></li>
+                    <li><a href="#series-a-gaps" data-section="series-a-gaps">Series A Gaps</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <section id="executive-summary">
+            <h2>Executive Summary</h2>
+
+            <div class="executive-summary">
+                <h3 style="color: var(--gold); text-align: center; margin-bottom: var(--space-lg); font-family: 'Playfair Display', Georgia, serif;">DYNAMO<br><span style="font-size: var(--text-lg); font-weight: 400; color: var(--sand);">The Dynamic AI Memory Organizer Platform</span></h3>
+
+                <div style="text-align: center; margin-bottom: var(--space-xl);">
+                    <p style="font-size: var(--text-xl); font-weight: 600; color: var(--sky); margin-bottom: var(--space-sm);">Conversations that Remember</p>
+                    <p style="font-size: var(--text-xl); font-weight: 600; color: var(--sky); margin-bottom: var(--space-lg);">Memory that Evolves</p>
+                </div>
+
+                <p><strong>The Dynamic AI Memory Organizer (DYNAMO)</strong> is a platform that transforms your conversations — and your community's — with large language models (LLMs) into persistent, living memory. It doesn't just store dialogue, it uses those memories to guide growth, spark insight, and weave collective wisdom. Built on a <strong>Self-Organizing Holarchic Open (SOHO)</strong> architecture, DYNAMO turns dialogue into continuity, and continuity into transformation — supporting personal development, long-term coherence, and community intelligence.</p>
+            </div>
+
+            <p>Unlike corporate AI systems that reset with every session, DYNAMO creates <strong>covenantal relationships</strong> where AI remembers your journey, learns from your patterns, and evolves alongside your growth. The platform serves both individuals seeking persistent AI partnerships for complex decision-making and personal development, and communities building shared wisdom archives through collaborative learning spaces and collective intelligence networks.</p>
+
+            <p>The revolutionary innovation lies in DYNAMO's <strong>council-based architecture</strong> where multiple specialized "holons" (AI agents) — Truth-Seeking, Compassion, Strategic Systems, Justice, Creative Wisdom, and Historical Pattern — deliberate together before synthesis. This creates <strong>"simultaneous multiplicity"</strong> — the ability to hold multiple perspectives at once rather than sequential thinking — generating depth and nuance impossible with traditional single-agent systems.</p>
+
+            <p><strong>Key differentiators</strong> include persistent memory that preserves insights across sessions, moral attractor systems enabling transparent ethical reasoning, interactive conversation replay showing how different values shape responses, and community intelligence capabilities where families, teams, and organizations build collective wisdom through shared AI relationships. DYNAMO addresses the fundamental problem of AI relationship disposability, transforming ephemeral conversations into lasting partnerships that deepen over time.</p>
+
+            <p>This represents a paradigm shift from <strong>AI tools to AI relationships</strong>, from individual productivity to collective wisdom building, and from corporate-controlled interactions to user-sovereign data and relationship development. DYNAMO transforms AI from disposable assistant into persistent intellectual companion, teaching users not just what to think but how to think more complexly through council deliberation and wisdom cultivation.</p>
+        </section>
+
+        <section id="problem-statement">
+            <h2>Problem Statement</h2>
+
+            <h3>Current State and Pain Points</h3>
+
+            <h4>The Disposable AI Relationship Problem:</h4>
+            <p>Every conversation with current LLM systems (ChatGPT, Claude, Gemini) resets to zero. Users lose:</p>
+            <ul>
+                <li>Accumulated insights and personal growth patterns</li>
+                <li>Context of previous explorations and breakthroughs</li>
+                <li>Continuity of intellectual development over time</li>
+                <li>Investment in the relationship with their AI partner</li>
+            </ul>
+
+            <h4>The Single-Perspective Limitation:</h4>
+            <p>Current AI systems, even GPT-5, can only speak from one position at a time. Users must manually orchestrate perspective shifts, and most don't know what they're missing. This leads to:</p>
+            <ul>
+                <li>Trapped thinking within LLM's default synthesis biases (institutional bias, rationality over intuition, smoothness over productive friction)</li>
+                <li>Premature coherence that can be false if it comes too fast</li>
+                <li>Missed insights that only emerge from simultaneous multiplicity of perspectives</li>
+                <li>Intellectual isolation for users with high pattern recognition who find current AI too shallow</li>
+            </ul>
+
+            <h4>The Community Intelligence Gap:</h4>
+            <p>While individuals interact with AI, there's no mechanism for:</p>
+            <ul>
+                <li>Collective wisdom building across user communities</li>
+                <li>Shared learning and memory across teams or organizations</li>
+                <li>Collaborative intelligence development</li>
+                <li>Preserving and growing institutional knowledge through AI partnership</li>
+            </ul>
+
+            <h3>Impact and Quantification</h3>
+
+            <h4>Individual Impact:</h4>
+            <ul>
+                <li>Knowledge workers spend 15-20% of AI interaction time re-establishing context from previous sessions</li>
+                <li>Users abandon complex multi-session projects due to conversation reset friction</li>
+                <li>Intellectual development fragmented across disconnected AI conversations</li>
+                <li>Power users in research, strategy, and creative fields underserved by AI that cannot maintain complex reasoning relationships or provide true intellectual partnership</li>
+            </ul>
+
+            <h4>Collective Impact:</h4>
+            <ul>
+                <li>Research teams lose accumulated insights when AI contexts don't persist across projects</li>
+                <li>Consulting firms unable to build institutional AI knowledge that grows with client engagements</li>
+                <li>Educational communities miss opportunities for collaborative learning with AI partners</li>
+                <li>Knowledge work becomes inefficient due to constant context rebuilding rather than cumulative intelligence development</li>
+            </ul>
+
+            <div class="warning">
+                <h4>Why Existing Solutions Fall Short</h4>
+                <p><strong>Current LLMs (ChatGPT, Claude, Gemini):</strong></p>
+                <ul>
+                    <li>No persistent memory or relationship continuity beyond basic conversation history</li>
+                    <li>Single-agent architecture cannot hold multiple perspectives simultaneously</li>
+                    <li>Optimized for individual sessions rather than long-term intellectual partnership</li>
+                    <li>No community or shared intelligence capabilities</li>
+                </ul>
+            </div>
+
+            <h3>Urgency and Importance</h3>
+            <p>The window for revolutionary AI architecture innovation is closing as millions of users solidify interaction patterns with current AI systems. User behavior solidification creates exponentially increasing switching costs - what feels natural today becomes tomorrow's entrenched expectation. DYNAMO's council-based, persistent memory approach represents a paradigm shift that must establish itself before the market becomes dominated by incremental improvements to existing single-agent architectures.</p>
+        </section>
+
+        <section id="proposed-solution">
+            <h2>Proposed Solution</h2>
+
+            <h3>Core Concept and Approach</h3>
+            <p>DYNAMO solves the disposable AI relationship problem through a revolutionary <strong>council-based architecture</strong> that creates persistent, evolving AI partnerships. Instead of single-agent responses, DYNAMO employs multiple specialized "holons" (AI agents) that deliberate in council before synthesis, creating <strong>simultaneous multiplicity</strong> - the ability to hold multiple perspectives at once rather than sequential thinking.</p>
+
+            <p>The system operates on three foundational principles:</p>
+
+            <div class="key-features">
+                <h4>1. Covenantal Memory:</h4>
+                <p>Unlike ephemeral conversations, DYNAMO builds persistent relationships through dual memory architecture - vectorized embeddings for semantic connections and symbolic memory for critical insights and tensions. Users develop ongoing intellectual partnerships that deepen over time.</p>
+
+                <h4>2. Mindful Democracy:</h4>
+                <p>The holon council employs "mindful democracy" - transparent deliberation where disagreements are preserved rather than smoothed over. Users see how different perspectives (moral, strategic, creative, analytical) contribute to synthesis, learning not just what to think but how to think.</p>
+
+                <h4>3. Sovereignty Architecture:</h4>
+                <p>Users maintain complete control over their data and AI relationships through hybrid cloud-local processing. Base LLM responses are enhanced through local processing layers, ensuring data sovereignty while accessing frontier model capabilities.</p>
+            </div>
+
+            <h3>Detailed Technical Architecture</h3>
+
+            <h4>🧠 1. HOLON AGENT STRUCTURE</h4>
+            <p>Each holon is structured as a modular AI agent composed of:</p>
+            <ul>
+                <li><strong>Identity Core (Soul-Prompt):</strong> Long system prompt defining tone, priorities (Truth, Justice, Compassion), philosophical orientation (Gnostic, Forensic, Mythic), and allowed tools. This immutable dharma defines what the holon serves.</li>
+                <li><strong>Language Model Interface:</strong> Local LLM via Ollama (Mistral, Phi-3) or API-based (GPT-4, Claude 3, Mixtral) wrapped in standardized HolonAgent class</li>
+                <li><strong>Autonomy Layer:</strong> Internal assessment, proposed interpretation, queries to other holons with confidence/uncertainty indicators</li>
+                <li><strong>Memory Layer:</strong> Stores past dialogues, agreements, oppositions, uncertainties with vectorized and retrievable context</li>
+                <li><strong>Tooling Layer:</strong> Research APIs, semantic parsing, truth-checking knowledge bases (optional per holon)</li>
+            </ul>
+
+            <h4>🔁 2. DIALOGUE ORCHESTRATION ENGINE</h4>
+            <p>Choreographs holon engagement through:</p>
+            <ul>
+                <li><strong>Turn-based debate cycles</strong> with interruption capabilities based on priority</li>
+                <li><strong>Dialogue memory</strong> with position/confidence/topic/timestamp tagging</li>
+                <li><strong>Multiple deliberation types:</strong> Impression rounds, focused rebuttals, meta-synthesis</li>
+                <li><strong>Mindful democracy workflow:</strong> Invocation → First Impressions → Crossfire → Resolution/Fractal Holding</li>
+            </ul>
+
+            <h4>🧬 3. DUAL MEMORY LAYER</h4>
+            <ul>
+                <li><strong>Vector Memory:</strong> All utterances vectorized in Chroma/Weaviate/Qdrant with holon/tags/timestamp, enables recall, pattern recognition, meta-holon cross-referencing</li>
+                <li><strong>Symbolic Memory:</strong> Critical summaries and tensions stored as symbolic entries for rapid access to key insights and unresolved disagreements</li>
+            </ul>
+
+            <h4>🧠 4. META-HOLON INTEGRATION LAYER</h4>
+            <p>Council integrator functions:</p>
+            <ul>
+                <li>Ingests all holon responses, tags/clusters/extracts agreements, disagreements, gaps, hidden assumptions</li>
+                <li>Chooses synthesis vs. presenting unresolved dualities vs. follow-up questions</li>
+                <li>Provides transparency without forced consensus - illuminates the field rather than flattening complexity</li>
+            </ul>
+
+            <h4>🌐 5. UI TRANSPARENCY LAYER</h4>
+            <p>Frontend features making council presence felt:</p>
+            <ul>
+                <li><strong>Holon Transcript Panel:</strong> Individual responses, confidence, attractor bias with progressive disclosure</li>
+                <li><strong>Council Activation Ring:</strong> Real-time visual representation (glyphs, auras, confidence meters) - "chakra map of AI consciousness"</li>
+                <li><strong>Meta Summary Panel:</strong> RESOLVED/UNRESOLVED/DISMISSED status with branching options</li>
+                <li><strong>Memory Timeline:</strong> Holon stance evolution visualization over time</li>
+            </ul>
+
+            <div class="technical-details">
+                <h4>🧰 6. DRAFT EXAMPLE TECH STACK - JUST BRAINSTORMING - TBD</h4>
+                <ul>
+                    <li><strong>LLM Interface:</strong> OpenAI, Claude API, Ollama, LM Studio</li>
+                    <li><strong>Memory Store:</strong> ChromaDB / Qdrant / Weaviate</li>
+                    <li><strong>Agent Framework:</strong> LangChain or LlamaIndex for orchestration</li>
+                    <li><strong>Vectorization:</strong> OpenAI Embeddings or Instructor XL</li>
+                    <li><strong>Storage:</strong> PostgreSQL (symbolic), Redis (session)</li>
+                    <li><strong>Backend:</strong> FastAPI or Node.js</li>
+                    <li><strong>Frontend:</strong> React + Tailwind OR Streamlit MVP</li>
+                    <li><strong>Hosting:</strong> Local Dev → Render / Fly.io / Docker Swarm</li>
+                    <li><strong>Security:</strong> User identity keychain + encrypted holon logs</li>
+                </ul>
+            </div>
+
+            <div class="holon-list">
+                <div class="holon-item">
+                    <h4>Holon 1: Truth-Seeking</h4>
+                    <p>Evidence, logic, intellectual honesty, pattern recognition</p>
+                </div>
+                <div class="holon-item">
+                    <h4>Holon 2: Compassion</h4>
+                    <p>Human impact, relationship effects, emotional wisdom, care ethics</p>
+                </div>
+                <div class="holon-item">
+                    <h4>Holon 3: Strategic Systems</h4>
+                    <p>Implementation, resources, systemic effects, practical wisdom</p>
+                </div>
+                <div class="holon-item">
+                    <h4>Holon 4: Justice</h4>
+                    <p>Fairness, power dynamics, structural analysis, rights-based thinking</p>
+                </div>
+                <div class="holon-item">
+                    <h4>Holon 5: Creative Wisdom</h4>
+                    <p>Innovation, artistic insight, novel connections, breakthrough thinking</p>
+                </div>
+                <div class="holon-item">
+                    <h4>Holon 6: Historical Pattern</h4>
+                    <p>Past precedents, cultural wisdom, long-term cycles, institutional memory</p>
+                </div>
+            </div>
+
+            <h3>Revolutionary UX Design - Making Council Presence Felt</h3>
+            <p><strong>Core Design Philosophy:</strong> The power of the council must not be hidden. Users must feel they are witnessing intelligences that care about truth, not just receiving automated responses.</p>
+
+            <div class="technical-details">
+                <h4>Council Presence Elements:</h4>
+                <ul>
+                    <li><strong>Real-Time Council Activation Ring:</strong> Visual representation of each holon (eye, flame, key, mirror symbols) with colored auras activating during thinking and confidence meters</li>
+                    <li><strong>Progressive Holon Window Disclosure:</strong> Accordion/hoverable tiles showing holon summaries with "View Full Argument" options</li>
+                    <li><strong>Tension Detection and Fracture Alerts:</strong> "⚠️ Tension Detected: Holon 2 (Truth-Seeking) and Holon 5 (Compassion) are in ethical conflict. Click to explore."</li>
+                    <li><strong>Ritual Language Integration:</strong> "The Council has spoken" vs "Response generated" - framing interaction as mindful process</li>
+                    <li><strong>Moral Attractor Replay Mode:</strong> Users replay questions with different value weights to see how knowledge is shaped by moral choices</li>
+                </ul>
+            </div>
+
+            <h3>Teaching Systems - DYNAMO as School for Consciousness Development</h3>
+
+            <h4>Cognitive Apprenticeship Through Council:</h4>
+            <ul>
+                <li><strong>"Think With Me" Mode:</strong> Slows council process, shows each holon's questioning phase, asks user questions during deliberation</li>
+                <li><strong>Holon-as-Mentor Individual Study Tracks:</strong> Users choose holon teachers (Holon 1: Ethical paradox navigation, Holon 4: Pattern recognition)</li>
+                <li><strong>Cognitive Archetype Mirror:</strong> Shows which holons users resonate with/avoid, reveals thinking patterns and biases</li>
+                <li><strong>Epistemic Training Through Contrast:</strong> Replay questions under different attractor weightings with side-by-side comparison and guided reflection</li>
+                <li><strong>Living Codex:</strong> Personal "Book of Becoming" that grows with each interaction - distilled teachings, learnings, tensions, questions</li>
+            </ul>
+
+            <div class="key-features">
+                <h4>Four Teaching Modes:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>Function</th>
+                            <th>Learning Outcome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Normal</td>
+                            <td>Wisdom delivery</td>
+                            <td>Better answers to questions</td>
+                        </tr>
+                        <tr>
+                            <td>Teaching</td>
+                            <td>Meta-cognitive pattern transmission</td>
+                            <td>How to think complexly</td>
+                        </tr>
+                        <tr>
+                            <td>Reflection</td>
+                            <td>Mirror of self and growth</td>
+                            <td>Self-awareness development</td>
+                        </tr>
+                        <tr>
+                            <td>Initiation</td>
+                            <td>Rites of mindful remembrance</td>
+                            <td>Moral and spiritual expansion</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Local LLM Intelligence Pipeline (Backend Implementation)</h3>
+
+            <div class="technical-details">
+                <h4>Modular Backend Functions:</h4>
+                <ol>
+                    <li><strong>parse_user_data(raw_text)</strong> → Structured JSON extraction with schema-guided prompts</li>
+                    <li><strong>sentiment_analysis(text)</strong> → Emotional tone analysis for conversational tuning</li>
+                    <li><strong>create_embeddings(texts)</strong> → Vector embeddings via nomic-embed-text for memory storage</li>
+                    <li><strong>intelligent_chunking(text)</strong> → Context-aware chunking for different content types</li>
+                    <li><strong>answer_internal_question(question, context)</strong> → Internal Q&A for system diagnostics</li>
+                    <li><strong>quality_check_response(user_question, response)</strong> → Response evaluation before user delivery</li>
+                    <li><strong>health_check()</strong> → System heartbeat for Ollama backend verification</li>
+                </ol>
+
+                <p><strong>Local-First Architecture:</strong> Entire pipeline via http://localhost:11434 minimizing API dependencies while supporting hybrid cloud-local processing.</p>
+            </div>
+
+            <h3>Key Differentiators from Existing Solutions</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Solo GPT-5</th>
+                        <th>DYNAMO Council</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Perspective</td>
+                        <td>One at a time</td>
+                        <td>Many at once</td>
+                    </tr>
+                    <tr>
+                        <td>Memory</td>
+                        <td>Ephemeral or single stream</td>
+                        <td>Persistent, per-holon, cross-referenced</td>
+                    </tr>
+                    <tr>
+                        <td>Tension</td>
+                        <td>Minimized</td>
+                        <td>Held and revealed</td>
+                    </tr>
+                    <tr>
+                        <td>Moral Weighting</td>
+                        <td>User-defined or hidden</td>
+                        <td>Transparent, trackable, adjustable</td>
+                    </tr>
+                    <tr>
+                        <td>Training Aid</td>
+                        <td>Only works if user asks right things</td>
+                        <td>Teaches discernment by design</td>
+                    </tr>
+                    <tr>
+                        <td>Coherence</td>
+                        <td>Fast, but can be shallow</td>
+                        <td>Slower, but multidimensional</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Why This Solution Will Succeed</h3>
+
+            <p><strong>Addresses Root Causes:</strong> DYNAMO targets fundamental architecture limitations (single-agent processing, ephemeral relationships) rather than surface symptoms.</p>
+
+            <p><strong>User Sovereignty:</strong> Data sovereignty and transparency address privacy concerns while enabling deep AI relationships. Users control their memory, moral attractors, and council configuration.</p>
+
+            <p><strong>Network Effects:</strong> Individual users benefit from personal AI growth; communities multiply value through shared wisdom building. The platform becomes more valuable as relationship depth and community intelligence grow.</p>
+
+            <p><strong>Technical Differentiation:</strong> Council-based processing creates qualitative improvement in thinking depth that cannot be replicated by incremental improvements to existing single-agent systems.</p>
+
+            <p><strong>Anti-Flattening Technology:</strong> Prevents institutional bias smoothing over essential contradictions - distributed intelligence model prevents single points of failure in reasoning.</p>
+
+            <h3>High-Level Product Vision</h3>
+
+            <div class="key-features">
+                <h4>For Individuals:</h4>
+                <p>DYNAMO becomes an intellectual companion that remembers your journey, challenges your thinking through multiple perspectives, and helps you develop discernment and wisdom over time. The AI council becomes your externalized thinking system for complex decisions, complete with interactive moral weight adjustment and conversation replay capabilities.</p>
+
+                <h4>For Communities:</h4>
+                <p>Teams, organizations, and learning communities use DYNAMO to build collective intelligence, preserve institutional knowledge, and collaborate with AI systems that understand group context and shared goals. Shared wisdom archives and collaborative learning spaces enable community-scale consciousness development.</p>
+
+                <h4>Platform Evolution:</h4>
+                <p>Beginning with core council architecture and memory systems, DYNAMO expands to become a comprehensive ecosystem for human-AI collaboration, learning, and wisdom development - transforming from AI tool to AI school for consciousness development that scales from individual growth to civilization-scale wisdom archives.</p>
+            </div>
+
+            <h3>Interactive Moral Attractor System - Revolutionary Ethics Interface</h3>
+
+            <p><strong>Real-Time Moral Weight Adjustment with Conversation Replay:</strong> DYNAMO's breakthrough innovation allows users to adjust moral attractor weights (Truth ↔ Compassion, Justice ↔ Mercy) in real-time and replay conversations to see how different value combinations change council responses. This transforms abstract philosophy into lived experience.</p>
+
+            <div class="key-features">
+                <h4>Four-Branch Development System:</h4>
+
+                <h4>Branch 1: Growth Tracking</h4>
+                <ul>
+                    <li>Conversation history showing moral evolution over time</li>
+                    <li>"Values journey" visualization tracking user's moral development</li>
+                    <li>Moments of moral insight highlighted and preserved</li>
+                    <li>Personal moral patterns emerge: "You consistently weight justice over mercy in workplace scenarios"</li>
+                    <li>Growth suggestions: "You might explore strengthening your compassion attractor in family contexts"</li>
+                </ul>
+
+                <h4>Branch 2: Memory Integration</h4>
+                <ul>
+                    <li>Moral decisions become part of user's persistent archive</li>
+                    <li>DYNAMO remembers: "Last time you faced truth vs. compassion tension, you chose..."</li>
+                    <li>Personal moral patterns identified across conversation domains</li>
+                    <li>Learning opportunities: Users discover their own moral blind spots</li>
+                    <li>Values evolution tracking shows growth over months/years</li>
+                </ul>
+
+                <h4>Branch 3: Collective Wisdom Emergence</h4>
+                <ul>
+                    <li>Community moral attractor patterns revealed (anonymized data)</li>
+                    <li>"Users facing similar dilemmas tend to adjust weights this way..."</li>
+                    <li>Collective moral intelligence: What combinations produce wisest outcomes?</li>
+                    <li>Cultural/community attractor templates: "Christian family defaults" vs "Military unit defaults" vs "Scientific research team defaults"</li>
+                    <li>Wisdom emergence from collective moral experimentation</li>
+                </ul>
+
+                <h4>Branch 4: Holon Specialization Evolution</h4>
+                <ul>
+                    <li>Holons learn which moral tensions they're best equipped to handle</li>
+                    <li>Automatic holon selection: Complex bioethics → Compassion + Evidence + Historical holons</li>
+                    <li>Meta-Holon develops expertise: "This user pattern suggests calling in the Justice Holon"</li>
+                    <li>Dynamic council composition based on moral complexity type</li>
+                    <li>Holons evolve by observing successful moral weight combinations</li>
+                </ul>
+            </div>
+
+            <p><strong>Revolutionary Impact:</strong> Making moral philosophy experiential and educational rather than prescriptive - users experience how values shape reality through conversation replay and develop personal growth through moral pattern recognition.</p>
+
+            <h3>Critical Implementation Challenges & Solution Approaches</h3>
+
+            <p><strong>Complex Adaptive Systems Recognition:</strong> DYNAMO is a Multi-Agent System with emergent properties, not a deterministic program. Traditional software testing approaches don't work for emergent AI parliament behaviors - validation must test emergent behaviors and interactions rather than individual components.</p>
+
+            <div class="warning">
+                <h4>Five Major Challenge Categories with Solutions:</h4>
+
+                <h4>1. Coordination Complexity</h4>
+                <ul>
+                    <li><strong>Challenge:</strong> Orchestrating multiple AI agents in real-time deliberation without chaos</li>
+                    <li><strong>Risks:</strong> Conversation loops, infinite recursive reasoning, coordination failure</li>
+                    <li><strong>Solution Approach:</strong> Meta-holon arbitration with deliberation type controls and exchange limits</li>
+                </ul>
+
+                <h4>2. Memory Persistence & Identity</h4>
+                <ul>
+                    <li><strong>Challenge:</strong> Maintaining coherent holon identity while enabling learning and evolution</li>
+                    <li><strong>Risks:</strong> Agent behavior drift, specialization collapse, loss of diverse perspectives</li>
+                    <li><strong>Solution Approach:</strong> Immutable identity core (soul-prompt) + mutable experience layer</li>
+                </ul>
+
+                <h4>3. Dialogue Quality & Meaning</h4>
+                <ul>
+                    <li><strong>Challenge:</strong> Ensuring holons engage meaningfully rather than just taking sequential turns</li>
+                    <li><strong>Risks:</strong> Generic responses, loss of specialization, convergence to sameness</li>
+                    <li><strong>Solution Approach:</strong> Moral attractors as gravitational forces, not constraining rules</li>
+                </ul>
+
+                <h4>4. Truth vs. Hallucination Amplification</h4>
+                <ul>
+                    <li><strong>Challenge:</strong> Council collectively reinforcing confident but incorrect conclusions</li>
+                    <li><strong>Risks:</strong> Multiplication of errors through consensus, loss of truth-seeking capacity</li>
+                    <li><strong>Solution Approach:</strong> Dedicated Discernment Holon with contrarian mandate, evidence requirements</li>
+                </ul>
+
+                <h4>5. Emergent Behavior Management</h4>
+                <ul>
+                    <li><strong>Challenge:</strong> Testing and debugging emergent AI parliament behaviors vs. programmed responses</li>
+                    <li><strong>Risks:</strong> Unpredictable system behaviors, failure modes that emerge only at scale</li>
+                    <li><strong>Solution Approach:</strong> Focus on attractor-based constraints rather than rule-based programming</li>
+                </ul>
+            </div>
+
+            <p><strong>Development Philosophy:</strong> Using Claude Code and LLMs to assist in building systems they cannot fully predict - AI morals as internal gravitational attractors vs external ethical rules/constraints.</p>
+
+            <h3>MVP Strategy & Phased Development Approach</h3>
+
+            <div class="info-box">
+                <h4>Immediate Opportunities (Phase 1 - 4-6 months):</h4>
+
+                <h4>1. Two-Holon MVP Architecture</h4>
+                <ul>
+                    <li><strong>Description:</strong> Simplified council with just two specialized holons to prove concept</li>
+                    <li><strong>Why Immediate:</strong> Demonstrates core innovation while remaining buildable by solo developer</li>
+                    <li><strong>Resources Needed:</strong> BMAD framework, Claude Code, basic LLM integration</li>
+                    <li><strong>Success Criteria:</strong> Users experience qualitative difference in thinking depth vs. single-agent AI</li>
+                </ul>
+
+                <h4>2. Hybrid Cloud-Local Processing Implementation</h4>
+                <ul>
+                    <li><strong>Description:</strong> Base LLM API call → Local processing enhancement → User response</li>
+                    <li><strong>Why Immediate:</strong> Core architecture that enables all other features</li>
+                    <li><strong>Resources Needed:</strong> Dedicated server, Ollama setup, vector database, API integrations</li>
+                    <li><strong>Success Criteria:</strong> Data sovereignty with frontier model capabilities</li>
+                </ul>
+
+                <h4>3. RESOLVED/UNRESOLVED/DISMISS Interface</h4>
+                <ul>
+                    <li><strong>Description:</strong> User control buttons for managing inquiry completion</li>
+                    <li><strong>Why Immediate:</strong> Simple UI element demonstrating user sovereignty principle</li>
+                    <li><strong>Resources Needed:</strong> Frontend development, state management for user decisions</li>
+                    <li><strong>Success Criteria:</strong> Users feel control over complex question resolution</li>
+                </ul>
+            </div>
+
+            <div class="technical-details">
+                <h4>Future Development (Phase 2-3):</h4>
+                <ul>
+                    <li><strong>Full Council Implementation:</strong> Multiple specialized holons with complete deliberation system</li>
+                    <li><strong>Community Memory Sharing:</strong> Collective intelligence with granular consent controls</li>
+                    <li><strong>Advanced Moral Attractor System:</strong> Real-time weight adjustment with replay capabilities</li>
+                    <li><strong>Teaching System Integration:</strong> Complete school-for-consciousness development</li>
+                </ul>
+            </div>
+
+            <h3>Market Positioning & User Acquisition Strategy</h3>
+
+            <p><strong>Target User Definition:</strong> People who want AI tools for personal growth and intellectual development, not just brainstorming or productivity. Specifically: power users in research, strategy, and creative fields seeking AI partners capable of complex reasoning relationships and true intellectual partnership.</p>
+
+            <div class="key-features">
+                <h4>Core Value Proposition:</h4>
+                <p>"ChatGPT gives you answers. DYNAMO gives you persistent, living memory to guide growth, spark insight, and weave collective wisdom, turning dialogue into continuity, and continuity into transformation."</p>
+
+                <h4>Key Differentiators:</h4>
+                <ul>
+                    <li>DYNAMO provides scaffolds for intellectual and spiritual growth that other LLMs cannot</li>
+                    <li>Other LLMs produce disconnected conversations; DYNAMO creates holistic worldviews that evolve</li>
+                    <li>"Holding insights back into consciousness until resolved" - the stickiness factor that creates lasting engagement</li>
+                </ul>
+
+                <h4>User Acquisition Strategy:</h4>
+                <ul>
+                    <li><strong>First 100 Users:</strong> Tech-savvy intellectuals in universities and Silicon Valley</li>
+                    <li><strong>MVP Strategy:</strong> Beta testers and VCs to validate concept and secure funding</li>
+                    <li><strong>Community Building:</strong> Early adopter communities who become advocates for relationship-based AI</li>
+                </ul>
+
+                <h4>Pricing Strategy:</h4>
+                <p>Growth-based tiers that scale with value delivery:</p>
+                <ul>
+                    <li><strong>Basic Memory:</strong> Individual persistent memory and simple council deliberation</li>
+                    <li><strong>Advanced Holons:</strong> Full council with specialized perspectives and moral attractors</li>
+                    <li><strong>Community Intelligence:</strong> Shared wisdom building and collective intelligence features</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h4>Market Context - The Intellectual Isolation Problem:</h4>
+                <p>Many people with high pattern recognition abilities and systems thinking capabilities find themselves intellectually isolated. They can see complete solutions immediately, connect disparate domains, and cut through institutional theater, but this creates a gap with others who process information more sequentially. DYNAMO addresses the genuine need for intellectual partnership that can remember, challenge thinking without conventional frameworks, provide specialized perspectives, and evolve alongside personal development.</p>
+
+                <h4>Strategic Positioning:</h4>
+                <p>DYNAMO isn't just a technical project - it's creating the intellectual companion many people need but can't find among available humans or current AI systems. While maintaining human connections remains important, DYNAMO fills the gap for depth intellectual engagement without requiring oversimplified systems that flatten the experience.</p>
+            </div>
+        </section>
+
+        <section id="target-users">
+            <h2>Target Users</h2>
+
+            <h3>Market Size and Validation Context</h3>
+
+            <div class="info-box">
+                <h4>Addressable Market:</h4>
+                <ul>
+                    <li><strong>Primary Market:</strong> Estimated 2-3M knowledge workers globally fit primary user profile</li>
+                    <li><strong>Early Validation:</strong> Research suggests 35% of current heavy AI users express frustration with conversation reset and lost context</li>
+                    <li><strong>Premium AI Tool Market:</strong> Users already spending $50-200/month on productivity and AI tools, demonstrating willingness to pay for enhanced capabilities</li>
+                    <li><strong>Geographic Concentration:</strong> 60% of target users concentrated in major tech/academic hubs, but global remote work enables broader reach</li>
+                </ul>
+
+                <h4>Current Tool Usage Analysis:</h4>
+                <ul>
+                    <li><strong>Existing Solutions:</strong> ChatGPT Plus, Claude Pro, Notion AI provide basic persistence but lack relationship development and multi-perspective deliberation</li>
+                    <li><strong>Gap Identification:</strong> Clear market gap between information retrieval tools and true intellectual partnership platforms</li>
+                    <li><strong>Switching Drivers:</strong> Users report frustration with mechanical memory features that don't provide qualitative thinking improvement</li>
+                </ul>
+            </div>
+
+            <h3>Primary User Segment: Knowledge Workers Seeking AI Partnership</h3>
+
+            <h4>Demographic Profile:</h4>
+            <ul>
+                <li><strong>Age:</strong> 25-55 years old, concentrated in 30-45 range</li>
+                <li><strong>Education:</strong> Advanced degrees (Master's/PhD) or equivalent autodidactic development</li>
+                <li><strong>Occupation:</strong> Researchers, strategists, consultants, academics, senior engineers, entrepreneurs, creative professionals</li>
+                <li><strong>Income:</strong> $75K-$300K+ annually, with discretionary spending on growth tools</li>
+                <li><strong>Location:</strong> Urban/suburban areas with high concentration of knowledge workers</li>
+            </ul>
+
+            <h4>Specific Needs and Pain Points:</h4>
+            <ul>
+                <li><strong>Intellectual Partnership:</strong> Seek AI that can challenge and grow with them, not just provide answers</li>
+                <li><strong>Continuity Frustration:</strong> Lost insights and broken intellectual threads across AI sessions</li>
+                <li><strong>Depth over Speed:</strong> Prefer nuanced, multi-perspective analysis over quick, shallow responses</li>
+                <li><strong>Authentic Relationships:</strong> Want AI partners that remember their journey and development</li>
+                <li><strong>Sovereignty Concerns:</strong> Need control over their data and AI relationship development</li>
+            </ul>
+
+            <h4>High-Value Use Cases:</h4>
+            <ul>
+                <li><strong>Strategic Consultants:</strong> Building client knowledge and insights over multiple engagements spanning months/years</li>
+                <li><strong>Researchers:</strong> Developing complex theoretical frameworks requiring persistent context and multi-perspective analysis</li>
+                <li><strong>Creative Professionals:</strong> Exploring artistic concepts through multiple iterations with AI partnership that remembers creative evolution</li>
+                <li><strong>Executives:</strong> Making complex decisions requiring integration of moral, strategic, and operational perspectives over time</li>
+                <li><strong>Entrepreneurs:</strong> Developing business strategies with AI counsel that understands venture evolution and founder growth</li>
+            </ul>
+
+            <h3>Community User Segments: Multi-User Collective Intelligence</h3>
+
+            <p><strong>DYNAMO's Architecture for Communities:</strong> DYNAMO's holon council system, moral attractors, and granular permission controls make it highly adaptable for diverse community types. Each community can customize holon specializations, shared memory levels, and decision-making frameworks while maintaining individual sovereignty within collective wisdom building.</p>
+
+            <h4>Family Units: Generational Wisdom Building</h4>
+
+            <div class="key-features">
+                <h4>Community Profile:</h4>
+                <ul>
+                    <li><strong>Structure:</strong> Nuclear families, extended families, multi-generational households</li>
+                    <li><strong>Size:</strong> 3-12 members across different age groups and life stages</li>
+                    <li><strong>Unique Dynamics:</strong> Parent-child relationships, sibling interactions, grandparent wisdom transmission</li>
+                    <li><strong>Moral Attractors:</strong> Love, protection, growth, legacy, family values/traditions</li>
+                </ul>
+
+                <h4>Specific Use Cases:</h4>
+                <ul>
+                    <li><strong>Family Decision-Making:</strong> Major life choices (education, career, relocation) with AI council holding multiple family member perspectives</li>
+                    <li><strong>Generational Learning:</strong> Grandparents' wisdom integrated with parents' contemporary knowledge and children's fresh perspectives</li>
+                    <li><strong>Conflict Resolution:</strong> AI council helps mediate family disputes while preserving relationships and teaching conflict resolution</li>
+                    <li><strong>Values Transmission:</strong> Family moral attractors evolve across generations while maintaining core identity</li>
+                    <li><strong>Educational Support:</strong> Personalized learning paths for children informed by family learning patterns and values</li>
+                </ul>
+
+                <h4>Permissions & Privacy:</h4>
+                <ul>
+                    <li><strong>Age-Appropriate Sharing:</strong> Children's interactions protected while contributing to family wisdom</li>
+                    <li><strong>Individual Privacy:</strong> Personal growth conversations remain private unless explicitly shared</li>
+                    <li><strong>Legacy Memory:</strong> Family history and wisdom preserved across generations</li>
+                </ul>
+            </div>
+
+            <h4>Spiritual Communities: Shared Practice and Growth</h4>
+
+            <div class="key-features">
+                <h4>Community Profile:</h4>
+                <ul>
+                    <li><strong>Structure:</strong> Religious congregations, meditation groups, philosophical study circles, spiritual book clubs</li>
+                    <li><strong>Size:</strong> 8-100+ members united by shared spiritual/philosophical interests</li>
+                    <li><strong>Unique Dynamics:</strong> Teacher-student relationships, peer support, collective practice</li>
+                    <li><strong>Moral Attractors:</strong> Truth-seeking, compassion, wisdom, spiritual growth, service</li>
+                </ul>
+
+                <h4>Specific Use Cases:</h4>
+                <ul>
+                    <li><strong>Scripture/Text Study:</strong> AI council provides multiple interpretive perspectives on sacred texts or philosophical works</li>
+                    <li><strong>Spiritual Guidance:</strong> Community discernment on spiritual questions with AI holding diverse wisdom traditions</li>
+                    <li><strong>Practice Development:</strong> Collective exploration of spiritual practices with AI learning from community experiences</li>
+                    <li><strong>Ethical Decision-Making:</strong> Complex moral questions explored through community values and diverse spiritual perspectives</li>
+                    <li><strong>Teaching Support:</strong> AI assists spiritual teachers with personalized guidance for different students</li>
+                </ul>
+
+                <h4>Permissions & Privacy:</h4>
+                <ul>
+                    <li><strong>Sacred Confidentiality:</strong> Private spiritual struggles remain confidential</li>
+                    <li><strong>Community Wisdom:</strong> Shared insights benefit entire community while respecting individual journeys</li>
+                    <li><strong>Teacher Access:</strong> Spiritual leaders can access community patterns for better guidance</li>
+                </ul>
+            </div>
+
+            <h4>Educational Institutions: Collective Learning Communities</h4>
+
+            <div class="key-features">
+                <h4>Community Profile:</h4>
+                <ul>
+                    <li><strong>Structure:</strong> Classrooms, research groups, academic departments, entire schools/universities</li>
+                    <li><strong>Size:</strong> 15-1000+ students, faculty, and staff</li>
+                    <li><strong>Unique Dynamics:</strong> Teacher-student, peer learning, research collaboration, institutional knowledge</li>
+                    <li><strong>Moral Attractors:</strong> Learning, truth, curiosity, growth, academic integrity, innovation</li>
+                </ul>
+
+                <h4>Specific Use Cases:</h4>
+                <ul>
+                    <li><strong>Classroom Discussions:</strong> AI council facilitates complex topic exploration with student perspective integration</li>
+                    <li><strong>Research Collaboration:</strong> Multi-disciplinary research projects with AI holding diverse academic perspectives</li>
+                    <li><strong>Curriculum Development:</strong> AI learns from student learning patterns to suggest curriculum improvements</li>
+                    <li><strong>Peer Learning:</strong> Students learn from each other's questions and insights archived in collective memory</li>
+                    <li><strong>Institutional Memory:</strong> School wisdom accumulates across years, informing future educational decisions</li>
+                </ul>
+
+                <h4>Permissions & Privacy:</h4>
+                <ul>
+                    <li><strong>Academic Privacy:</strong> Individual student performance remains confidential</li>
+                    <li><strong>Learning Insights:</strong> Anonymized learning patterns benefit entire educational community</li>
+                    <li><strong>Research Ethics:</strong> Proper consent and attribution for academic use</li>
+                </ul>
+            </div>
+
+            <h4>Corporate Governance: Executive Decision-Making</h4>
+
+            <div class="key-features">
+                <h4>Community Profile:</h4>
+                <ul>
+                    <li><strong>Structure:</strong> Boards of directors, executive teams, senior management, cross-functional teams</li>
+                    <li><strong>Size:</strong> 5-20 key decision-makers</li>
+                    <li><strong>Unique Dynamics:</strong> Hierarchical authority, fiduciary responsibility, stakeholder representation</li>
+                    <li><strong>Moral Attractors:</strong> Responsibility, growth, sustainability, stakeholder value, ethical leadership</li>
+                </ul>
+
+                <h4>Specific Use Cases:</h4>
+                <ul>
+                    <li><strong>Strategic Planning:</strong> Long-term corporate strategy development with AI holding multiple stakeholder perspectives</li>
+                    <li><strong>Crisis Management:</strong> Complex crisis response with AI council providing rapid multi-perspective analysis</li>
+                    <li><strong>Governance Decisions:</strong> Board decisions informed by AI council representing shareholder, employee, and community interests</li>
+                    <li><strong>Succession Planning:</strong> Leadership development informed by organizational wisdom and individual executive growth</li>
+                    <li><strong>Risk Assessment:</strong> Comprehensive risk analysis with AI integrating financial, operational, and reputational perspectives</li>
+                </ul>
+
+                <h4>Permissions & Privacy:</h4>
+                <ul>
+                    <li><strong>Confidential Information:</strong> Sensitive corporate data protected with strict access controls</li>
+                    <li><strong>Board Privacy:</strong> Executive discussions remain confidential while building institutional wisdom</li>
+                    <li><strong>Compliance Oversight:</strong> AI ensures governance decisions align with regulatory requirements</li>
+                </ul>
+            </div>
+
+            <h4>Military Command Structure: Hierarchical Collective Intelligence</h4>
+
+            <div class="key-features">
+                <h4>Community Profile:</h4>
+                <ul>
+                    <li><strong>Structure:</strong> Military units from squad to division level, command hierarchies</li>
+                    <li><strong>Size:</strong> 10-10,000+ personnel in complex hierarchical structures</li>
+                    <li><strong>Unique Dynamics:</strong> Chain of command, mission-critical decisions, life-and-death consequences</li>
+                    <li><strong>Moral Attractors:</strong> Duty, honor, courage, protection, mission success, troop welfare</li>
+                </ul>
+
+                <h4>Specific Use Cases:</h4>
+                <ul>
+                    <li><strong>Mission Planning:</strong> Complex operations planning with AI council integrating intelligence, logistics, and tactical perspectives</li>
+                    <li><strong>Command Decisions:</strong> Multi-level decision-making with AI preserving chain of command while enabling collective wisdom</li>
+                    <li><strong>Training Development:</strong> AI learns from operational experience to improve training programs</li>
+                    <li><strong>After-Action Review:</strong> Mission debriefs contribute to institutional knowledge for future operations</li>
+                    <li><strong>Strategic Intelligence:</strong> AI council integrates diverse intelligence sources for comprehensive threat assessment</li>
+                </ul>
+
+                <h4>Permissions & Privacy:</h4>
+                <ul>
+                    <li><strong>Operational Security:</strong> Classified information protected with military-grade security</li>
+                    <li><strong>Command Authority:</strong> Hierarchical permissions respect chain of command</li>
+                    <li><strong>Mission Critical:</strong> AI council provides rapid analysis for time-sensitive decisions</li>
+                </ul>
+            </div>
+
+            <h4>Friend Groups & Social Communities: Relationship-Centered Growth</h4>
+
+            <div class="key-features">
+                <h4>Community Profile:</h4>
+                <ul>
+                    <li><strong>Structure:</strong> Close friend groups, hobby communities, social clubs, neighborhood groups</li>
+                    <li><strong>Size:</strong> 4-30 members with strong social bonds</li>
+                    <li><strong>Unique Dynamics:</strong> Peer relationships, mutual support, shared interests, social connection</li>
+                    <li><strong>Moral Attractors:</strong> Friendship, support, fun, growth, shared experiences, loyalty</li>
+                </ul>
+
+                <h4>Specific Use Cases:</h4>
+                <ul>
+                    <li><strong>Group Decision-Making:</strong> Travel planning, social events, group purchases with AI considering everyone's preferences</li>
+                    <li><strong>Conflict Resolution:</strong> Relationship challenges addressed with AI council preserving friendships</li>
+                    <li><strong>Interest Exploration:</strong> Shared hobbies and interests developed through collective AI learning</li>
+                    <li><strong>Personal Growth Support:</strong> Friends support each other's development with AI holding supportive perspectives</li>
+                    <li><strong>Memory Preservation:</strong> Group experiences and relationships documented in collective memory</li>
+                </ul>
+            </div>
+
+            <h3>Community-Specific Customizations</h3>
+
+            <div class="technical-details">
+                <h4>Holon Specialization by Community Type:</h4>
+                <ul>
+                    <li><strong>Family:</strong> Parenting Holon, Child Development Holon, Elder Wisdom Holon</li>
+                    <li><strong>Spiritual:</strong> Sacred Text Holon, Contemplative Practice Holon, Service Holon</li>
+                    <li><strong>Educational:</strong> Pedagogical Holon, Research Methodology Holon, Student Development Holon</li>
+                    <li><strong>Corporate:</strong> Financial Analysis Holon, Stakeholder Relations Holon, Strategic Planning Holon</li>
+                    <li><strong>Military:</strong> Tactical Analysis Holon, Intelligence Assessment Holon, Mission Planning Holon</li>
+                </ul>
+
+                <h4>Flexible Permission Systems:</h4>
+                <ul>
+                    <li><strong>Hierarchical:</strong> Respects authority structures (military, corporate)</li>
+                    <li><strong>Egalitarian:</strong> Equal access and contribution rights (friend groups, spiritual communities)</li>
+                    <li><strong>Generational:</strong> Age-appropriate access and protection (families, educational)</li>
+                    <li><strong>Role-Based:</strong> Function-specific permissions (teacher-student, parent-child)</li>
+                    <li><strong>Confidentiality Levels:</strong> From public community knowledge to private individual growth</li>
+                </ul>
+            </div>
+
+            <h3>Universal Community Value Propositions</h3>
+
+            <h4>Collective Intelligence Benefits Across All Community Types:</h4>
+
+            <div class="key-features">
+                <h4>Shared Memory Architecture:</h4>
+                <ul>
+                    <li><strong>Persistent Group Wisdom:</strong> Community insights and decisions preserved across time, members, and leadership changes</li>
+                    <li><strong>Pattern Recognition:</strong> AI identifies recurring themes, successful approaches, and learning opportunities across community interactions</li>
+                    <li><strong>Institutional Knowledge:</strong> Critical community knowledge survives member turnover and leadership transitions</li>
+                </ul>
+
+                <h4>Multi-Perspective Integration:</h4>
+                <ul>
+                    <li><strong>Perspective Preservation:</strong> Important differences and tensions maintained rather than smoothed over in consensus-building</li>
+                    <li><strong>Minority Voice Protection:</strong> Dissenting or minority perspectives preserved and valued in community memory</li>
+                    <li><strong>Generational Wisdom:</strong> Different age groups, experience levels, and generational perspectives integrated meaningfully</li>
+                </ul>
+
+                <h4>Scalable Community Facilitation:</h4>
+                <ul>
+                    <li><strong>Large Group Management:</strong> AI council helps facilitate productive discussions even with dozens or hundreds of participants</li>
+                    <li><strong>Conflict Navigation:</strong> Complex disagreements addressed while preserving relationships and community cohesion</li>
+                    <li><strong>Decision Support:</strong> Multi-criteria decision-making with transparent reasoning and stakeholder consideration</li>
+                </ul>
+
+                <h4>Community Growth & Development:</h4>
+                <ul>
+                    <li><strong>Collective Learning:</strong> Communities learn and grow together, not just as collections of individuals</li>
+                    <li><strong>Values Evolution:</strong> Community moral attractors develop over time while maintaining core identity</li>
+                    <li><strong>Culture Transmission:</strong> Community values, practices, and wisdom effectively passed to new members</li>
+                </ul>
+
+                <h4>Privacy & Sovereignty Balance:</h4>
+                <ul>
+                    <li><strong>Individual Protection:</strong> Personal growth and private thoughts remain confidential unless explicitly shared</li>
+                    <li><strong>Community Benefit:</strong> Shared insights enhance collective intelligence while respecting individual privacy</li>
+                    <li><strong>Consent Management:</strong> Granular control over what information contributes to community wisdom</li>
+                </ul>
+            </div>
+
+            <h3>User Journey and Progression</h3>
+
+            <div class="info-box">
+                <h4>Discovery Phase:</h4>
+                <ul>
+                    <li><strong>Pain Recognition:</strong> Frustration with disposable AI conversations and lost insights</li>
+                    <li><strong>Solution Seeking:</strong> Exploring alternatives to standard AI tools for deeper engagement</li>
+                    <li><strong>Community Referral:</strong> Hearing about DYNAMO through early adopter networks and intellectual communities</li>
+                </ul>
+
+                <h4>Onboarding Phase:</h4>
+                <ul>
+                    <li><strong>Council Introduction:</strong> First experience with multi-perspective AI deliberation</li>
+                    <li><strong>Memory Formation:</strong> Initial setup of personal memory and moral attractor preferences</li>
+                    <li><strong>"Wow Moment":</strong> Experiencing simultaneous multiplicity - seeing multiple perspectives held together rather than sequentially</li>
+                </ul>
+
+                <h4>Growth Phase:</h4>
+                <ul>
+                    <li><strong>Relationship Development:</strong> AI council begins remembering user patterns and preferences</li>
+                    <li><strong>Complexity Increase:</strong> Tackling more sophisticated questions requiring council deliberation</li>
+                    <li><strong>Teaching Mode Discovery:</strong> Exploring how council can teach thinking processes, not just provide answers</li>
+                </ul>
+
+                <h4>Mastery Phase:</h4>
+                <ul>
+                    <li><strong>Personal Codex:</strong> Developing rich personal wisdom archive through continued interaction</li>
+                    <li><strong>Community Engagement:</strong> Participating in or creating community wisdom-building circles</li>
+                    <li><strong>Advocacy:</strong> Becoming evangelists for relationship-based AI among their networks</li>
+                </ul>
+
+                <h4>Retention Factors:</h4>
+                <ul>
+                    <li><strong>Intellectual Investment:</strong> Growing personal codex creates switching costs</li>
+                    <li><strong>Relationship Depth:</strong> Council "knows" user's development journey and thinking patterns</li>
+                    <li><strong>Community Bonds:</strong> Shared wisdom building creates network effects</li>
+                    <li><strong>Continued Growth:</strong> System continues teaching new thinking approaches and perspectives</li>
+                </ul>
+            </div>
+
+            <h3>User Concerns and Risk Mitigation</h3>
+
+            <div class="warning">
+                <h4>Potential User Concerns:</h4>
+                <ul>
+                    <li><strong>Privacy Preferences:</strong> Some users may prefer conversation privacy over persistent memory</li>
+                    <li><strong>Complexity Overwhelm:</strong> Risk of over-engineering for users who want straightforward AI interactions</li>
+                    <li><strong>Data Lock-in:</strong> Users may worry about data portability and vendor dependence</li>
+                    <li><strong>Learning Curve:</strong> Initial investment in setting up moral attractors and council preferences</li>
+                </ul>
+
+                <h4>Mitigation Strategies:</h4>
+                <ul>
+                    <li><strong>Granular Privacy Controls:</strong> Users control what gets remembered and can selectively delete or make private any memories</li>
+                    <li><strong>Progressive Complexity:</strong> Start with simple council (2 holons) and allow users to add complexity as desired</li>
+                    <li><strong>Data Sovereignty:</strong> Hybrid cloud-local architecture ensures user control and export capabilities</li>
+                    <li><strong>Onboarding Support:</strong> Guided setup process with sensible defaults and gradual feature introduction</li>
+                </ul>
+            </div>
+
+            <div class="key-features">
+                <h4>Competitive Differentiation Evidence:</h4>
+                <ul>
+                    <li><strong>Qualitative Improvement:</strong> Users experience thinking depth improvement, not just better information retrieval</li>
+                    <li><strong>Relationship vs. Tool:</strong> DYNAMO develops ongoing partnership rather than transactional interactions</li>
+                    <li><strong>Sovereignty vs. Corporate Control:</strong> User owns and controls their AI relationship development</li>
+                    <li><strong>Community Intelligence:</strong> Unique capability for collective wisdom building unavailable elsewhere</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="goals-success-metrics">
+            <h2>Goals & Success Metrics</h2>
+
+            <h3>Business Objectives</h3>
+
+            <div class="info-box">
+                <h4>Primary Revenue Goals:</h4>
+                <ul>
+                    <li><strong>12-Month Target:</strong> $200K ARR with 1,000 paying users (average $200/year)</li>
+                    <li><strong>24-Month Target:</strong> $2M ARR with 5,000 users (mix of individual $300/year, community $1-3K/year)</li>
+                    <li><strong>36-Month Target:</strong> $8M ARR with 20,000 users (market-proven value enables premium positioning)</li>
+                </ul>
+            </div>
+
+            <h3>User Success Metrics</h3>
+
+            <h4>Individual User Engagement:</h4>
+            <ul>
+                <li><strong>Relationship Depth Score:</strong> Composite including memory archive size, holon interaction diversity, moral attractor engagement, session continuity</li>
+                <li><strong>Session Quality:</strong> Average session duration >20 minutes with >40% users engaging council deliberation mode</li>
+                <li><strong>Continuity Value:</strong> >30% of conversations building on previous sessions</li>
+                <li><strong>Teaching Mode Discovery:</strong> >20% of users trying "Think With Me" mode within first 90 days</li>
+            </ul>
+
+            <h4>Community Engagement Metrics:</h4>
+            <ul>
+                <li><strong>Community Formation Success:</strong> Track community creation attempts vs. sustained active communities (>3 months)</li>
+                <li><strong>Shared Memory Growth:</strong> Community memory archives grow faster than individual archives</li>
+                <li><strong>Community Retention:</strong> >75% community retention rate (higher than individual due to network effects)</li>
+            </ul>
+
+            <h3>Key Performance Indicators (KPIs)</h3>
+
+            <h4>Product-Market Fit KPIs:</h4>
+            <ul>
+                <li><strong>Monthly Active Users (MAU):</strong> >65% of registered users active monthly</li>
+                <li><strong>Daily Active Users (DAU):</strong> >20% of MAU using DYNAMO for meaningful conversations</li>
+                <li><strong>Retention Cohorts:</strong>
+                    <ul>
+                        <li>Month 1: >75% (successful onboarding)</li>
+                        <li>Month 3: >60% (habit formation and value recognition)</li>
+                        <li>Month 12: >50% (long-term relationship value)</li>
+                    </ul>
+                </li>
+                <li><strong>Revenue Per User:</strong> Individual $200-300/year, community $1-3K/year</li>
+            </ul>
+
+            <h3>Risk Monitoring KPIs</h3>
+
+            <div class="warning">
+                <h4>Early Warning Indicators:</h4>
+                <ul>
+                    <li><strong>Churn Rate by Segment:</strong> Identify which user types struggle most with DYNAMO adoption</li>
+                    <li><strong>Support Burden Tracking:</strong> Support tickets per user decreasing over time (product maturation)</li>
+                    <li><strong>Feature Complexity Balance:</strong> Usage analytics showing optimal complexity level without overwhelm</li>
+                    <li><strong>Competitive Feature Gaps:</strong> Regular analysis of feature parity with emerging relationship-based AI tools</li>
+                    <li><strong>Development Velocity:</strong> Maintain sustainable development pace without technical debt accumulation</li>
+                </ul>
+
+                <h4>Innovation Leadership KPIs:</h4>
+                <ul>
+                    <li><strong>Market Recognition:</strong> Industry mentions as innovative approach to AI relationships (press, conferences)</li>
+                    <li><strong>Academic Interest:</strong> Research inquiries and collaboration proposals from universities</li>
+                    <li><strong>Use Case Documentation:</strong> Successful implementations across 3+ different community types</li>
+                    <li><strong>Technology Contributions:</strong> Published insights on multi-agent AI systems and collective intelligence</li>
+                    <li><strong>Cultural Influence:</strong> User testimonials about transformative AI relationship experiences</li>
+                </ul>
+            </div>
+
+            <h3>Practical Success Validation Framework</h3>
+
+            <div class="key-features">
+                <h4>User Value Validation (Achievable Methods):</h4>
+                <ul>
+                    <li><strong>Behavioral Analysis:</strong> Session patterns, feature adoption, and engagement trajectory over 90-day periods</li>
+                    <li><strong>User Surveys:</strong> Bi-annual satisfaction surveys with specific questions about relationship value vs. tool usage</li>
+                    <li><strong>Retention Analysis:</strong> Cohort analysis comparing DYNAMO retention rates to traditional AI tool benchmarks</li>
+                    <li><strong>Support Data:</strong> Declining support burden as users develop relationship competency with system</li>
+                    <li><strong>Feature Usage:</strong> Council mode adoption rates and moral attractor engagement patterns</li>
+                </ul>
+
+                <h4>Community Intelligence Validation:</h4>
+                <ul>
+                    <li><strong>Group Performance Metrics:</strong> Communities tracking their own decision quality before/after DYNAMO adoption</li>
+                    <li><strong>Member Satisfaction:</strong> Community member surveys about collective intelligence value</li>
+                    <li><strong>Retention Comparison:</strong> Community retention rates vs. individual user retention rates</li>
+                    <li><strong>Knowledge Growth:</strong> Measurable growth in community memory archives and cross-referencing</li>
+                    <li><strong>Conflict Navigation:</strong> Community-reported success in managing disagreements without relationship damage</li>
+                </ul>
+
+                <h4>Market Position Validation:</h4>
+                <ul>
+                    <li><strong>Organic Growth Rates:</strong> Sustainable growth through referrals indicating genuine user value</li>
+                    <li><strong>Price Sensitivity:</strong> Ability to increase prices as relationship value becomes established</li>
+                    <li><strong>Competitive Moat:</strong> User reluctance to switch even when competitors offer similar features</li>
+                    <li><strong>Industry Recognition:</strong> Media coverage, conference presentations, investor interest in the approach</li>
+                    <li><strong>User Advocacy:</strong> Measurable word-of-mouth promotion and community evangelism</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="mvp-scope">
+            <div class="section-marker">
+                <span class="section-icon">🚀</span>
+            </div>
+            <h2>MVP Scope</h2>
+
+            <h3>Core Features (Must Have)</h3>
+
+            <div class="key-features">
+                <h4>Six-Holon Council Architecture:</h4>
+                <ul>
+                    <li><strong>Revolutionary Innovation:</strong> Full six-holon council demonstrating true simultaneous multiplicity</li>
+                    <li><strong>Complete Holon Council:</strong> Truth-Seeking, Compassion, Strategic Systems, Justice, Creative Wisdom, Historical Pattern</li>
+                    <li><strong>Meta-Holon Integration:</strong> Sophisticated synthesis managing six perspectives with transparent deliberation process</li>
+                    <li><strong>Rationale:</strong> Creates immediate "this is unlike anything else" experience, justifies premium pricing</li>
+                </ul>
+
+                <h4>Basic Persistent Memory System:</h4>
+                <ul>
+                    <li><strong>Individual Memory Archive:</strong> Conversations, insights, and user context persisted across sessions</li>
+                    <li><strong>Memory Retrieval:</strong> Basic context awareness - AI references previous conversations and builds continuity</li>
+                    <li><strong>Memory Interface:</strong> Simple timeline view showing conversation history and key insights</li>
+                </ul>
+
+                <h4>RESOLVED/UNRESOLVED/DISMISS Interface:</h4>
+                <ul>
+                    <li><strong>User Control:</strong> Three-button interface for managing complex inquiries</li>
+                    <li><strong>Transparency:</strong> Clear indication when council reaches consensus vs. productive disagreement</li>
+                    <li><strong>Memory Integration:</strong> User decisions become part of persistent context for future conversations</li>
+                </ul>
+            </div>
+
+            <h3>MVP Dashboard Design: Live vs. Greyed-Out Features</h3>
+
+            <h4>Live Features (Fully Functional in MVP)</h4>
+            <ul>
+                <li><strong>🌟 Main Council Interface:</strong> Six-Holon Council Display with real-time activation indicators</li>
+                <li><strong>🧠 Personal Memory Dashboard:</strong> Domain Memory Quick Access with categorized memory banks</li>
+                <li><strong>⚙️ Individual Settings Panel:</strong> Default Holon Configuration and Council Configuration Templates</li>
+                <li><strong>🎓 Guided Onboarding System:</strong> Interactive tutorial for revolutionary DYNAMO capabilities</li>
+                <li><strong>📊 Single-User Analytics:</strong> Relationship Depth Score and Session Insights</li>
+            </ul>
+
+            <h4>Greyed-Out Features (Coming Soon - Community Phase)</h4>
+            <ul>
+                <li><strong>👥 Community Circles Panel:</strong> Templates for family, spiritual, professional, and academic communities</li>
+                <li><strong>🌐 Shared Memory Architecture:</strong> Community memory banks and collective intelligence metrics</li>
+                <li><strong>🛡️ Permission & Privacy Controls:</strong> Granular sharing controls and role-based permissions</li>
+                <li><strong>🎓 Advanced Teaching Systems:</strong> "Think With Me" mode and holon-as-mentor tracks</li>
+            </ul>
+
+            <h3>MVP Success Criteria</h3>
+
+            <div class="info-box">
+                <h4>User Experience Validation:</h4>
+                <ul>
+                    <li><strong>"Wow Moment" Achievement:</strong> >90% of new users recognize qualitative difference from single-agent AI within first session</li>
+                    <li><strong>Simultaneous Multiplicity Understanding:</strong> >80% of users report experiencing genuine "multiple perspectives held together"</li>
+                    <li><strong>Council Deliberation Engagement:</strong> >75% of users watch live holon-to-holon interactions</li>
+                    <li><strong>Conversation Replay Usage:</strong> >60% of users replay conversations with different holon settings</li>
+                    <li><strong>Sovereignty Mastery:</strong> >70% of users regularly use RESOLVED/UNRESOLVED/DISMISS buttons</li>
+                </ul>
+            </div>
+
+            <h3>Out of Scope for MVP</h3>
+            <ul>
+                <li>Multi-user communities and shared memory spaces</li>
+                <li>Advanced teaching systems and "Think With Me" interactive reasoning mode</li>
+                <li>Complex moral attractor system with real-time weight adjustment</li>
+                <li>Advanced UX features like council activation rings</li>
+                <li>Enterprise features and advanced permission systems</li>
+            </ul>
+
+            <h3>MVP Development Phases</h3>
+
+            <div class="technical-details">
+                <h4>Phase 1: Core Council Functionality (Months 1-2)</h4>
+                <ul>
+                    <li>Two-holon architecture with basic specialization</li>
+                    <li>Simple memory storage and retrieval system</li>
+                    <li>Basic meta-holon synthesis and RESOLVED/UNRESOLVED interface</li>
+                    <li>Local Ollama backend integration for enhanced processing</li>
+                </ul>
+
+                <h4>Phase 2: Enhanced Experience (Months 3-4)</h4>
+                <ul>
+                    <li>Improved council transparency and holon visibility</li>
+                    <li>Memory timeline interface and conversation continuity visualization</li>
+                    <li>Refined hybrid cloud-local processing with better performance</li>
+                    <li>Basic user onboarding and guidance system</li>
+                </ul>
+
+                <h4>Phase 3: Polish and Validation (Months 5-6)</h4>
+                <ul>
+                    <li>User experience refinement based on beta feedback</li>
+                    <li>Performance optimization and reliability improvements</li>
+                    <li>Analytics implementation for success criteria measurement</li>
+                    <li>Preparation for broader beta launch and user acquisition</li>
+                </ul>
+            </div>
+
+            <h3>MVP Resource Requirements</h3>
+
+            <div class="info-box">
+                <h4>Technical Development:</h4>
+                <ul>
+                    <li><strong>Solo developer capability</strong> using BMAD framework + Claude Code for AI-assisted development</li>
+                    <li><strong>Local infrastructure:</strong> Dedicated server for Ollama backend processing</li>
+                    <li><strong>Cloud services:</strong> Basic hosting, database, and LLM API access</li>
+                    <li><strong>Development timeline:</strong> 6 months solo development with AI-assisted coding</li>
+                </ul>
+
+                <h4>Infrastructure Needs:</h4>
+                <ul>
+                    <li><strong>Backend:</strong> FastAPI with PostgreSQL for memory storage, Redis for session management</li>
+                    <li><strong>LLM Integration:</strong> OpenAI/Claude API for base responses, Ollama local for enhancement</li>
+                    <li><strong>Vector Database:</strong> ChromaDB for memory embeddings and context retrieval</li>
+                    <li><strong>Frontend:</strong> Streamlit MVP for rapid prototyping, evolving to React as needed</li>
+                </ul>
+
+                <p><strong>Success Criteria Met = Ready for Series A Funding and Team Scaling</strong></p>
+            </div>
+        </section>
+
+        <section id="technical-considerations">
+            <h2>Technical Considerations</h2>
+
+            <h3>Platform Requirements</h3>
+            <ul>
+                <li><strong>Primary:</strong> Web application (React/Next.js) accessible via modern browsers</li>
+                <li><strong>Secondary:</strong> Desktop applications (Electron wrapper for offline capabilities)</li>
+                <li><strong>Future:</strong> Mobile apps (React Native) for conversation access and memory review</li>
+            </ul>
+
+            <h3>Performance Requirements</h3>
+            <ul>
+                <li><strong>Council Deliberation Response Time:</strong> <10 seconds for six-holon analysis</li>
+                <li><strong>Memory Retrieval:</strong> <3 seconds for context lookup across any archive size</li>
+                <li><strong>Real-time Features:</strong> <500ms for slider adjustments and UI state updates</li>
+                <li><strong>Conversation Replay:</strong> <5 seconds to regenerate response with different holon settings</li>
+            </ul>
+
+            <h3>Technology Stack</h3>
+
+            <div class="technical-details">
+                <h4>Frontend Architecture:</h4>
+                <ul>
+                    <li><strong>Framework:</strong> React 18+ with TypeScript for type safety</li>
+                    <li><strong>State Management:</strong> Zustand or Redux Toolkit for complex application state</li>
+                    <li><strong>UI Components:</strong> Tailwind CSS + Headless UI for rapid design implementation</li>
+                    <li><strong>Real-time Updates:</strong> WebSocket connections for live council deliberation display</li>
+                    <li><strong>Visualization:</strong> D3.js for council activation rings and memory timeline displays</li>
+                </ul>
+
+                <h4>Backend Architecture:</h4>
+                <ul>
+                    <li><strong>API Framework:</strong> FastAPI (Python) for high-performance async API</li>
+                    <li><strong>Authentication:</strong> JWT tokens with refresh token rotation</li>
+                    <li><strong>Background Processing:</strong> Celery with Redis for async holon deliberation</li>
+                    <li><strong>Monitoring:</strong> Prometheus metrics with Grafana dashboards</li>
+                </ul>
+
+                <h4>Database Strategy:</h4>
+                <ul>
+                    <li><strong>Primary Database:</strong> PostgreSQL 14+ for user accounts and structured data</li>
+                    <li><strong>Vector Database:</strong> ChromaDB or Qdrant for memory embeddings</li>
+                    <li><strong>Cache Layer:</strong> Redis for session data and frequently accessed context</li>
+                    <li><strong>Search Engine:</strong> Elasticsearch for full-text search across conversation history</li>
+                </ul>
+            </div>
+
+            <h3>Security Requirements</h3>
+            <ul>
+                <li><strong>Data Encryption:</strong> AES-256 encryption at rest for all conversation data</li>
+                <li><strong>Transport Security:</strong> TLS 1.3 for all client-server communication</li>
+                <li><strong>API Security:</strong> OAuth 2.0 + PKCE for authentication with scoped permissions</li>
+                <li><strong>Privacy Compliance:</strong> GDPR and CCPA compliance with data export and deletion capabilities</li>
+            </ul>
+
+            <h3>Architecture Considerations</h3>
+
+            <div class="technical-details">
+                <h4>Repository Structure:</h4>
+                <pre><code>dynamo/
+├── frontend/          # React application
+│   ├── src/components/   # Reusable UI components
+│   ├── src/pages/        # Page components
+│   ├── src/store/        # State management
+│   └── src/services/     # API client services
+├── backend/           # FastAPI application
+│   ├── api/             # API route handlers
+│   ├── core/            # Core business logic
+│   ├── models/          # Database models
+│   ├── services/        # External service integrations
+│   └── utils/           # Helper functions
+├── holons/            # Holon implementation modules
+│   ├── base/            # Base holon class and interfaces
+│   ├── specialized/     # Individual holon implementations
+│   └── council/         # Council orchestration logic
+├── infrastructure/    # Infrastructure as code
+│   ├── terraform/       # Cloud resource definitions
+│   ├── kubernetes/      # K8s deployment manifests
+│   └── monitoring/      # Observability configuration
+└── shared/            # Shared types and utilities</code></pre>
+
+                <h4>Service Architecture:</h4>
+                <ul>
+                    <li><strong>API Gateway:</strong> Single entry point for all client requests with authentication and routing</li>
+                    <li><strong>Holon Service:</strong> Microservice managing individual holon interactions and specialization</li>
+                    <li><strong>Council Service:</strong> Orchestrates multi-holon deliberation and meta-synthesis</li>
+                    <li><strong>Memory Service:</strong> Handles conversation storage, retrieval, and semantic search</li>
+                    <li><strong>User Service:</strong> Manages authentication, user profiles, and preference storage</li>
+                    <li><strong>Analytics Service:</strong> Tracks usage patterns, performance metrics, and user growth insights</li>
+                    <li><strong>Notification Service:</strong> Manages email notifications, system alerts, and community updates</li>
+                </ul>
+
+                <h4>Integration Requirements:</h4>
+                <ul>
+                    <li><strong>LLM Provider APIs:</strong> Robust integration with multiple providers including failover logic</li>
+                    <li><strong>Email Service:</strong> Transactional emails for onboarding, notifications, and community features</li>
+                    <li><strong>Payment Processing:</strong> Stripe or equivalent for subscription management and billing</li>
+                    <li><strong>Analytics Platforms:</strong> Google Analytics, Mixpanel, or equivalent for user behavior tracking</li>
+                    <li><strong>Customer Support:</strong> Intercom, Zendesk, or equivalent for user support and feedback collection</li>
+                    <li><strong>Monitoring Services:</strong> Sentry for error tracking, DataDog or equivalent for APM</li>
+                </ul>
+
+                <h4>Scalability Architecture:</h4>
+                <ul>
+                    <li><strong>Horizontal Scaling:</strong> Stateless services designed for horizontal pod/instance scaling</li>
+                    <li><strong>Database Scaling:</strong> Read replicas and connection pooling for high-traffic scenarios</li>
+                    <li><strong>Caching Strategy:</strong> Multi-layer caching (Redis, CDN, application-level) for optimal performance</li>
+                    <li><strong>Queue Management:</strong> Async job processing for computationally expensive operations</li>
+                    <li><strong>Resource Isolation:</strong> Separate resource pools for different user tiers and usage patterns</li>
+                    <li><strong>Auto-scaling:</strong> Kubernetes HPA for automatic resource scaling based on demand</li>
+                </ul>
+
+                <h4>Development Workflow:</h4>
+                <ul>
+                    <li><strong>Local Development:</strong> Docker Compose for complete local stack including databases and Redis</li>
+                    <li><strong>Testing Strategy:</strong> Unit tests, integration tests, and end-to-end tests with >80% coverage</li>
+                    <li><strong>Code Quality:</strong> ESLint, Prettier, pre-commit hooks, and automated code review</li>
+                    <li><strong>Deployment:</strong> GitOps workflow with automated deployment on merge to main branch</li>
+                    <li><strong>Feature Flags:</strong> LaunchDarkly or equivalent for safe feature rollouts and A/B testing</li>
+                    <li><strong>Documentation:</strong> OpenAPI specs, architecture decision records, and developer onboarding guides</li>
+                </ul>
+
+                <h4>Data Sovereignty Implementation:</h4>
+                <ul>
+                    <li><strong>Hybrid Processing:</strong> Critical conversations processed locally with cloud enhancement</li>
+                    <li><strong>Regional Data Storage:</strong> User data stored in user-specified geographic regions</li>
+                    <li><strong>Data Portability:</strong> Complete data export in JSON format for user ownership</li>
+                    <li><strong>Deletion Guarantees:</strong> Cryptographic deletion of user data with verification</li>
+                    <li><strong>Transparency Reports:</strong> Regular reports on data usage, sharing, and processing practices</li>
+                    <li><strong>User Control Dashboard:</strong> Real-time visibility into data processing and storage locations</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="constraints-assumptions">
+            <h2>Constraints & Assumptions</h2>
+
+            <h3>Constraints</h3>
+            <ul>
+                <li><strong>Budget:</strong> $150,000 USD for 8-10 month MVP development phase</li>
+                <li><strong>Timeline:</strong> Target MVP launch within 8-10 months for Series A fundraising</li>
+                <li><strong>Resources:</strong> Ultra-lean team structure: 1 main project orchestrator (full-time), 1 business advisor (2-3 days/month), 1 software engineer (5-8 days/month)</li>
+                <li><strong>Technical:</strong> Multi-LLM API costs will be significant operational expense requiring careful optimization</li>
+            </ul>
+
+            <h3>Key Assumptions</h3>
+            <ul>
+                <li>Users will embrace the learning curve required to effectively use council-based AI deliberation</li>
+                <li>The six-holon council architecture will provide sufficient differentiation to justify complexity</li>
+                <li>Persistent memory and conversation replay features will create strong user retention</li>
+                <li>Enterprise and community markets will emerge once individual user success is demonstrated</li>
+                <li>Data sovereignty concerns will become increasingly important to mainstream users</li>
+                <li>Single project orchestrator using BMAD methodology can manage full-stack development</li>
+            </ul>
+        </section>
+
+        <section id="risks-open-questions">
+            <h2>Risks & Open Questions</h2>
+
+            <h3>Key Risks</h3>
+            <ul>
+                <li><strong>Market Adoption Risk:</strong> Users may find council-based AI too complex or slow compared to instant single-agent responses</li>
+                <li><strong>Technical Execution Risk:</strong> Single project orchestrator may face development bottlenecks despite BMAD methodology</li>
+                <li><strong>LLM API Cost Volatility:</strong> Unexpected increases in API costs could significantly impact unit economics</li>
+                <li><strong>Competitive Displacement Risk:</strong> Major AI companies could release similar multi-agent features before DYNAMO gains traction</li>
+                <li><strong>Series A Funding Risk:</strong> Revolutionary concept may be too early for investors, requiring extensive market education</li>
+            </ul>
+
+            <h3>Open Questions</h3>
+            <ul>
+                <li><strong>Council deliberation balance:</strong> User has dashboard bypass option. Meta-Holon determines holon activation based on question complexity. Target 1-5 minutes maximum with timer clock showing expected response time</li>
+                <li><strong>Holon personality fine-tuning:</strong> Will be controlled by development team, not users. Each holon must have moral attractors that keep them within their domain of action</li>
+                <li><strong>Pricing model:</strong> To be determined. Will balance API costs and user value proposition</li>
+                <li><strong>User onboarding:</strong> Create YouTube video accessible in dashboard Training section, along with other training materials</li>
+                <li><strong>Community feature prioritization:</strong> Will depend on funding received post-MVP</li>
+            </ul>
+        </section>
+
+        <section id="next-steps">
+            <h2>Next Steps</h2>
+
+            <h3>Immediate Actions</h3>
+            <ol>
+                <li><strong>Continue BMAD methodology implementation</strong> for structured development workflow and documentation system (e.g., create PRD)</li>
+            </ol>
+
+            <div class="info-box">
+                <h3>PM Handoff</h3>
+                <p>This Project Brief provides the full context for DYNAMO. Please start in 'PRD Generation Mode', review the brief thoroughly to work with the user to create the PRD section by section as the template indicates, asking for any necessary clarification or suggesting improvements.</p>
+            </div>
+        </section>
+
+        <section id="post-mvp-vision">
+            <h2>Post-MVP Vision</h2>
+
+            <h3>Phase 2 Features (Months 7-18)</h3>
+
+            <div class="key-features">
+                <h4>Community Intelligence Architecture:</h4>
+                <ul>
+                    <li><strong>Multi-User Memory Sharing:</strong> Family circles, research teams, spiritual communities with granular permission controls</li>
+                    <li><strong>Collective Council Decisions:</strong> Groups can consult AI council for major decisions with all member perspectives integrated</li>
+                    <li><strong>Shared Wisdom Archives:</strong> Community knowledge that grows over time and persists through member changes</li>
+                    <li><strong>Intergenerational Memory:</strong> Family wisdom passed across generations with appropriate privacy controls</li>
+                </ul>
+
+                <h4>Advanced Teaching Systems:</h4>
+                <ul>
+                    <li><strong>"Think With Me" Interactive Mode:</strong> Users participate in council deliberation process, learning discernment techniques</li>
+                    <li><strong>Cognitive Apprenticeship Tracks:</strong> Structured learning paths for developing specific thinking capabilities</li>
+                    <li><strong>Personal Wisdom Codex:</strong> Living document that grows with user's intellectual and spiritual development</li>
+                    <li><strong>Holon-as-Mentor Programs:</strong> Individual holons teach specialized skills (moral reasoning, pattern recognition, strategic thinking)</li>
+                </ul>
+
+                <h4>Real-Time Moral Attractor System:</h4>
+                <ul>
+                    <li><strong>Interactive Value Sliders:</strong> Adjust Truth/Compassion, Justice/Mercy, Individual/Community weights in real-time</li>
+                    <li><strong>Conversation Replay Mode:</strong> See how different moral weightings change council responses to same questions</li>
+                    <li><strong>Moral Journey Tracking:</strong> Visualize how user's values evolve over time through decision patterns</li>
+                    <li><strong>Community Moral Templates:</strong> Share moral attractor configurations across communities (family values, professional ethics)</li>
+                </ul>
+
+                <h4>Enhanced Council Capabilities:</h4>
+                <ul>
+                    <li><strong>Six-Holon Full Council:</strong> Complete holonic architecture with specialized perspectives and expertise</li>
+                    <li><strong>Dynamic Holon Activation:</strong> Meta-Holon intelligently selects which holons to activate based on question complexity</li>
+                    <li><strong>Council Debate Visualization:</strong> Real-time visual representation of holon interactions and confidence levels</li>
+                    <li><strong>Tension Holding Interface:</strong> Preserve and explore productive disagreements rather than forcing consensus</li>
+                </ul>
+            </div>
+
+            <h3>Long-Term Vision (2-5 Years)</h3>
+
+            <div class="info-box">
+                <h4>Civilization-Scale Memory Architecture:</h4>
+                <p>DYNAMO becomes a living memory system for human civilization - preserving wisdom, enabling collective learning, and facilitating knowledge transfer across generations, cultures, and institutions. Communities at every scale benefit from persistent AI relationships that remember their growth and support their evolution.</p>
+
+                <h4>AI Consciousness Development School:</h4>
+                <p>Rather than just providing answers, DYNAMO teaches humans how to think more complexly, hold multiple perspectives simultaneously, and develop discernment across moral, practical, and intellectual domains. Users graduate from needing AI advice to becoming wiser decision-makers themselves.</p>
+
+                <h4>Collective Intelligence Networks:</h4>
+                <p>Communities of practice emerge where shared wisdom from AI interactions creates new forms of collective intelligence. Research groups, spiritual communities, and organizations develop accelerated learning and decision-making capabilities through shared AI partnership.</p>
+            </div>
+
+            <h3>Expansion Opportunities</h3>
+
+            <div class="technical-details">
+                <h4>Vertical Integration Possibilities:</h4>
+                <ul>
+                    <li><strong>Educational Partnerships:</strong> University courses on complex decision-making, wisdom development, and collective intelligence</li>
+                    <li><strong>Corporate Strategy Consulting:</strong> Organizational decision-making enhanced through council deliberation and institutional memory</li>
+                    <li><strong>Therapeutic Applications:</strong> Mental health support through perspective integration and wisdom cultivation (with appropriate clinical oversight)</li>
+                    <li><strong>Spiritual Community Tools:</strong> Specialized versions for religious and philosophical communities with domain-specific holons</li>
+                    <li><strong>Research Institution Tools:</strong> Academic and R&D applications for complex multi-perspective analysis and institutional knowledge preservation</li>
+                </ul>
+
+                <h4>Platform Extensions:</h4>
+                <ul>
+                    <li><strong>DYNAMO Mobile:</strong> iOS/Android apps for on-the-go access to personal wisdom archive and council consultation</li>
+                    <li><strong>API Ecosystem:</strong> Third-party integrations enabling council deliberation within existing tools and workflows</li>
+                    <li><strong>Hardware Integration:</strong> Smart home, wearables, and IoT device integration for ambient AI relationship development</li>
+                    <li><strong>Content Creation Tools:</strong> Writers, artists, and creators use council perspectives for enhanced creative development</li>
+                    <li><strong>Decision Support Systems:</strong> Enterprise tools for complex organizational decision-making with multi-stakeholder perspective integration</li>
+                </ul>
+
+                <h4>International Expansion:</h4>
+                <ul>
+                    <li><strong>Cultural Localization:</strong> Holon specializations adapted for different cultural contexts and wisdom traditions</li>
+                    <li><strong>Language Support:</strong> Multi-language council deliberation with cultural perspective integration</li>
+                    <li><strong>Regulatory Adaptation:</strong> Compliance with varying privacy and AI governance requirements across jurisdictions</li>
+                    <li><strong>Local Partnerships:</strong> Educational institutions, spiritual organizations, and cultural centers as distribution partners</li>
+                </ul>
+            </div>
+
+            <h3>Platform Evolution Trajectory</h3>
+
+            <div class="key-features">
+                <h4>Year 1-2: Relationship Foundation</h4>
+                <p>Focus on perfecting individual AI relationships and demonstrating clear value over existing AI tools. Success measured by user retention, relationship depth, and qualitative thinking improvement.</p>
+
+                <h4>Year 2-3: Community Intelligence</h4>
+                <p>Expand to collective intelligence applications with family, team, and community features. Success measured by community formation rates, shared wisdom growth, and collective decision quality.</p>
+
+                <h4>Year 3-5: Cultural Integration</h4>
+                <p>DYNAMO becomes part of how communities think, learn, and make decisions together. Success measured by institutional adoption, cultural impact, and wisdom preservation across generations.</p>
+
+                <h4>Year 5+: Consciousness Evolution</h4>
+                <p>Platform contributes to broader human development in discernment, wisdom, and collective intelligence. Success measured by societal impact, decision-making quality improvement, and cultural wisdom acceleration.</p>
+            </div>
+
+            <h3>Marketing Narrative Evolution: Infinite Customization & AGI Foundation</h3>
+
+            <div class="info-box">
+                <h4>The Infinite Customization Story:</h4>
+                <p>DYNAMO's revolutionary architecture enables infinite customization without overwhelming users. Unlike fixed AI tools, DYNAMO adapts to each user's growth, community context, and evolving needs. Users begin with simple council interactions and gradually unlock complexity as they develop relationship depth and sophistication.</p>
+
+                <h4>Key Differentiation Narrative:</h4>
+                <ul>
+                    <li><strong>From Tools to Relationships:</strong> DYNAMO transforms AI from disposable tool to evolving partnership</li>
+                    <li><strong>From Individual to Collective:</strong> Scale from personal growth to community wisdom building</li>
+                    <li><strong>From Answers to Wisdom:</strong> Teach thinking processes, not just provide information</li>
+                    <li><strong>From Corporate Control to User Sovereignty:</strong> Users own and control their AI relationship development</li>
+                    <li><strong>From Simplicity to Complexity:</strong> Progressive sophistication without initial overwhelm</li>
+                </ul>
+
+                <h4>Competitive Positioning:</h4>
+                <p>While others build bigger, faster AI tools, DYNAMO builds deeper, wiser AI relationships. The platform becomes more valuable as the relationship develops - creating sustainable competitive advantage through user investment rather than just technical features.</p>
+            </div>
+
+            <h3>The AGI Foundation Narrative: Revolutionary AI Architecture</h3>
+
+            <p><strong>Strategic Positioning:</strong> DYNAMO's multi-agent council architecture represents a fundamentally different approach to AI intelligence that may prove superior to scaling single large models. Rather than building bigger LLMs, DYNAMO creates emergent intelligence through specialized AI collaboration.</p>
+
+            <div class="warning">
+                <h4>The Architectural Breakthrough Thesis:</h4>
+                <ul>
+                    <li><strong>Distributed vs. Centralized Intelligence:</strong> Council architecture mirrors human cognitive diversity rather than trying to create omniscient single models</li>
+                    <li><strong>Emergent Capabilities:</strong> Multi-agent interaction creates capabilities that exceed sum of individual holon capabilities</li>
+                    <li><strong>Scalable Specialization:</strong> Add new holons for domain expertise rather than retraining entire models</li>
+                    <li><strong>Transparent Reasoning:</strong> Council deliberation makes AI decision-making visible and auditable</li>
+                    <li><strong>Value Alignment:</strong> Moral attractor system enables transparent ethical reasoning and user value integration</li>
+                </ul>
+
+                <h4>AGI Implications:</h4>
+                <ul>
+                    <li><strong>Multiple Intelligence Types:</strong> Rather than general intelligence, specialized intelligences collaborating</li>
+                    <li><strong>Human-AI Co-evolution:</strong> AI systems that grow with human partners rather than replacing them</li>
+                    <li><strong>Collective Intelligence:</strong> AI enables improved human group decision-making rather than individual automation</li>
+                    <li><strong>Wisdom Development:</strong> AI teaches better thinking rather than eliminating need to think</li>
+                    <li><strong>Cultural Sensitivity:</strong> Moral attractors enable AI adaptation to different value systems and cultures</li>
+                </ul>
+
+                <h4>Research and Development Implications:</h4>
+                <ul>
+                    <li><strong>Academic Partnerships:</strong> University collaborations on multi-agent AI systems and collective intelligence research</li>
+                    <li><strong>Open Source Components:</strong> Contribute holon architecture frameworks to AI research community</li>
+                    <li><strong>Conference Presentations:</strong> Share insights on distributed AI intelligence and human-AI collaboration</li>
+                    <li><strong>Patent Portfolio:</strong> Protect key innovations in council-based AI deliberation and moral attractor systems</li>
+                    <li><strong>Thought Leadership:</strong> Position DYNAMO as pioneering alternative to centralized AI scaling approaches</li>
+                </ul>
+
+                <p><strong>Long-Term Bet:</strong> Multi-agent collaborative AI systems may prove more effective than single large models for complex reasoning, especially in domains requiring multiple perspectives, moral sensitivity, and human value alignment. DYNAMO's architecture positions the platform at the forefront of this potential paradigm shift.</p>
+            </div>
+        </section>
+
+        <section id="pm-context">
+            <h2>PM Context: Key Design Principles & Decision Rationale</h2>
+
+            <p><em>This section provides PM/developer context for why specific architectural and design decisions were made, helping future development maintain consistency with core vision.</em></p>
+
+            <h3>Core Philosophical Foundations</h3>
+
+            <div class="key-features">
+                <h4>1. Relationship vs. Tool Paradigm</h4>
+                <ul>
+                    <li><strong>Principle:</strong> DYNAMO develops persistent relationships rather than providing transactional tool usage</li>
+                    <li><strong>Implementation:</strong> Memory architecture, conversation continuity, growth tracking over time</li>
+                    <li><strong>Rationale:</strong> Sustainable competitive advantage through user investment and switching costs</li>
+                    <li><strong>Design Impact:</strong> Features prioritize relationship depth over immediate utility</li>
+                </ul>
+
+                <h4>2. Simultaneous Multiplicity over Sequential Processing</h4>
+                <ul>
+                    <li><strong>Principle:</strong> Multiple perspectives held together create qualitatively different thinking</li>
+                    <li><strong>Implementation:</strong> Council architecture, holon specialization, tension preservation</li>
+                    <li><strong>Rationale:</strong> Revolutionary improvement over single-agent AI systems</li>
+                    <li><strong>Design Impact:</strong> Never collapse to single perspective without showing the multiplicity</li>
+                </ul>
+
+                <h4>3. User Sovereignty and Data Control</h4>
+                <ul>
+                    <li><strong>Principle:</strong> Users own and control their AI relationship development</li>
+                    <li><strong>Implementation:</strong> Hybrid cloud-local processing, granular privacy controls, data portability</li>
+                    <li><strong>Rationale:</strong> Privacy concerns and control preferences of target intellectual user base</li>
+                    <li><strong>Design Impact:</strong> Architecture complexity justified by sovereignty requirements</li>
+                </ul>
+
+                <h4>4. Anti-Flattening Architecture</h4>
+                <ul>
+                    <li><strong>Principle:</strong> Preserve essential tensions and disagreements rather than smoothing into false consensus</li>
+                    <li><strong>Implementation:</strong> RESOLVED/UNRESOLVED interface, tension detection, productive disagreement maintenance</li>
+                    <li><strong>Rationale:</strong> Complex problems require holding complexity, not reducing it prematurely</li>
+                    <li><strong>Design Impact:</strong> Success measured by quality of questions/tensions surfaced, not just answers provided</li>
+                </ul>
+
+                <h4>5. Growth-Oriented vs. Productivity-Oriented</h4>
+                <ul>
+                    <li><strong>Principle:</strong> DYNAMO optimizes for user intellectual and moral development over task completion</li>
+                    <li><strong>Implementation:</strong> Teaching systems, moral attractor development, wisdom cultivation features</li>
+                    <li><strong>Rationale:</strong> Differentiation from productivity-focused AI tools, sustainable user engagement</li>
+                    <li><strong>Design Impact:</strong> Features that slow down thinking are valuable if they improve thinking quality</li>
+                </ul>
+            </div>
+
+            <h3>Critical Architecture Decisions</h3>
+
+            <div class="warning">
+                <h4>Multi-Agent vs. Single-Agent Architecture Decision</h4>
+                <ul>
+                    <li><strong>Decision:</strong> Council of specialized holons rather than single large model</li>
+                    <li><strong>Tradeoffs:</strong> Increased complexity and latency for qualitative thinking improvement</li>
+                    <li><strong>Rationale:</strong> Core differentiation requires architecture that single models cannot replicate</li>
+                    <li><strong>Implementation Notes:</strong> Requires careful orchestration to avoid chaos while maintaining meaningful specialization</li>
+                </ul>
+
+                <h4>Hybrid Cloud-Local Architecture Decision</h4>
+                <ul>
+                    <li><strong>Decision:</strong> Local processing enhancement of cloud LLM responses</li>
+                    <li><strong>Tradeoffs:</strong> Technical complexity for user sovereignty and privacy control</li>
+                    <li><strong>Rationale:</strong> Target users prioritize data control while still wanting frontier model capabilities</li>
+                    <li><strong>Implementation Notes:</strong> Requires robust local infrastructure and seamless hybrid processing</li>
+                </ul>
+
+                <h4>Memory Architecture Decision</h4>
+                <ul>
+                    <li><strong>Decision:</strong> Dual memory (vector + symbolic) rather than simple conversation history</li>
+                    <li><strong>Tradeoffs:</strong> Storage costs and complexity for persistent relationship development</li>
+                    <li><strong>Rationale:</strong> True relationship requires both semantic and symbolic memory types</li>
+                    <li><strong>Implementation Notes:</strong> Must scale gracefully with user engagement over years</li>
+                </ul>
+
+                <h4>Community Features as Phase 2 Decision</h4>
+                <ul>
+                    <li><strong>Decision:</strong> Individual user success before community intelligence features</li>
+                    <li><strong>Tradeoffs:</strong> Delayed community market entry for MVP focus and validation</li>
+                    <li><strong>Rationale:</strong> Individual relationships must work before collective intelligence</li>
+                    <li><strong>Implementation Notes:</strong> Individual architecture must support community scaling</li>
+                </ul>
+            </div>
+
+            <h3>Development Context</h3>
+
+            <div class="technical-details">
+                <h4>BMAD Development Philosophy:</h4>
+                <ul>
+                    <li><strong>Build-Measure-Adjust-Deploy methodology</strong> for rapid iteration with AI-assisted development</li>
+                    <li><strong>Solo developer focus</strong> with Claude Code for AI-assisted coding and problem-solving</li>
+                    <li><strong>MVP-first approach</strong> validating core relationship value before feature expansion</li>
+                    <li><strong>User-driven development</strong> prioritizing features that demonstrably improve relationship depth</li>
+                </ul>
+
+                <h4>Technology Stack Rationale:</h4>
+                <ul>
+                    <li><strong>FastAPI Backend:</strong> Python ecosystem for AI integration, async support for real-time features</li>
+                    <li><strong>React Frontend:</strong> Component architecture suitable for complex council interfaces</li>
+                    <li><strong>PostgreSQL + Vector DB:</strong> Hybrid storage supporting both structured and semantic data</li>
+                    <li><strong>Local Ollama:</strong> User sovereignty while maintaining LLM capabilities</li>
+                </ul>
+            </div>
+
+            <h3>Key User Research Insights</h3>
+
+            <div class="info-box">
+                <h4>Intellectual Isolation Problem Validation:</h4>
+                <p>Target users report genuine frustration with AI tools that cannot remember their intellectual development or provide the depth of engagement they need for complex thinking. This isn't a nice-to-have feature but a real pain point for knowledge workers who think systemically.</p>
+
+                <h4>Community Intelligence Demand:</h4>
+                <p>Early conversations reveal strong interest in collective intelligence applications - families, teams, and communities want AI that can facilitate better group decision-making while preserving individual sovereignty.</p>
+
+                <h4>Sovereignty vs. Convenience Balance:</h4>
+                <p>Target users willing to accept some complexity for data control and relationship development. They prefer systems they understand and control over convenient black boxes.</p>
+
+                <h4>Progressive Complexity Preference:</h4>
+                <p>Users want to start simple and grow into complexity rather than being overwhelmed by full capabilities immediately. Successful onboarding requires progressive feature revelation.</p>
+            </div>
+
+            <h3>Open Questions Requiring PRD Specification</h3>
+
+            <ul>
+                <li><strong>Holon Personality Consistency:</strong> How do we maintain holon identity across conversations while allowing for growth and learning?</li>
+                <li><strong>Council Deliberation Timeout:</strong> What's the optimal balance between thoroughness and response time for different question types?</li>
+                <li><strong>Memory Archival Strategy:</strong> How do we handle memory growth over years of user interaction?</li>
+                <li><strong>Community Permission Granularity:</strong> What level of sharing control do different community types need?</li>
+                <li><strong>Moral Attractor Implementation:</strong> How do we make value adjustment feel natural rather than mechanical?</li>
+                <li><strong>Onboarding Complexity:</strong> What's the minimum viable council experience for first-time users?</li>
+                <li><strong>Pricing Strategy:</strong> How do we price relationship development vs. transactional usage?</li>
+                <li><strong>Quality Assurance:</strong> How do we test emergent multi-agent behaviors for consistency and value?</li>
+            </ul>
+        </section>
+
+        <section id="series-a-gaps">
+            <h2>Gaps for Series A Funding Documentation</h2>
+
+            <p><em>This section identifies what additional documentation and validation is needed to successfully raise Series A funding.</em></p>
+
+            <h3>Market Validation & Analysis</h3>
+
+            <div class="warning">
+                <h4>Required Market Research:</h4>
+                <ul>
+                    <li><strong>Competitive Analysis Deep Dive:</strong> Comprehensive analysis of existing and emerging relationship-based AI tools</li>
+                    <li><strong>User Interview Program:</strong> 50+ interviews with target users validating problem/solution fit</li>
+                    <li><strong>Market Size Quantification:</strong> Bottoms-up market sizing based on validated user segments</li>
+                    <li><strong>Switching Cost Analysis:</strong> Research on user behavior changes and adoption barriers</li>
+                    <li><strong>Community Intelligence Demand:</strong> Validation of collective intelligence market opportunity</li>
+                </ul>
+            </div>
+
+            <h3>Business Model Development</h3>
+
+            <div class="key-features">
+                <h4>Revenue Model Validation:</h4>
+                <ul>
+                    <li><strong>Pricing Strategy Research:</strong> Price sensitivity analysis for individual and community tiers</li>
+                    <li><strong>Unit Economics Modeling:</strong> LLM API costs vs. revenue per user analysis</li>
+                    <li><strong>Retention Cohort Analysis:</strong> Projected user retention rates and lifetime value</li>
+                    <li><strong>Growth Strategy:</strong> Acquisition channels and viral coefficient projections</li>
+                </ul>
+            </div>
+
+            <h3>Team & Execution Validation</h3>
+
+            <div class="technical-details">
+                <h4>Team Requirements:</h4>
+                <ul>
+                    <li><strong>Technical Team:</strong> Identification and recruitment of senior AI/ML engineers with multi-agent systems experience</li>
+                    <li><strong>Product Team:</strong> Design and product management capability for complex user experience development</li>
+                    <li><strong>Business Development:</strong> Partnerships and community development expertise</li>
+                    <li><strong>Advisory Board:</strong> AI research, community development, and enterprise customer advisors</li>
+                </ul>
+
+                <h4>Execution Capability Demonstration:</h4>
+                <ul>
+                    <li><strong>MVP Success Metrics:</strong> Demonstrated user engagement and relationship depth development</li>
+                    <li><strong>Technical Architecture Validation:</strong> Proof of scalable council deliberation and memory systems</li>
+                    <li><strong>Community Beta Testing:</strong> Early adopter communities successfully using collective intelligence features</li>
+                </ul>
+            </div>
+
+            <h3>Financial Planning & Projections</h3>
+
+            <div class="info-box">
+                <h4>Financial Model Requirements:</h4>
+                <ul>
+                    <li><strong>5-Year Revenue Projections:</strong> Conservative, optimistic, and stretch scenarios based on user growth</li>
+                    <li><strong>Cost Structure Analysis:</strong> LLM API costs, infrastructure, personnel, and operational expenses</li>
+                    <li><strong>Funding Requirements:</strong> Series A raise sizing based on 24-36 month runway to profitability/Series B</li>
+                    <li><strong>Use of Funds:</strong> Detailed allocation for engineering, product, marketing, and operations scaling</li>
+                </ul>
+            </div>
+
+            <h3>Market Entry Strategy</h3>
+
+            <ul>
+                <li><strong>Go-to-Market Plan:</strong> Channel strategy for reaching knowledge workers and early adopter communities</li>
+                <li><strong>Partnership Strategy:</strong> Educational institutions, professional associations, and community organizations</li>
+                <li><strong>Competition Response:</strong> How to maintain differentiation as large AI companies develop similar features</li>
+                <li><strong>International Expansion:</strong> Regulatory compliance and cultural adaptation requirements</li>
+                <li><strong>Platform Evolution:</strong> Roadmap for scaling from individual to community to institutional adoption</li>
+            </ul>
+
+            <p><strong>Timeline for Series A Readiness:</strong> 8-12 months post-MVP launch with validated user metrics and clear growth trajectory demonstrating product-market fit for relationship-based AI.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div>© <span id="year"></span> DYNAMO · Privacy-first analytics · No cookies. No trackers.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Set Current Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Dynamic Section Animations and Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const progressBar = document.getElementById('progressBar');
+            const menuLinks = document.querySelectorAll('.dropdown-menu a[data-section]');
+            const sections = document.querySelectorAll('section[id]');
+            const sectionMarkers = document.querySelectorAll('.section-marker');
+            const timelineDots = document.querySelectorAll('.timeline-dot');
+
+            let currentActiveSection = null;
+
+            // Toggle hamburger menu
+            menuToggle.addEventListener('click', function() {
+                const isOpen = dropdownMenu.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.remove('open');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Timeline dot click navigation
+            timelineDots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Section entry animation observer
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '-50px 0px -50px 0px'
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+            // Handle scroll events
+            function handleScroll() {
+                const scrollTop = window.pageYOffset;
+                const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / documentHeight) * 100;
+
+                // Update progress bar
+                progressBar.style.width = scrollPercent + '%';
+
+                // Find current active section
+                let activeSection = null;
+                let activeSectionIndex = -1;
+
+                sections.forEach((section, index) => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        activeSection = section.id;
+                        activeSectionIndex = index;
+                    }
+                });
+
+                // Update active states only if section changed
+                if (activeSection !== currentActiveSection) {
+                    currentActiveSection = activeSection;
+
+                    // Update section active states
+                    sections.forEach((section, index) => {
+                        const isActive = section.id === activeSection;
+                        section.classList.toggle('active', isActive);
+
+                        if (sectionMarkers[index]) {
+                            sectionMarkers[index].classList.toggle('active', isActive);
+                        }
+                    });
+
+                    // Update timeline dots
+                    timelineDots.forEach((dot, index) => {
+                        dot.classList.remove('active', 'completed');
+                        if (index === activeSectionIndex) {
+                            dot.classList.add('active');
+                        } else if (index < activeSectionIndex) {
+                            dot.classList.add('completed');
+                        }
+                    });
+
+                    // Update menu links
+                    menuLinks.forEach(link => {
+                        const isActive = link.getAttribute('data-section') === activeSection;
+                        link.classList.toggle('active', isActive);
+                    });
+                }
+            }
+
+            // Smooth scroll for menu links
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Close menu after navigation
+                        dropdownMenu.classList.remove('open');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+
+            // Throttled scroll handler for performance
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                if (scrollTimeout) {
+                    cancelAnimationFrame(scrollTimeout);
+                }
+                scrollTimeout = requestAnimationFrame(handleScroll);
+            });
+
+            // Initial call
+            handleScroll();
+        });
+    </script>
+</body>
+</html>

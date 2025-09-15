@@ -195,6 +195,141 @@
             border-left: 4px solid var(--red);
         }
 
+        /* Pricing Grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+
+        .pricing-card {
+            background: rgba(250,247,240,0.05);
+            border-radius: 16px;
+            padding: var(--space-lg);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+        }
+
+        .pricing-card.individual {
+            border-color: rgba(46,139,192,0.3);
+        }
+        .pricing-card.individual::before {
+            background: linear-gradient(90deg, var(--sky), var(--sand));
+        }
+        .pricing-card.individual:hover {
+            border-color: var(--sky);
+            background: rgba(46,139,192,0.1);
+        }
+
+        .pricing-card.professional {
+            border-color: rgba(201,162,39,0.3);
+        }
+        .pricing-card.professional::before {
+            background: linear-gradient(90deg, var(--gold), var(--sky));
+        }
+        .pricing-card.professional:hover {
+            border-color: var(--gold);
+            background: rgba(201,162,39,0.1);
+        }
+
+        .pricing-card.premium {
+            border-color: rgba(217,197,178,0.3);
+        }
+        .pricing-card.premium::before {
+            background: linear-gradient(90deg, var(--sand), var(--gold));
+        }
+        .pricing-card.premium:hover {
+            border-color: var(--sand);
+            background: rgba(217,197,178,0.1);
+        }
+
+        .pricing-card.enterprise {
+            border-color: rgba(15,61,62,0.3);
+        }
+        .pricing-card.enterprise::before {
+            background: linear-gradient(90deg, var(--earth), var(--red));
+        }
+        .pricing-card.enterprise:hover {
+            border-color: var(--earth);
+            background: rgba(15,61,62,0.15);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(250,247,240,0.15);
+            padding-bottom: var(--space-md);
+        }
+
+        .pricing-header h5 {
+            color: var(--ivory);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .price {
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            color: var(--gold);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .price span {
+            font-size: var(--text-sm);
+            color: var(--sand);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pricing-features li {
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid rgba(250,247,240,0.1);
+            position: relative;
+            padding-left: var(--space-lg);
+            color: rgba(250,247,240,0.9);
+            line-height: 1.5;
+        }
+
+        .pricing-features li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+            font-size: var(--text-lg);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
         /* Lists */
         ul, ol {
             margin-bottom: var(--space-lg);
@@ -2124,41 +2259,61 @@
 
             <h4>Subscription Tiers</h4>
 
-            <div class="info-box">
-                <h5>Individual Tier ($20/month):</h5>
-                <ul>
-                    <li>LLM usage budget for external API calls</li>
-                    <li>Full six-holon council access and unlimited memory features</li>
-                    <li>Individual user account with personal dashboard</li>
-                    <li>Strategic model selection encouraged for cost efficiency</li>
-                </ul>
+            <div class="pricing-grid">
+                <div class="pricing-card individual">
+                    <div class="pricing-header">
+                        <h5>Individual</h5>
+                        <div class="price">$20<span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>LLM usage budget for external API calls</li>
+                        <li>Full six-holon council access and unlimited memory features</li>
+                        <li>Individual user account with personal dashboard</li>
+                        <li>Strategic model selection encouraged for cost efficiency</li>
+                    </ul>
+                </div>
 
-                <h5>Professional Tier ($50/month):</h5>
-                <ul>
-                    <li>Larger LLM usage budget for more frequent conversations</li>
-                    <li>Full six-holon council access and unlimited memory features</li>
-                    <li>Enhanced community features access</li>
-                    <li>Teaching mode capabilities</li>
-                    <li>Greater flexibility for deeper reasoning LLM models</li>
-                </ul>
+                <div class="pricing-card professional">
+                    <div class="pricing-header">
+                        <h5>Professional</h5>
+                        <div class="price">$50<span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Larger LLM usage budget for more frequent conversations</li>
+                        <li>Full six-holon council access and unlimited memory features</li>
+                        <li>Enhanced community features access</li>
+                        <li>Teaching mode capabilities</li>
+                        <li>Greater flexibility for deeper reasoning LLM models</li>
+                    </ul>
+                </div>
 
-                <h5>Premium Tier ($100/month):</h5>
-                <ul>
-                    <li>Maximum LLM usage budget for extensive conversations</li>
-                    <li>Full six-holon council access and unlimited memory features</li>
-                    <li>Complete community features (family, spiritual, educational institutions)</li>
-                    <li>Advanced teaching mode with sophisticated guidance systems</li>
-                    <li>Freedom to use deeper reasoning LLM models regularly</li>
-                </ul>
+                <div class="pricing-card premium">
+                    <div class="pricing-header">
+                        <h5>Premium</h5>
+                        <div class="price">$100<span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Maximum LLM usage budget for extensive conversations</li>
+                        <li>Full six-holon council access and unlimited memory features</li>
+                        <li>Complete community features (family, spiritual, educational institutions)</li>
+                        <li>Advanced teaching mode with sophisticated guidance systems</li>
+                        <li>Freedom to use deeper reasoning LLM models regularly</li>
+                    </ul>
+                </div>
 
-                <h5>Enterprise/Custom Tier (Fee Negotiated):</h5>
-                <ul>
-                    <li>Custom development services from DYNAMO team</li>
-                    <li>Bespoke integrations and specialized configurations</li>
-                    <li>Dedicated implementation support</li>
-                    <li>Tailored solutions for large organizations</li>
-                    <li>All standard features plus custom enhancements</li>
-                </ul>
+                <div class="pricing-card enterprise">
+                    <div class="pricing-header">
+                        <h5>Enterprise/Custom</h5>
+                        <div class="price">Negotiated<span>/custom</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Custom development services from DYNAMO team</li>
+                        <li>Bespoke integrations and specialized configurations</li>
+                        <li>Dedicated implementation support</li>
+                        <li>Tailored solutions for large organizations</li>
+                        <li>All standard features plus custom enhancements</li>
+                    </ul>
+                </div>
             </div>
         </section>
 

@@ -198,9 +198,19 @@
         /* Pricing Grid */
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: var(--space-lg);
             margin: var(--space-xl) 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
         }
 
         .pricing-card {
@@ -655,7 +665,9 @@
                     <li><a href="#next-steps" data-section="next-steps">Next Steps</a></li>
                     <li><a href="#post-mvp-vision" data-section="post-mvp-vision">Post-MVP Vision</a></li>
                     <li><a href="#pm-context" data-section="pm-context">PM Context</a></li>
-                    <li><a href="#series-a-gaps" data-section="series-a-gaps">Series A Gaps</a></li>
+                    <li><a href="#financial-projections" data-section="Financial Projections & Unit Economics">Financial Projections</a></li>
+
+                    <!-- <li><a href="#series-a-gaps" data-section="series-a-gaps">Series A Gaps</a></li> -->
                 </ul>
             </div>
         </div>
@@ -2232,7 +2244,7 @@
 
             <div class="info-box">
                 <h4>Core Economic Advantage:</h4>
-                <p>DYNAMO's hybrid architecture fundamentally changes AI cost economics by requiring one external LLM call per user query, then providing unlimited free local holon council enhancement of that response.</p>
+                <p>DYNAMO's hybrid architecture fundamentally changes AI cost economics by requiring one external LLM call per user query, then providing unlimited free local holon council enhancement of that response. Note: Free local holon council enhancements are possible because DYNAMO will be running a local LLM (e.g., Ollama) that does not require making API calls to ChatGPT, CLAUDE, or anyother external LLMs.</p>
             </div>
 
             <h4>Cost Structure Breakdown</h4>
@@ -2317,7 +2329,7 @@
             </div>
         </section>
 
-        <section id="series-a-gaps">
+        <!-- <section id="series-a-gaps">
             <h2>Gaps for Series A Funding Documentation</h2>
 
             <p><em>This section identifies what additional documentation and validation is needed to successfully raise Series A funding.</em></p>
@@ -2389,7 +2401,7 @@
             </ul>
 
             <p><strong>Timeline for Series A Readiness:</strong> 8-12 months post-MVP launch with validated user metrics and clear growth trajectory demonstrating product-market fit for relationship-based AI.</p>
-        </section>
+        </section> -->
     </main>
 
     <footer>

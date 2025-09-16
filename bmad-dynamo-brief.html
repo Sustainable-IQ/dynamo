@@ -1152,6 +1152,71 @@
             font-weight: 700;
         }
 
+        /* BMAD Method sparkling text */
+        .bmad-notice {
+            text-align: center;
+            margin: var(--space-3xl) 0;
+            padding: var(--space-xl);
+            background: rgba(201,162,39,0.05);
+            border: 1px solid rgba(201,162,39,0.2);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bmad-notice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(201,162,39,0.1) 50%,
+                transparent 100%);
+            animation: sweep 3s ease-in-out infinite;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .bmad-text {
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--sand);
+            position: relative;
+            z-index: 1;
+        }
+
+        .bmad-method {
+            color: var(--gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                text-shadow:
+                    0 0 5px rgba(201,162,39,0.5),
+                    0 0 10px rgba(201,162,39,0.3);
+                transform: scale(1);
+            }
+            50% {
+                text-shadow:
+                    0 0 10px rgba(201,162,39,0.8),
+                    0 0 20px rgba(201,162,39,0.5),
+                    0 0 30px rgba(201,162,39,0.3);
+                transform: scale(1.02);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -1216,7 +1281,6 @@
 
         <section id="executive-summary">
             <h2>Executive Summary</h2>
-<p>This Project Brief is the output of a complex brainstorming session that is part of the BMAD Method. Many more steps are needed and will be documented. </p>
 <p>DYNAMO is a revolutionary covenantal AI platform that transforms ephemeral LLM conversations into persistent, evolving relationships through distributed council-based intelligence. Unlike corporate AI systems that reset with every session, DYNAMO remembers, learns, and builds continuity through a unique holonic architecture where specialized AI agents deliberate in council before synthesis, creating &quot;simultaneous multiplicity&quot; that no single LLM can achieve.</p>
 <p>The platform serves both individual users and communities of users who share memories, work collaboratively, and grow together through collective intelligence. DYNAMO addresses the fundamental problem of AI relationship disposability - where valuable insights, personal growth opportunities, and collective knowledge are lost with each new conversation. Individual users gain persistent AI partnership for personal development and complex decision-making, while communities can build shared wisdom archives, collaborative learning spaces, and collective intelligence networks.</p>
 <p>The core innovation lies in its Self-Organizing Holarchic Open (SOHO) system where multiple specialized &quot;holons&quot; (AI agents) each contribute domain-specific perspectives before meta-integration, creating depth and nuance impossible with traditional single-agent systems. This council architecture prevents premature synthesis while maintaining productive disagreement, transforming DYNAMO from tool into school for consciousness development that scales from individual growth to community wisdom cultivation.</p>
@@ -1556,8 +1620,8 @@ Beginning with core council architecture and memory systems, DYNAMO expands to b
 <h3>Interactive Moral Attractor System - Revolutionary Ethics Interface</h3>
 <p><strong>Real-Time Moral Weight Adjustment with Conversation Replay:</strong>
 DYNAMO's breakthrough innovation allows users to adjust moral attractor weights (Truth ↔ Compassion, Justice ↔ Mercy) in real-time and replay conversations to see how different value combinations change council responses. This transforms abstract philosophy into lived experience.</p>
-<p><strong>Four-Branch Development System:</strong></p>
-<p><strong>Branch 1: Growth Tracking</strong></p>
+<p><strong><span class="blue-text">Four-Branch Development System:</span></strong></p>
+<p><strong><span class="pink-text">Branch 1: Growth Tracking</span></strong></p>
 <ul>
 <li>Conversation history showing moral evolution over time</li>
 <li>&quot;Values journey&quot; visualization tracking user's moral development</li>
@@ -1565,7 +1629,7 @@ DYNAMO's breakthrough innovation allows users to adjust moral attractor weights 
 <li>Personal moral patterns emerge: &quot;You consistently weight justice over mercy in workplace scenarios&quot;</li>
 <li>Growth suggestions: &quot;You might explore strengthening your compassion attractor in family contexts&quot;</li>
 </ul>
-<p><strong>Branch 2: Memory Integration</strong></p>
+<p><strong><span class="pink-text">Branch 2: Memory Integration</span></strong></p>
 <ul>
 <li>Moral decisions become part of user's persistent archive</li>
 <li>DYNAMO remembers: &quot;Last time you faced truth vs. compassion tension, you chose...&quot;</li>
@@ -1573,7 +1637,7 @@ DYNAMO's breakthrough innovation allows users to adjust moral attractor weights 
 <li>Learning opportunities: Users discover their own moral blind spots</li>
 <li>Values evolution tracking shows growth over months/years</li>
 </ul>
-<p><strong>Branch 3: Collective Wisdom Emergence</strong></p>
+<p><strong><span class="pink-text">Branch 3: Collective Wisdom Emergence</span></strong></p>
 <ul>
 <li>Community moral attractor patterns revealed (anonymized data)</li>
 <li>&quot;Users facing similar dilemmas tend to adjust weights this way...&quot;</li>
@@ -1581,7 +1645,7 @@ DYNAMO's breakthrough innovation allows users to adjust moral attractor weights 
 <li>Cultural/community attractor templates: &quot;Christian family defaults&quot; vs &quot;Military unit defaults&quot; vs &quot;Scientific research team defaults&quot;</li>
 <li>Wisdom emergence from collective moral experimentation</li>
 </ul>
-<p><strong>Branch 4: Holon Specialization Evolution</strong></p>
+<p><strong><span class="pink-text">Branch 4: Holon Specialization Evolution</span></strong></p>
 <ul>
 <li>Holons learn which moral tensions they're best equipped to handle</li>
 <li>Automatic holon selection: Complex bioethics → Compassion + Evidence + Historical holons</li>

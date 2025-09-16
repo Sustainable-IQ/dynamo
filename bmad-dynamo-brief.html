@@ -1085,6 +1085,60 @@
                 height: 16px;
             }
         }
+        /* Pink Start Here Link */
+        .start-here-link {
+            text-align: center;
+            margin: var(--space-xl) 0;
+            padding: var(--space-lg);
+        }
+
+        .start-here-link .start-text {
+            color: #ff69b4;
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-weight: 600;
+            font-size: var(--text-xl);
+            margin-right: var(--space-sm);
+            background: linear-gradient(
+                90deg,
+                #ff69b4 0%,
+                #ffffff 25%,
+                #ff1493 50%,
+                #ffffff 75%,
+                #ff69b4 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .start-here-link .website-link {
+            color: #ff69b4;
+            font-family: "Montserrat", system-ui, sans-serif;
+            font-weight: 700;
+            font-size: var(--text-xl);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .start-here-link .website-link:hover {
+            color: #ff1493;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 <body>
@@ -1140,6 +1194,11 @@
             <div class="hero-description">
                 The Dynamic AI Memory Organizer (DYNAMO) is a platform that transforms your conversations — and your community's — with large language models (LLMs) into persistent, living memory. It doesn't just store dialogue, it uses those memories to guide growth, spark insight, and weave collective wisdom. Built on a Self-Organizing Holarchic Open (SOHO) architecture, DYNAMO turns dialogue into continuity, and continuity into transformation — supporting personal development, long-term coherence, and community intelligence.
             </div>
+        </div>
+
+        <div class="start-here-link">
+            <span class="start-text">Start Here ---></span>
+            <a href="https://dynamo-ai.tech/" class="website-link">DYNAMO WEBSITE</a>
         </div>
 
         <section id="executive-summary">

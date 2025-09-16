@@ -1140,6 +1140,18 @@
             transform: scale(1.05);
         }
 
+        /* Pink text styling */
+        .pink-text {
+            color: #ff69b4 !important;
+            font-weight: 700;
+        }
+
+        /* Blue text styling */
+        .blue-text {
+            color: var(--sky) !important;
+            font-weight: 700;
+        }
+
     </style>
 </head>
 <body>
@@ -1571,13 +1583,13 @@ DYNAMO's breakthrough innovation allows users to adjust moral attractor weights 
         <section id="memory-system">
 <h2>DYNAMO Memory System Architecture</h2>
 <h3>Memory Pipeline Architecture</h3>
-<p><strong>Core Memory Processing Flow:</strong></p>
+<p><strong><span class="pink-text">Core Memory Processing Flow:</span></strong></p>
 <ul>
 <li><strong>External LLM Query Processing:</strong> User submits question through DYNAMO interface, routed to selected external LLM (ChatGPT, Claude, etc.), with response captured and returned to internal processing pipeline</li>
 <li><strong>Question + External Response Foundation:</strong> Question and external LLM response become foundation for comprehensive memory creation across all system components</li>
 <li><strong>Six-Stage Vectorization Pipeline:</strong> User question → External response → Six holon responses → Meta-holon synthesis, with each stage independently chunked, vectorized, and stored with comprehensive metadata</li>
 </ul>
-<p><strong>Internal Memory Processing Pipeline:</strong></p>
+<p><strong><span class="pink-text">Internal Memory Processing Pipeline:</span></strong></p>
 <ul>
 <li><strong>Stage 1 - Question Vectorization:</strong> User's original question chunked, vectorized, and stored with domain categorization metadata</li>
 <li><strong>Stage 2 - External Response Vectorization:</strong> External LLM response chunked, vectorized, and stored with source model metadata</li>
@@ -1587,13 +1599,13 @@ DYNAMO's breakthrough innovation allows users to adjust moral attractor weights 
 <li><strong>Stage 6 - Final Answer Vectorization:</strong> Meta-holon synthesis chunked, vectorized, and stored with resolution status metadata</li>
 </ul>
 <h3>Vector Database Schema</h3>
-<p><strong>Core Memory Entity Structure:</strong></p>
+<p><strong><span class="blue-text">Core Memory Entity Structure:</span></strong></p>
 <ul>
 <li><strong>Memory Record Components:</strong> memory_id (UUID), conversation_id (UUID for grouping), memory_type (user_question/external_response/holon_response/meta_synthesis), holon_id (UUID, null for non-holon), content_text (full text), content_chunks (array for vectorization), vector_embeddings (array), timestamp (creation datetime), meta_tags (JSON categorization)</li>
 <li><strong>Relationship Mapping:</strong> Foreign key relationships between conversation threads, holon specializations, and topic evolution tracking</li>
 <li><strong>Performance Optimization:</strong> Composite indexes on meta_tags + timestamp for fast topic-based searches across large memory sets</li>
 </ul>
-<p><strong>Meta-Tag Categorization System:</strong></p>
+<p><strong><span class="blue-text">Meta-Tag Categorization System:</span></strong></p>
 <ul>
 <li><strong>Domain Categories:</strong> philosophy, ethics, history, media, conspiracy, art, literature, science, ai, nutrition, health, relationships, work, personal_growth, creative, spiritual, family, education, decision_making</li>
 <li><strong>Resolution Status:</strong> resolved, unresolved, dismissed, in_progress, needs_followup, archived</li>
@@ -2677,7 +2689,7 @@ While mainstream AI development pursues ever-larger single models (GPT-5, GPT-6,
         <section id="technical-considerations">
 <h2>Technical Considerations (Tentative Brainstorming)</h2>
 <h3>Platform Requirements</h3>
-<p><strong>Target Platforms</strong></p>
+<p><strong><span class="pink-text">Target Platforms</span></strong></p>
 <ul>
 <li><strong>Primary:</strong> Web application (React/Next.js) accessible via modern browsers</li>
 <li><strong>Secondary:</strong> Local machine deployment (Docker Compose on developer workstation with RTX 5090)</li>
@@ -2685,14 +2697,14 @@ While mainstream AI development pursues ever-larger single models (GPT-5, GPT-6,
 <li><strong>Future:</strong> Desktop wrapper (Electron) for offline access, mobile apps (React Native) for memory review and light interaction</li>
 <li><strong>Enterprise:</strong> On-premises deployment for organizations requiring full data sovereignty</li>
 </ul>
-<p><strong>Browser/OS Support</strong></p>
+<p><strong><span class="pink-text">Browser/OS Support</span></strong></p>
 <ul>
 <li><strong>Web Browsers:</strong> Chrome 90+, Firefox 88+, Safari 14+, Edge 90+ (modern JavaScript + WebSocket support)</li>
 <li><strong>Desktop:</strong> Windows 10+, macOS 11+, Linux (Ubuntu 20.04+)</li>
 <li><strong>Mobile (Future):</strong> iOS 14+, Android 10+ with modern WebView support</li>
 <li><strong>Accessibility:</strong> WCAG 2.1 AA compliance</li>
 </ul>
-<p><strong>Performance Targets (MVP)</strong></p>
+<p><strong><span class="pink-text">Performance Targets (MVP)</span></strong></p>
 <ul>
 <li><strong>Council deliberation:</strong> &lt;10s for six-holon synthesis</li>
 <li><strong>Memory retrieval:</strong> &lt;3s for context lookup in vector DB</li>
@@ -2700,7 +2712,7 @@ While mainstream AI development pursues ever-larger single models (GPT-5, GPT-6,
 <li><strong>Conversation replay:</strong> &lt;5s regeneration under different holon weights</li>
 </ul>
 <h3>Technology Stack</h3>
-<p><strong>Frontend (shared across local + VM)</strong></p>
+<p><strong><span class="pink-text">Frontend (shared across local + VM)</span></strong></p>
 <ul>
 <li><strong>Framework:</strong> React 18+ with TypeScript</li>
 <li><strong>Styling:</strong> Tailwind CSS + Headless UI</li>
@@ -2709,7 +2721,7 @@ While mainstream AI development pursues ever-larger single models (GPT-5, GPT-6,
 <li><strong>Visualization:</strong> D3.js for council rings, memory timelines</li>
 <li><strong>PWA Support:</strong> Service workers for offline review</li>
 </ul>
-<p><strong>Backend (runs identically on local RTX 5090 or VM twin)</strong></p>
+<p><strong><span class="pink-text">Backend (runs identically on local RTX 5090 or VM twin)</span></strong></p>
 <ul>
 <li><strong>Framework:</strong> FastAPI (Python, async) with auto-generated OpenAPI</li>
 <li><strong>Task Queue:</strong> Celery + Redis for async holon deliberation and memory jobs</li>
@@ -2718,14 +2730,14 @@ While mainstream AI development pursues ever-larger single models (GPT-5, GPT-6,
 <li><strong>File Storage:</strong> S3-compatible object storage (MinIO locally, S3/R2 in cloud)</li>
 <li><strong>Monitoring:</strong> Grafana + Prometheus for system health</li>
 </ul>
-<p><strong>Data Layer</strong></p>
+<p><strong><span class="pink-text">Data Layer</span></strong></p>
 <ul>
 <li><strong>Relational DB:</strong> PostgreSQL 14+ (users, metadata, configs)</li>
 <li><strong>Vector DB:</strong> Qdrant for embeddings + semantic search</li>
 <li><strong>Cache:</strong> Redis for sessions and hot context</li>
 <li><strong>Backup Strategy:</strong> Nightly logical dumps → object storage</li>
 </ul>
-<p><strong>LLM Integration</strong></p>
+<p><strong><span class="pink-text">LLM Integration</span></strong></p>
 <ul>
 <li><strong>Local Models:</strong> Ollama or vLLM running on RTX 5090 / VM GPU</li>
 <li><strong>Supported Families:</strong> Qwen 3, Mistral 3.2, DeepSeek R1 (depending on holon role)</li>
@@ -2734,13 +2746,13 @@ While mainstream AI development pursues ever-larger single models (GPT-5, GPT-6,
 <li><strong>Fallback:</strong> Cloud LLMs (Claude, GPT) only for non-sensitive tasks</li>
 </ul>
 <h3>Deployment &amp; Infrastructure</h3>
-<p><strong>MVP Deployment</strong></p>
+<p><strong><span class="pink-text">MVP Deployment</span></strong></p>
 <ul>
 <li><strong>Local-first:</strong> Docker Compose stack running on a single machine (home RTX 5090)</li>
 <li><strong>VM Twin:</strong> Cloud GPU instance (RunPod/Vast.ai) synced daily, Cloudflare routes traffic to either local or VM</li>
 <li><strong>Switchable Backend:</strong> Same stack runs identically on both; user-facing URL remains constant</li>
 </ul>
-<p><strong>Scaling Path (post-investment)</strong></p>
+<p><strong><span class="pink-text">Scaling Path (post-investment)</span></strong></p>
 <ul>
 <li><strong>Phase 2:</strong> Container orchestration via Kubernetes for staging/production</li>
 <li><strong>Phase 3:</strong> Multi-cloud deployment (AWS primary, GCP backup), advanced observability, enterprise security (Vault, audit logs)</li>

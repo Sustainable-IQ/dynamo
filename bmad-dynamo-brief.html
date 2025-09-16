@@ -13,6 +13,7 @@
 
     <style>
         :root {
+            
             --earth: #0F3D3E;
             --sky: #2E8BC0;
             --sand: #D9C5B2;
@@ -1098,28 +1099,6 @@
             font-weight: 600;
             font-size: var(--text-xl);
             margin-right: var(--space-sm);
-            background: linear-gradient(
-                90deg,
-                #ff69b4 0%,
-                #ffffff 25%,
-                #ff1493 50%,
-                #ffffff 75%,
-                #ff69b4 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 2s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
         }
 
         .start-here-link .website-link {

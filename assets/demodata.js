@@ -14,7 +14,7 @@
       { author: "Alex", text: "GDPR requires explicit consent. We should implement progressive disclosure for complex permissions." },
       { author: "Dr. Chen", text: "Good point on progressive disclosure. Makes consent more meaningful and less overwhelming." },
       { author: "Council", text: "Synthesizing: Clear opt-in, retroactive consent review, and progressive disclosure as core principles." }
-    ], synthesis: "Clear opt-in, retroactive consent review, and progressive disclosure established as core principles.", decisions:[{text: "Implement progressive disclosure for complex permissions", status: "Decided"}], questions:[{prompt: "What about existing users? Do we need retroactive consent for current data?", status: "Open"}] },
+    ], synthesis: "Clear opt-in, retroactive consent review, and progressive disclosure established as core principles.", decisions:[{title: "Implement progressive disclosure for complex permissions", rationale: "Makes consent more meaningful and less overwhelming", status: "Decided"}], questions:[{prompt: "What about existing users? Do we need retroactive consent for current data?", status: "Open"}] },
     { id: "t3", title: "Website revamp: launch checklist", tags:["Comms","Launch"], packs:[], dialogue:[
       { author: "Taylor", text: "Mobile responsiveness testing is complete. All breakpoints look good." },
       { author: "Morgan", text: "SEO audit shows we need meta descriptions for 12 pages. I can handle those this week." },
@@ -22,7 +22,7 @@
       { author: "Taylor", text: "Should we delay launch until the contact form is fixed? That's pretty critical." },
       { author: "Morgan", text: "Agreed. Better to launch clean than deal with frustrated users on day one." },
       { author: "Council", text: "Decision logged: Launch postponed pending contact form optimization. Quality over speed." }
-    ], synthesis: "Mobile testing complete, SEO needs attention, contact form requires optimization before launch.", decisions:[{text: "Launch postponed pending contact form optimization", status: "Decided"}], questions:[{prompt: "Should we delay launch until the contact form is fixed?", status: "Resolved"}] }
+    ], synthesis: "Mobile testing complete, SEO needs attention, contact form requires optimization before launch.", decisions:[{title: "Launch postponed pending contact form optimization", rationale: "Quality over speed approach", status: "Decided"}], questions:[{prompt: "Should we delay launch until the contact form is fixed?", status: "Resolved"}] }
   ];
 
 // Agent packs available in the system

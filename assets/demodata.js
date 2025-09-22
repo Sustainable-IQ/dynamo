@@ -16,24 +16,7 @@ const packs = [
   { id:"launch", name:"Launch Pack", roles:["PM Orchestrator","Risk Scout","Docs Writer","Comms Drafter"], outputs:["synthesis","decisions"] }
 ];
 
-// --- Universal navigation helper (works local + Cloudflare) ---
-function _basePrefix() {
-  const isLocal = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.protocol === "file:";
-  if (!isLocal) return ""; // production (Cloudflare): root is "/"
-
-  const first = location.pathname.split("/")[1] || "";
-  if (first.toLowerCase() === "dynamowebsite") return `/${first}`;
-  return "";
-}
-
-function goTo(path) {
-  let clean = path.startsWith("/") ? path : "/" + path;
-  if (!clean.endsWith("/")) clean = clean + "/";
-  window.location.href = _basePrefix() + clean;
-}
-// ----------------------------------------------------------------
-
-// Export for use in Node.js if needed
+// Export for use in both HTML files
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { threads, packs };
 }

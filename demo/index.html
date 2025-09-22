@@ -630,7 +630,8 @@
   document.getElementById('showAllCommsBtn').addEventListener('click', ()=>{
     log('Go To Community Console clicked');
     showToast('Opening all community interactions...');
-    goTo("/demo/community");
+    // Works on Cloudflare AND any local server
+    window.location.href = "/demo/community/index.html";
   });
 
   // INIT

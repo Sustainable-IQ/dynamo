@@ -1,4 +1,4 @@
-﻿﻿<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -352,11 +352,11 @@
   ];
 
   const aiAgents = [
-    {id:"truthSeeker", name:"Truth-Seeker", symbol:"ðŸ”", value:80},
-    {id:"authority",   name:"Authority",      symbol:"ðŸ›¡ï¸", value:70},
-    {id:"strategist",  name:"Strategist",     symbol:"ðŸŽ¯", value:65},
-    {id:"archivist",   name:"Archivist",     symbol:"âš–ï¸", value:55},
-    {id:"secretariat", name:"Secretariat",          symbol:"ðŸ§ ", value:80},
+    {id:"authority",   name:"Authority", symbol:"ðŸ›¡ï¸", value:70},
+   {id:"iconoclast", name:"Iconoclast", symbol:"ðŸ”", value:80},
+    {id:"strategist",  name:"Strategist", symbol:"ðŸŽ¯", value:65},
+    {id:"archivist",   name:"Archivist", symbol:"âš–ï¸", value:55},
+    {id:"secretariat", name:"Secretariat", symbol:"ðŸ§ ", value:80},
   ];
 
   let memory = [
@@ -428,7 +428,7 @@
 
   function renderAiAgentControls(){
     const descriptions = {
-      "truthSeeker":"Goes beyond the prevailing narrative, questions, detects inversions, deceptions, and hidden patterns.",
+      "iconoclast":"Goes beyond the prevailing narrative, questions, detects inversions, deceptions, and hidden patterns.",
       "authority":"Represents the prevailing official narrative, the baseline voice of institutions and consensus.",
       "strategist":"Turns knowledge into pathways forward — strategies, options, experiments, and next steps.",
       "archivist":"Retrieves and presents relevant memory and record for both user and council.",
@@ -544,7 +544,7 @@
 
   function fakeOpinion(h, q){
     const seeds = {
-      "truthSeeker":"Goes beyond prevailing narrative, questions assumptions, detects hidden patterns.",
+      "iconoclast":"Goes beyond prevailing narrative, questions assumptions, detects hidden patterns.",
       "authority":"Represents official narrative, institutional voice, baseline consensus.",
       "strategist":"Turns knowledge into pathways forward — strategies, options, experiments, and next steps.",
       "archivist":"Retrieves relevant memory and records for user and council deliberation.",
@@ -559,7 +559,7 @@
     return [
       "Stage traction with three open demos, each < 10 minutes, recorded and shareable.",
       "Guard sovereignty: local-first memory, explicit consent toggles, transparent logs.",
-      `Weighting applied â†' Truth-Seeker ${pct(w.truthSeeker)}, Secretariat ${pct(w.secretariat)}, Authority ${pct(w.authority)}.`,
+      `Council status â†' ${aiAgents.filter(h => h.value > 0).map(h => h.name).join(', ')} active.`,
       "Invest the remainder in onboarding and a waitlist flow that converts curiosity to commitment."
     ].join(' ');
   }

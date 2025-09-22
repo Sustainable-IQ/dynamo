@@ -249,7 +249,6 @@
     <hr>
     <div class="section-title">Recent Threads</div>
     <div id="memoryList" style="display:flex;flex-direction:column;gap:10px"></div>
-    <button class="btn" id="viewAllMemoriesBtn" style="margin-top:10px;">View All Personal Memories</button>
     <div style="flex-grow:1;"></div>
     <div class="hr"></div>
     <div>
@@ -579,9 +578,6 @@
 
   // EVENTS
   document.getElementById('askBtn').addEventListener('click', runDemo);
-  document.getElementById('viewAllMemoriesBtn').addEventListener('click', ()=>{
-    log('View All Personal Memories clicked'); showToast('Opening personal memories...');
-  });
   document.getElementById('bypassToggle').addEventListener('change', (e)=>{
     const isChecked = e.target.checked;
     log(`Bypass External LLM ${isChecked ? 'enabled' : 'disabled'}`);

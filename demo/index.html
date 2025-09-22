@@ -33,7 +33,7 @@
     gap:18px; padding:26px; max-width:1600px; margin:0 auto;
   }
   .panel{border-radius:14px; padding:18px; box-shadow: 0 6px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.05);}
-  .left{height:86vh; overflow:auto; background:linear-gradient(180deg,var(--left-1),var(--left-2)); display:flex; flex-direction:column;}
+  .left{height:86vh; overflow:hidden; background:linear-gradient(180deg,var(--left-1),var(--left-2)); display:flex; flex-direction:column;}
   .right{height:86vh; overflow:auto; background:linear-gradient(180deg,var(--right-1),var(--right-2));}
   .center{
     height:86vh; display:flex; flex-direction:column; gap:12px; overflow:hidden;
@@ -138,6 +138,15 @@
   .pill-toggle input[id^="off-"]:checked ~ label[for^="off-"]{color:white;}
   .pill-toggle input[id^="off-"]:checked ~ label[for^="on-"]{color:#888;}
   .ai-agent-item .ai-agent-value{font-size:10px;color:var(--muted);}
+  
+    /* Global divider style */
+  hr {
+    border: none;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.23);
+    margin: 12px 0;
+  }
+  
   /* Community projects */
   .community-item{background:rgba(255,255,255,0.03);padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);margin-bottom:8px;}
   .community-item h4{margin:0;font-size:12px;color:#eef2ff;}
@@ -234,7 +243,11 @@
 
   <!-- LEFT: distinct teal/blue gradient -->
   <div class="panel left">
-    <h2>Personal Memories - Quick View</h2>
+    <h2>Dynamo Memories</h2>
+    <hr>
+    <button class="btn" id="showMemoryConsoleBtn" style="background:#06b6d4;color:white;border:none;">Go To Memory Console</button>
+    <hr>
+    <div class="section-title">Recent Threads</div>
     <div id="memoryList" style="display:flex;flex-direction:column;gap:10px"></div>
     <button class="btn" id="viewAllMemoriesBtn" style="margin-top:10px;">View All Personal Memories</button>
     <div style="flex-grow:1;"></div>
@@ -303,13 +316,12 @@
   <!-- RIGHT: distinct purple/indigo gradient -->
   <div class="panel right">
     <h2>Dynamo Community</h2>
-    <div class="hr"></div>
+    <hr>
     <button class="btn" id="showAllCommsBtn" style="background:#06b6d4;color:white;border:none;">Go To Community Console</button>
-    <div class="hr"></div>
+    <hr>
     <div class="section-title">Recent Community Projects</div>
     <div id="communityProjects" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;"></div>
-
-    <div class="hr"></div>
+    <hr>
     <div class="section-title"><strong>Recent Community Actions</strong></div>
     <div id="communityActions" style="font-size:12px;color:var(--muted);margin-bottom:12px;">
       <div style="margin-bottom:6px;padding:8px;background:rgba(255,255,255,0.03);border-radius:6px;border:1px solid rgba(255,255,255,0.06);">Bob F added a command in Protocol X</div>
@@ -632,6 +644,12 @@
     showToast('Opening all community interactions...');
     // Works on Cloudflare AND any local server
     window.location.href = "community/index.html";
+  });
+
+  document.getElementById('showMemoryConsoleBtn').addEventListener('click', ()=>{
+    log('Go To Memory Console clicked');
+    showToast('Opening memory dashboard...');
+    window.location.href = "memorydashboard/index.html";
   });
 
   // INIT

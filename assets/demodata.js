@@ -1,5 +1,6 @@
 // Shared data for DYNAMO application
 // This file is used by both index.html and community.html to maintain synchronized data
+// If you change the content here, you need to change two .js lines in each html file (demo and community) and add a new value to the version e.g., v2 to v3, etc. This deal with the Cloudflare cache issues).
 
 // Active community threads
  const threads = [

@@ -163,7 +163,13 @@
       <div class="section-title">Community Pulse</div>
       <div id="pulseCard" class="pulse-card">
         <div><strong>This week</strong></div>
-        <ul id="pulseList" style="margin:8px 0 0 18px; padding:0;">
+        <ul id="pulseListWeek" style="margin:8px 0 0 18px; padding:0;">
+          <li>0 decisions logged</li>
+          <li>0 open questions answered</li>
+          <li>0 threads revived</li>
+        </ul>
+        <div style="margin-top:12px;"><strong>This month</strong></div>
+        <ul id="pulseListMonth" style="margin:8px 0 0 18px; padding:0;">
           <li>0 decisions logged</li>
           <li>0 open questions answered</li>
           <li>0 threads revived</li>
@@ -197,6 +203,7 @@ let selectedThreadId = null;
 const ledger = [];
 const docDrafts = [];
 let weekPulse = { decisions: 0, answered: 0, revived: 0 };
+let monthPulse = { decisions: 0, answered: 0, revived: 0 };
 
 /* ---------- DOM Refs ---------- */
 const threadList = document.getElementById("threadList");
@@ -210,7 +217,8 @@ const lensDecisions = document.getElementById("lens-decisions");
 const lensQuestions = document.getElementById("lens-questions");
 const councilOutput = document.getElementById("councilOutput");
 const userInput = document.getElementById("userInput");
-const pulseList = document.getElementById("pulseList");
+const pulseListWeek = document.getElementById("pulseListWeek");
+const pulseListMonth = document.getElementById("pulseListMonth");
 const slots = document.getElementById("slots");
 const ledgerEl = document.getElementById("ledger");
 const docDraftsEl = document.getElementById("docDrafts");
@@ -302,11 +310,35 @@ function renderThread(){
 }
 
 function renderPulse(){
-  pulseList.innerHTML = `
+  pulseListWeek.innerHTML = `
     <li>${weekPulse.decisions} decisions logged</li>
     <li>${weekPulse.answered} open questions answered</li>
     <li>${weekPulse.revived} threads revived</li>
   `;
+  pulseListMonth.innerHTML = `
+    <li>${monthPulse.decisions} decisions logged</li>
+    <li>${monthPulse.answered} open questions answered</li>
+    <li>${monthPulse.revived} threads revived</li>
+  `;
+}
+
+function initializePulseFromData(){
+  // Calculate totals from demodata.js
+  const totalDecisions = threads.reduce((sum, t) => sum + t.decisions.length, 0);
+  const totalQuestions = threads.reduce((sum, t) => sum + t.questions.length, 0);
+  const totalDialogue = threads.reduce((sum, t) => sum + t.dialogue.length, 0);
+
+  // Split logically between week and month
+  weekPulse.decisions = Math.ceil(totalDecisions / 2); // 1 this week
+  monthPulse.decisions = totalDecisions - weekPulse.decisions; // 1 this month
+
+  weekPulse.answered = Math.ceil(totalQuestions * 0.67); // 2 this week
+  monthPulse.answered = totalQuestions - weekPulse.answered; // 1 this month
+
+  // Revived based on dialogue activity (logical split)
+  const revivedTotal = Math.floor(totalDialogue / 4); // ~6 total revives
+  weekPulse.revived = Math.ceil(revivedTotal * 0.4); // ~2 this week
+  monthPulse.revived = revivedTotal - weekPulse.revived; // ~4 this month
 }
 
 function renderSlots(items=[]){
@@ -466,6 +498,7 @@ document.querySelectorAll(".tab").forEach(btn=>{
 
 /* ---------- Init ---------- */
 function init(){
+  initializePulseFromData();
   renderThreads();
   renderPacks();
   renderPulse();

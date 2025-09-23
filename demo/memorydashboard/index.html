@@ -1,0 +1,3025 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DYNAMO Memory Retrieval Dashboard</title>
+<style>
+  :root{
+    --bg:#0a1020; --muted:#a9b4c3; --accent:#7c3aed; --accent-2:#4f46e5; --success:#10b981; --warn:#f59e0b;
+    --left-1:#0a1c2d; --left-2:#0b1526;  /* LEFT panel gradient */
+    --right-1:#150f2d; --right-2:#0f1426; /* RIGHT panel gradient */
+    --center-1:rgba(255,255,255,0.02); --center-2:rgba(255,255,255,0.01);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  body{margin:0; background:linear-gradient(180deg,#071024 0%, #081426 60%); color:#e6eef6; min-height:100vh;}
+
+  /* Top navigation bar */
+  .top-nav{background:rgba(0,0,0,0.3);padding:12px 26px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);}
+  .dynamo-logo{font-size:24px;font-weight:900;color:#fbbf24;letter-spacing:1px;text-decoration:none;cursor:pointer;}
+  .dynamo-logo:hover{color:#fcd34d;}
+  .tagline{font-size:20px;color:#ffffff;font-weight:600;position:absolute;left:50%;transform:translateX(-50%);}
+  .nav-right{display:flex;align-items:center;gap:12px;}
+  .help-btn{background:transparent;border:1px solid rgba(255,255,255,0.2);padding:8px 16px;border-radius:6px;color:#e6eef6;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.3s;display:flex;align-items:center;gap:6px;}
+  .help-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);}
+
+  .app{
+    display:grid;
+    grid-template-columns: 320px 1fr 360px;
+    gap:18px; padding:26px; max-width:1600px; margin:0 auto; height:calc(100vh - 60px);
+  }
+
+  .panel{border-radius:14px; padding:18px; box-shadow: 0 6px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.05); overflow:auto;}
+  .left{background:linear-gradient(180deg,var(--left-1),var(--left-2));}
+  .right{background:linear-gradient(180deg,var(--right-1),var(--right-2));}
+  .center{
+    background:linear-gradient(180deg, var(--center-1), var(--center-2));
+    display:flex; flex-direction:column; gap:12px; overflow:hidden;
+  }
+
+  h2{margin:6px 0 12px 0; font-size:18px; color:#eef2ff;}
+  .section-title{font-size:12px; letter-spacing:.2px; color:var(--muted); margin-bottom:8px; text-transform:uppercase;}
+  .hr{border:none;height:1px;background:rgba(255,255,255,0.06);margin:12px 0;}
+
+  /* Buttons */
+  .btn{background:transparent; border:1px solid rgba(255,255,255,0.10); padding:10px 12px; border-radius:10px; cursor:pointer; color:#dbeafe; font-size:14px; font-weight:600; transition:all 0.2s;}
+  .btn:hover{background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.2);}
+  .btn.primary{background:linear-gradient(90deg,var(--accent), var(--accent-2)); box-shadow:0 8px 18px rgba(124,58,237,0.28); border:none; color:white;}
+  .btn.primary:hover{transform:translateY(-1px); box-shadow:0 10px 24px rgba(124,58,237,0.35);}
+  .btn.secondary{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15);}
+  .btn.large{padding:14px 24px; font-size:16px;}
+  .link-btn{background:none; border:none; color:var(--accent); cursor:pointer; text-decoration:underline; font-size:12px; padding:2px 4px;}
+  .link-btn:hover{color:var(--accent-2);}
+
+  /* Left Sidebar Filters */
+  .filter-section{margin-bottom:16px;}
+  .section-header{display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:4px 0;}
+  .section-header:hover .section-title{color:#ffffff;}
+  .toggle-icon{color:var(--muted); font-size:12px; transition:transform 0.2s;}
+  .section-header.collapsed .toggle-icon{transform:rotate(-90deg);}
+  .section-content{overflow:hidden; transition:max-height 0.3s ease;}
+  .section-content.collapsed{max-height:0;}
+
+  .quick-filters{display:flex; flex-direction:column; gap:6px;}
+  .filter-btn{background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.10); padding:8px 12px; border-radius:8px; color:#dbeafe; cursor:pointer; text-align:left; font-size:13px; transition:all 0.2s;}
+  .filter-btn:hover, .filter-btn.active{background:rgba(124,58,237,0.2); border-color:rgba(124,58,237,0.5);}
+
+  .date-presets{display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px;}
+  .date-preset-btn{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:6px 10px; border-radius:6px; color:#dbeafe; cursor:pointer; font-size:12px; transition:all 0.2s;}
+  .date-preset-btn:hover, .date-preset-btn.active{background:var(--accent); border-color:var(--accent); color:white;}
+
+  .custom-date-range{display:flex; flex-direction:column; gap:8px;}
+  .custom-date-range label{font-size:12px; color:var(--muted); display:flex; flex-direction:column; gap:4px;}
+  .custom-date-range input{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:6px 8px; border-radius:6px; color:#e6eef6; font-size:12px;}
+
+  .checkbox-label{display:flex; align-items:center; gap:8px; margin-bottom:6px; cursor:pointer; font-size:13px; color:#dbeafe;}
+  .checkbox-label input[type="checkbox"]{accent-color:var(--accent); margin:0;}
+
+  .chip-container{display:flex; flex-wrap:wrap; gap:6px;}
+  .chip{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:6px 10px; border-radius:16px; font-size:12px; cursor:pointer; transition:all 0.2s; user-select:none;}
+  .chip:hover{background:rgba(255,255,255,0.1);}
+  .chip.selected{background:var(--accent); border-color:var(--accent); color:white;}
+
+  .filter-group{margin-bottom:12px;}
+  .filter-group label{font-size:12px; color:var(--muted); margin-bottom:4px; display:block;}
+  .filter-group select{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:6px 8px; border-radius:6px; color:#e6eef6; font-size:12px; width:100%;}
+  .filter-group select option{background:#0a1020; color:#e6eef6;}
+
+  select[multiple]{height:80px;}
+
+  #tagInput{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:8px 10px; border-radius:6px; color:#e6eef6; font-size:13px; width:100%; margin-bottom:8px;}
+  .tag-suggestions{max-height:120px; overflow-y:auto; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; margin-bottom:8px; display:none;}
+  .tag-suggestion{padding:6px 10px; cursor:pointer; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.05);}
+  .tag-suggestion:hover{background:rgba(255,255,255,0.1);}
+  .selected-tags{display:flex; flex-wrap:wrap; gap:4px;}
+  .selected-tag{background:var(--accent); color:white; padding:4px 8px; border-radius:12px; font-size:11px; display:flex; align-items:center; gap:4px;}
+  .selected-tag .remove{cursor:pointer; font-weight:bold;}
+
+  .toggle-label{display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#dbeafe;}
+  .toggle-label input[type="checkbox"], .toggle-label input[type="radio"]{accent-color:var(--accent);}
+
+  .saved-searches-list{margin-bottom:10px; max-height:120px; overflow-y:auto;}
+  .saved-search{padding:6px 8px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); border-radius:6px; margin-bottom:4px; cursor:pointer; font-size:12px; display:flex; justify-content:space-between; align-items:center;}
+  .saved-search:hover{background:rgba(255,255,255,0.05);}
+  .saved-search .remove{color:var(--muted); cursor:pointer; padding:2px 4px;}
+  .saved-search .remove:hover{color:#ff6b6b;}
+
+  /* Center Column */
+  .results-container{flex:1; display:flex; flex-direction:column; overflow:hidden;}
+  .results-header{display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:12px;}
+  .results-info{display:flex; align-items:center; gap:8px; font-size:13px;}
+  .separator{color:var(--muted);}
+  .meta{color:var(--muted); font-size:12px;}
+
+  .bulk-bar{display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.3); border-radius:8px; margin-bottom:12px;}
+  .bulk-info{display:flex; align-items:center; gap:12px; font-size:13px;}
+  .bulk-actions{display:flex; gap:8px;}
+
+  .results-list{flex:1; overflow-y:auto; padding:0 12px;}
+  .empty-state{text-align:center; padding:40px 20px; color:var(--muted);}
+  .empty-state h3{color:#eef2ff; margin-bottom:8px;}
+  .example-queries{margin-top:20px;}
+  .example-query{background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.3); padding:8px 12px; border-radius:6px; color:#dbeafe; cursor:pointer; font-size:12px; margin:4px; transition:all 0.2s;}
+  .example-query:hover{background:rgba(124,58,237,0.2);}
+
+  .result-card{background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:10px; margin-bottom:12px; cursor:pointer; transition:all 0.2s;}
+  .result-card:hover{background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.15);}
+  .result-card.selected{background:rgba(124,58,237,0.15); border-color:rgba(124,58,237,0.5);}
+
+  .result-header{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+  .result-pills{display:flex; gap:6px; flex-wrap:wrap;}
+  .pill{padding:4px 8px; border-radius:12px; font-size:10px; font-weight:600; text-transform:uppercase;}
+  .pill.type{background:rgba(34, 197, 94, 0.2); color:#22c55e;}
+  .pill.status{background:rgba(251, 191, 36, 0.2); color:#fbbf24;}
+  .pill.holon{background:rgba(124, 58, 237, 0.2); color:#a855f7;}
+
+  .result-content{margin-bottom:8px;}
+  .result-title{font-weight:600; margin-bottom:4px; color:#eef2ff;}
+  .result-preview{color:var(--muted); font-size:13px; line-height:1.4;}
+  .result-metadata{display:flex; flex-wrap:wrap; gap:8px; font-size:11px; color:var(--muted);}
+  .result-actions{display:flex; gap:8px; margin-top:8px;}
+  .result-actions button{padding:4px 8px; font-size:11px;}
+
+  .pagination{display:flex; justify-content:space-between; align-items:center; padding:12px; border-top:1px solid rgba(255,255,255,0.05);}
+  .page-btn{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:8px 16px; border-radius:6px; color:#dbeafe; cursor:pointer; font-size:13px;}
+  .page-btn:hover{background:rgba(255,255,255,0.1);}
+  .page-btn:disabled{opacity:0.5; cursor:not-allowed;}
+  .page-info{font-size:13px; color:var(--muted);}
+
+  .query-container{border-top:1px solid rgba(255,255,255,0.05); padding:12px;}
+  .query-input-wrapper textarea{width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:8px; color:#e6eef6; font-size:14px; resize:vertical; margin-bottom:8px; font-family:inherit;}
+  .query-input-wrapper textarea::placeholder{color:var(--muted);}
+  .query-actions{display:flex; gap:8px;}
+
+  /* Right Sidebar */
+  .tabs{display:flex; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:16px;}
+  .tab-btn{background:none; border:none; color:var(--muted); padding:8px 12px; cursor:pointer; font-size:13px; border-bottom:2px solid transparent; transition:all 0.2s;}
+  .tab-btn:hover{color:#ffffff;}
+  .tab-btn.active{color:#ffffff; border-bottom-color:var(--accent);}
+
+  .tab-content{display:none; height:calc(100% - 50px); overflow-y:auto;}
+  .tab-content.active{display:block;}
+
+  /* Record Details Styles */
+  .record-detail{padding:16px;}
+  .detail-header{margin-bottom:20px;}
+  .detail-header h3{margin:0 0 8px 0; color:#eef2ff; font-size:16px;}
+  .detail-meta{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .detail-section{margin-bottom:20px;}
+  .detail-section h4{margin:0 0 8px 0; color:#eef2ff; font-size:14px;}
+  .detail-content{background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px; line-height:1.5; font-size:13px;}
+  .detail-content.user-message{border-left:3px solid var(--accent);}
+  .detail-content.council-response{border-left:3px solid var(--success);}
+  .detail-content mark{background:rgba(251,191,36,0.3); color:#fbbf24; padding:1px 2px; border-radius:2px;}
+
+  .metadata-table{background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:8px; padding:12px;}
+  .metadata-row{display:flex; justify-content:space-between; align-items:flex-start; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05);}
+  .metadata-row:last-child{border-bottom:none;}
+  .metadata-label{font-weight:600; color:var(--muted); font-size:12px; min-width:120px;}
+  .metadata-value{color:#e6eef6; font-size:12px; text-align:right; flex:1;}
+  .tag-chip{background:rgba(124,58,237,0.2); color:#a855f7; padding:2px 6px; border-radius:12px; font-size:10px; margin:0 2px;}
+
+  .detail-actions{display:flex; gap:8px; margin-top:16px; flex-wrap:wrap;}
+
+  /* Thread View Styles */
+  .thread-view{padding:16px;}
+  .thread-header{margin-bottom:16px;}
+  .thread-header h3{margin:0 0 8px 0; color:#eef2ff; font-size:16px;}
+  .thread-meta{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+
+  .thread-list{margin-bottom:16px;}
+  .thread-exchange{background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px; margin-bottom:8px; transition:all 0.2s;}
+  .thread-exchange:hover{background:rgba(255,255,255,0.05);}
+  .thread-exchange.active{border-color:var(--accent); background:rgba(124,58,237,0.1);}
+  .thread-exchange.selected{border-color:var(--success); background:rgba(16,185,129,0.1);}
+
+  .thread-exchange-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .thread-exchange-meta{display:flex; align-items:center; gap:8px;}
+  .thread-exchange-content{margin-bottom:8px;}
+  .thread-question, .thread-response{margin-bottom:4px; font-size:12px; line-height:1.4;}
+  .thread-question strong, .thread-response strong{color:var(--muted);}
+  .thread-exchange-actions{display:flex; gap:6px;}
+
+  .thread-actions{display:flex; gap:8px; flex-wrap:wrap;}
+
+  /* Preview Styles */
+  .preview-item-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .preview-item-title{font-weight:600; color:#eef2ff; font-size:13px;}
+  .preview-item-content{background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:6px; padding:8px; font-size:12px; line-height:1.4; margin-bottom:8px; white-space:pre-wrap;}
+  .preview-item-meta{display:flex; gap:8px; font-size:11px; color:var(--muted);}
+
+  .preview-header{margin-bottom:16px;}
+  .preview-header h3{margin:0 0 12px 0; font-size:16px;}
+  .preview-controls{display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+
+  .preview-list{flex:1; margin-bottom:16px; min-height:200px; border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px; background:rgba(255,255,255,0.02);}
+  .preview-item{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; border-radius:6px; margin-bottom:8px; cursor:move; position:relative;}
+  .preview-item .remove{position:absolute; top:6px; right:6px; background:rgba(255,0,0,0.2); color:#ff6b6b; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px;}
+
+  .preview-footer{border-top:1px solid rgba(255,255,255,0.1); padding-top:16px;}
+  .token-meter{margin-bottom:12px;}
+  .meter-bar{background:rgba(255,255,255,0.1); height:6px; border-radius:3px; overflow:hidden; margin-bottom:4px;}
+  .meter-fill{background:linear-gradient(90deg, var(--success), var(--warn)); height:100%; transition:width 0.3s;}
+  .meter-text{font-size:12px; color:var(--muted);}
+
+  .preview-meta{margin-bottom:16px;}
+  .preview-meta input{width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); padding:10px; border-radius:6px; color:#e6eef6; font-size:14px; margin-bottom:8px;}
+  .provenance{font-size:12px; color:var(--muted);}
+
+  /* Modals */
+  .modal-overlay{position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:1000;}
+  .modal-content{background:linear-gradient(180deg,#0a1c2d,#0b1526); border-radius:14px; padding:24px; max-width:500px; width:90%; border:1px solid rgba(255,255,255,0.1); box-shadow:0 10px 30px rgba(0,0,0,0.5); max-height:80vh; overflow-y:auto;}
+  .modal-content.small{max-width:400px;}
+  .modal-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+  .modal-header h3{margin:0; color:#eef2ff; font-size:18px;}
+  .close-btn{background:none; border:none; color:var(--muted); font-size:24px; cursor:pointer; padding:0; width:24px; height:24px;}
+  .close-btn:hover{color:#ffffff;}
+  .modal-body h4{color:#eef2ff; margin:16px 0 8px 0; font-size:14px;}
+  .shortcut-list{display:grid; grid-template-columns:1fr 2fr; gap:8px; margin-bottom:20px;}
+  .shortcut{display:flex; align-items:center; gap:8px; font-size:13px;}
+  .shortcut kbd{background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-family:monospace; font-size:11px;}
+  .syntax-examples{font-family:monospace; font-size:12px; line-height:1.6; color:var(--muted);}
+  .syntax-examples code{color:var(--accent); background:rgba(124,58,237,0.1); padding:2px 4px; border-radius:3px;}
+  .modal-footer{display:flex; gap:12px; justify-content:flex-end; margin-top:20px;}
+  .modal-body label{display:block; margin-bottom:8px; color:var(--muted); font-size:14px;}
+  .modal-body input{width:100%; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:#e6eef6; font-size:14px;}
+
+  /* Toast */
+  .toast{position:fixed; bottom:20px; right:20px; background:#0a1c2d; border:1px solid rgba(255,255,255,0.2); padding:12px 16px; border-radius:8px; color:#e6eef6; font-size:14px; z-index:1100; box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+
+  /* Accessibility Styles */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Enhanced Focus Indicators */
+  *:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
+  }
+
+  /* Skip Link */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--accent);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 1001;
+  }
+
+  .skip-link:focus {
+    top: 6px;
+  }
+
+  /* Loading */
+  .loading-overlay{position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:1200;}
+  .spinner{width:40px; height:40px; border:3px solid rgba(255,255,255,0.1); border-top:3px solid var(--accent); border-radius:50%; animation:spin 1s linear infinite;}
+  @keyframes spin{0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);}}
+
+  /* Responsive */
+  @media (max-width:1100px){
+    .app{grid-template-columns: 1fr; padding:12px; height:auto;}
+    .panel{height:auto; margin-bottom:16px;}
+    .center{height:60vh;}
+    .tagline{display:none;}
+  }
+
+  @media (max-width:768px){
+    .top-nav{padding:8px 16px;}
+    .dynamo-logo{font-size:20px;}
+    .help-btn span{display:none;}
+    .app{padding:8px; gap:12px;}
+    .panel{padding:12px;}
+    .results-header{flex-direction:column; gap:8px; align-items:flex-start;}
+    .bulk-bar{flex-direction:column; gap:8px; align-items:flex-start;}
+    .query-actions{flex-wrap:wrap;}
+    .tabs{overflow-x:auto;}
+    .preview-controls{flex-direction:column; align-items:flex-start;}
+  }
+
+  /* Accessibility */
+  .btn:focus, .filter-btn:focus, .tab-btn:focus, input:focus, textarea:focus, select:focus{outline:2px solid var(--accent); outline-offset:2px;}
+  .visually-hidden{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+
+  /* Dark scrollbars */
+  ::-webkit-scrollbar{width:8px; height:8px;}
+  ::-webkit-scrollbar-track{background:rgba(255,255,255,0.05);}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2); border-radius:4px;}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.3);}
+</style>
+</head>
+<body>
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- TOP NAVIGATION BAR -->
+<div class="top-nav" role="banner">
+  <a href="../index.html" class="dynamo-logo">DYNAMO</a>
+  <div class="tagline">Dynamo Retrieval</div>
+  <div class="nav-right">
+    <button class="help-btn" id="helpBtn" title="Keyboard Shortcuts">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 14.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13z"/>
+        <path d="M5.25 6.25a.75.75 0 0 1 .75-.75h.5a1.5 1.5 0 0 1 0 3H6a.5.5 0 0 0 0 1h.75a.75.75 0 0 1 0 1.5H6a2 2 0 0 1 0-4h.5v-1H6a.75.75 0 0 1-.75-.75zM8 12.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5z"/>
+      </svg>
+      Help
+    </button>
+  </div>
+</div>
+
+<!-- MAIN APPLICATION CONTAINER -->
+<main class="app" id="main-content" role="main">
+
+  <!-- LEFT SIDEBAR: FILTERS & TOOLS -->
+  <div class="panel left" role="complementary" aria-label="Search filters and tools">
+    <h2>Filters & Tools</h2>
+
+    <!-- Quick Filters -->
+    <div class="filter-section">
+      <div class="section-title">Quick Filters</div>
+      <div class="quick-filters">
+        <button class="filter-btn" data-preset="all">Everything</button>
+        <button class="filter-btn" data-preset="questions">My Questions</button>
+        <button class="filter-btn" data-preset="synthesis">Final Answers Only</button>
+        <button class="filter-btn" data-preset="holon">Holon Responses Only</button>
+        <button class="filter-btn" data-preset="unresolved">Unresolved Threads</button>
+        <button class="filter-btn" data-preset="7days">Last 7 Days</button>
+        <button class="filter-btn" data-preset="30days">Last 30 Days</button>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Time Range -->
+    <div class="filter-section collapsible">
+      <div class="section-header">
+        <span class="section-title">Time Range</span>
+        <span class="toggle-icon">�</span>
+      </div>
+      <div class="section-content">
+        <div class="date-presets">
+          <button class="date-preset-btn active" data-range="all">All Time</button>
+          <button class="date-preset-btn" data-range="today">Today</button>
+          <button class="date-preset-btn" data-range="week">This Week</button>
+          <button class="date-preset-btn" data-range="month">This Month</button>
+          <button class="date-preset-btn" data-range="custom">Custom</button>
+        </div>
+        <div class="custom-date-range" style="display:none;">
+          <label>From: <input type="date" id="dateFrom" /></label>
+          <label>To: <input type="date" id="dateTo" /></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Types Filter -->
+    <div class="filter-section collapsible">
+      <div class="section-header">
+        <span class="section-title">Types</span>
+        <span class="toggle-icon">�</span>
+      </div>
+      <div class="section-content">
+        <label class="checkbox-label">
+          <input type="checkbox" name="type" value="user_question" checked>
+          <span>User Questions</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="type" value="external_response" checked>
+          <span>External LLM Responses</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="type" value="holon_response" checked>
+          <span>Holon Responses</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="type" value="meta_synthesis" checked>
+          <span>Meta-Synthesis</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Holons Filter -->
+    <div class="filter-section collapsible">
+      <div class="section-header">
+        <span class="section-title">Holons</span>
+        <span class="toggle-icon">�</span>
+      </div>
+      <div class="section-content">
+        <div class="chip-container" id="holonChips">
+          <div class="chip" data-holon="truth">Truth-Seeking</div>
+          <div class="chip" data-holon="compassion">Compassion</div>
+          <div class="chip" data-holon="strategic">Strategic Systems</div>
+          <div class="chip" data-holon="justice">Justice</div>
+          <div class="chip" data-holon="creative">Creative Wisdom</div>
+          <div class="chip" data-holon="historical">Historical Pattern</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Domains Filter -->
+    <div class="filter-section collapsible">
+      <div class="section-header">
+        <span class="section-title">Domains</span>
+        <span class="toggle-icon">�</span>
+      </div>
+      <div class="section-content">
+        <select id="domainSelect" multiple size="5">
+          <option value="work">Work</option>
+          <option value="personal_growth">Personal Growth</option>
+          <option value="relationships">Relationships</option>
+          <option value="creative">Creative</option>
+          <option value="learning">Learning</option>
+          <option value="spiritual">Spiritual</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Status & Quality -->
+    <div class="filter-section collapsible">
+      <div class="section-header">
+        <span class="section-title">Status & Quality</span>
+        <span class="toggle-icon">�</span>
+      </div>
+      <div class="section-content">
+        <div class="filter-group">
+          <label>Resolution Status:</label>
+          <select id="resolutionStatus">
+            <option value="all">All</option>
+            <option value="resolved">Resolved</option>
+            <option value="unresolved">Unresolved</option>
+            <option value="dismissed">Dismissed</option>
+            <option value="in_progress">In Progress</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Consensus Level:</label>
+          <select id="consensusLevel">
+            <option value="all">All</option>
+            <option value="unanimous">Unanimous</option>
+            <option value="majority">Majority</option>
+            <option value="split">Split</option>
+            <option value="unresolved">Unresolved</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Importance:</label>
+          <select id="importance">
+            <option value="all">All</option>
+            <option value="critical">Critical</option>
+            <option value="important">Important</option>
+            <option value="moderate">Moderate</option>
+            <option value="minor">Minor</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Tags -->
+    <div class="filter-section collapsible">
+      <div class="section-header">
+        <span class="section-title">Tags</span>
+        <span class="toggle-icon">�</span>
+      </div>
+      <div class="section-content">
+        <input type="text" id="tagInput" placeholder="Type tags..." />
+        <div id="tagSuggestions" class="tag-suggestions"></div>
+        <div id="selectedTags" class="selected-tags"></div>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Relations -->
+    <div class="filter-section">
+      <label class="toggle-label">
+        <input type="checkbox" id="includeRelations">
+        <span>Include parent/child records</span>
+      </label>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Sort & Page -->
+    <div class="filter-section">
+      <div class="filter-group">
+        <label>Sort by:</label>
+        <select id="sortBy">
+          <option value="relevance">Relevance</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="importance">Importance</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Page size:</label>
+        <select id="pageSize">
+          <option value="10">10</option>
+          <option value="25" selected>25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Saved Searches -->
+    <div class="filter-section">
+      <div class="section-title">Saved Searches</div>
+      <div id="savedSearches" class="saved-searches-list"></div>
+      <button class="btn secondary" id="saveSearchBtn">Save Current Search</button>
+    </div>
+  </div>
+
+  <!-- CENTER: RESULTS & QUERY -->
+  <div class="panel center" role="region" aria-label="Search results and query input">
+
+    <h2>Search & Results</h2>
+
+    <!-- Results Output Box -->
+    <div class="results-container">
+
+      <!-- Results Header -->
+      <div class="results-header">
+        <div class="results-info">
+          <span id="resultCount">0 results</span>
+          <span id="elapsedTime" class="meta">in 0ms</span>
+          <span class="separator">"</span>
+          <span id="currentSort" class="meta">Sort: Relevance</span>
+          <span class="separator">"</span>
+          <span id="activeFilters" class="meta">3 filters active</span>
+          <button id="clearFilters" class="link-btn">Clear filters</button>
+        </div>
+        <button class="btn secondary" id="createSummaryBtn">Create Topic Summary</button>
+      </div>
+
+      <!-- Bulk Actions Bar (hidden by default) -->
+      <div class="bulk-bar" id="bulkBar" style="display:none;">
+        <div class="bulk-info">
+          <span id="selectedCount">0 selected</span>
+          <button class="link-btn" id="selectAllPage">Select all on page</button>
+          <button class="link-btn" id="selectAllResults">Select all in results</button>
+          <button class="link-btn" id="deselectAll">Deselect all</button>
+        </div>
+        <div class="bulk-actions">
+          <button class="btn secondary" id="bulkPreview">Add to Details & Actions</button>
+          <button class="btn secondary" id="bulkExport">Export</button>
+          <button class="btn secondary" id="bulkCopy">Copy as Markdown</button>
+        </div>
+      </div>
+
+      <!-- Results List -->
+      <div class="results-list" id="resultsList">
+        <!-- Results will be rendered here -->
+        <div class="empty-state">
+          <h3>Start your search</h3>
+          <p>Enter a query below or use the filters to find your memories</p>
+          <div class="example-queries">
+            <p class="meta">Try these:</p>
+            <button class="example-query">"show meta_synthesis on spirituality unresolved last 30 days"</button>
+            <button class="example-query">"type:holon_response domain:work status:resolved"</button>
+            <button class="example-query">"financial independence after:2025-06-01"</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination" style="display:none;">
+        <button class="page-btn" id="prevPage">� Previous</button>
+        <span class="page-info">
+          Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+        </span>
+        <button class="page-btn" id="nextPage">Next �</button>
+      </div>
+    </div>
+
+    <!-- Query Input Box -->
+    <div class="query-container">
+      <div class="query-input-wrapper">
+        <textarea
+          id="queryInput"
+          placeholder="Search your Dynamo memory: try 'show meta_synthesis on project Atlas unresolved last 30 days'"
+          rows="3"
+        ></textarea>
+        <div class="query-actions">
+          <button class="btn primary" id="searchBtn">Search</button>
+          <button class="btn secondary" id="syntaxHelpBtn">Advanced Syntax</button>
+          <button class="btn secondary" id="saveQueryBtn" style="display:none;">Save Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR: DETAILS & ACTIONS -->
+  <div class="panel right" role="complementary" aria-label="Record details and actions">
+
+    <h2>Details & Actions</h2>
+
+    <!-- Council Chat Navigation Button -->
+    <div style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <button class="btn" id="councilChatNavBtn" style="background:#06b6d4;color:white;border:none;padding:8px 12px;width:fit-content;font-weight:normal;">
+        Go to Dynamo Council Chat
+      </button>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="details">Record Details</button>
+      <button class="tab-btn" data-tab="thread">Thread View</button>
+      <button class="tab-btn" data-tab="preview">Preview for Council</button>
+    </div>
+
+    <!-- Record Details Tab -->
+    <div class="tab-content" id="detailsTab">
+      <div class="empty-state">
+        <p>Select a record to view details</p>
+      </div>
+    </div>
+
+    <!-- Thread View Tab -->
+    <div class="tab-content" id="threadTab" style="display:none;">
+      <div class="empty-state">
+        <p>Select a record to view its thread</p>
+      </div>
+    </div>
+
+    <!-- Preview for Council Tab -->
+    <div class="tab-content" id="previewTab" style="display:none;">
+      <div class="preview-header">
+        <h3>Preview Builder</h3>
+        <div class="preview-controls">
+          <label class="toggle-label">
+            <input type="radio" name="previewMode" value="concise" checked>
+            <span>Concise</span>
+          </label>
+          <label class="toggle-label">
+            <input type="radio" name="previewMode" value="full">
+            <span>Full</span>
+          </label>
+          <button class="btn secondary" id="summarizeBtn">Summarize Selection</button>
+        </div>
+      </div>
+
+      <div class="preview-list" id="previewList">
+        <div class="empty-state">
+          <p>No items selected for preview</p>
+          <p class="meta">Select records from the results to build your preview</p>
+        </div>
+      </div>
+
+      <div class="preview-footer">
+        <div class="token-meter">
+          <div class="meter-bar">
+            <div class="meter-fill" id="tokenMeter" style="width: 0%"></div>
+          </div>
+          <span class="meter-text"><span id="tokenCount">0</span> / 16k tokens</span>
+        </div>
+
+        <div class="preview-meta">
+          <input type="text" id="previewTitle" placeholder="Enter title for Council..." />
+          <div class="provenance">
+            <span class="meta">Source filters: <span id="provenanceInfo">None</span></span>
+          </div>
+        </div>
+
+        <button class="btn primary large" id="sendToCouncilBtn">
+          Send to Dynamo Council Chat
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Modals -->
+
+<!-- Help Modal -->
+<div class="modal-overlay" id="helpModal" style="display:none;" role="dialog" aria-labelledby="helpModalTitle" aria-modal="true">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="helpModalTitle">Keyboard Shortcuts & Syntax</h3>
+      <button class="close-btn" data-close="helpModal">�</button>
+    </div>
+    <div class="modal-body">
+      <h4>Keyboard Shortcuts</h4>
+      <div class="shortcut-list">
+        <div class="shortcut"><kbd>/</kbd> Focus search</div>
+        <div class="shortcut"><kbd>Enter</kbd> Run search</div>
+        <div class="shortcut"><kbd>Cmd/Ctrl + K</kbd> Open this help</div>
+        <div class="shortcut"><kbd>Cmd/Ctrl + A</kbd> Select all on page</div>
+        <div class="shortcut"><kbd>Cmd/Ctrl + S</kbd> Save current search</div>
+        <div class="shortcut"><kbd>[</kbd> <kbd>]</kbd> Navigate pages</div>
+        <div class="shortcut"><kbd>P</kbd> Open Preview tab</div>
+        <div class="shortcut"><kbd>T</kbd> Open Thread View tab</div>
+        <div class="shortcut"><kbd>C</kbd> Send to Council</div>
+      </div>
+
+      <h4>Advanced Search Syntax</h4>
+      <div class="syntax-examples">
+        <code>type:meta_synthesis</code> - Filter by type<br>
+        <code>holon:truth</code> - Filter by holon<br>
+        <code>domain:work</code> - Filter by domain<br>
+        <code>status:unresolved</code> - Filter by status<br>
+        <code>tags:"ethics, audit"</code> - Filter by tags<br>
+        <code>after:2025-07-01</code> - After date<br>
+        <code>before:2025-08-01</code> - Before date<br>
+        <code>sort:newest</code> - Sort order<br>
+        <code>include:relations</code> - Include related records
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Save Search Modal -->
+<div class="modal-overlay" id="saveSearchModal" style="display:none;" role="dialog" aria-labelledby="saveModalTitle" aria-modal="true">
+  <div class="modal-content small">
+    <div class="modal-header">
+      <h3 id="saveModalTitle">Save Search</h3>
+      <button class="close-btn" data-close="saveSearchModal">�</button>
+    </div>
+    <div class="modal-body">
+      <label>
+        Search Name:
+        <input type="text" id="searchName" placeholder="e.g., Unresolved Spiritual Questions" />
+      </label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn secondary" data-close="saveSearchModal">Cancel</button>
+      <button class="btn primary" id="confirmSaveSearch">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast" style="display:none;">
+  <span id="toastMessage">Message</span>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay" style="display:none;">
+  <div class="spinner"></div>
+</div>
+
+<!-- Link to pastconversations.js -->
+<script src="../../assets/pastconversations.js"></script>
+<script>
+// DYNAMO Memory Retrieval Dashboard - JavaScript Implementation
+
+// Application State
+const appState = {
+  searchQuery: {
+    queryText: '',
+    timeRange: { preset: 'all', startDate: null, endDate: null },
+    types: ['user_question', 'external_response', 'holon_response', 'meta_synthesis'],
+    holons: [],
+    domains: [],
+    resolutionStatus: 'all',
+    consensusLevel: 'all',
+    importance: 'all',
+    tags: [],
+    includeRelations: false,
+    sortBy: 'relevance',
+    pageSize: 25,
+    currentPage: 1
+  },
+  selection: {
+    selectedRecordIds: [],
+    activeRecordId: null
+  },
+  ui: {
+    activeTab: 'details',
+    isLoading: false,
+    currentResults: [],
+    totalResults: 0,
+    elapsedTime: 0
+  },
+  savedSearches: JSON.parse(localStorage.getItem('dynamoSavedSearches') || '[]')
+};
+
+// Utility Functions
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+function formatDate(dateString) {
+  return new Date(dateString).toLocaleDateString();
+}
+
+function formatTime(dateString) {
+  return new Date(dateString).toLocaleTimeString();
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  const toastMessage = document.getElementById('toastMessage');
+  toastMessage.textContent = message;
+  toast.style.display = 'block';
+  setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3000);
+}
+
+function showLoading() {
+  document.getElementById('loadingOverlay').style.display = 'flex';
+  appState.ui.isLoading = true;
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').style.display = 'none';
+  appState.ui.isLoading = false;
+}
+
+// Left Sidebar Filter Functions
+
+// Collapsible Sections
+function initializeCollapsibleSections() {
+  const headers = document.querySelectorAll('.section-header');
+  headers.forEach(header => {
+    header.addEventListener('click', () => {
+      const content = header.nextElementSibling;
+      const icon = header.querySelector('.toggle-icon');
+
+      if (content.classList.contains('collapsed')) {
+        content.classList.remove('collapsed');
+        content.style.maxHeight = content.scrollHeight + 'px';
+        icon.style.transform = 'rotate(0deg)';
+      } else {
+        content.classList.add('collapsed');
+        content.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(-90deg)';
+      }
+    });
+  });
+
+  // Set initial max-height for expanded sections
+  document.querySelectorAll('.section-content:not(.collapsed)').forEach(content => {
+    content.style.maxHeight = content.scrollHeight + 'px';
+  });
+}
+
+// Quick Filters
+function initializeQuickFilters() {
+  const quickFilterBtns = document.querySelectorAll('.filter-btn[data-preset]');
+
+  quickFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class from all buttons
+      quickFilterBtns.forEach(b => b.classList.remove('active'));
+      // Add active class to clicked button
+      btn.classList.add('active');
+
+      const preset = btn.dataset.preset;
+      applyQuickFilter(preset);
+    });
+  });
+}
+
+function applyQuickFilter(preset) {
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+  switch (preset) {
+    case 'all':
+      // Reset to defaults
+      appState.searchQuery = {
+        ...appState.searchQuery,
+        queryText: '',
+        timeRange: { preset: 'all', startDate: null, endDate: null },
+        types: ['user_question', 'external_response', 'holon_response', 'meta_synthesis'],
+        holons: [],
+        domains: [],
+        resolutionStatus: 'all',
+        tags: []
+      };
+      break;
+    case 'questions':
+      appState.searchQuery.types = ['user_question'];
+      break;
+    case 'synthesis':
+      appState.searchQuery.types = ['meta_synthesis'];
+      break;
+    case 'holon':
+      appState.searchQuery.types = ['holon_response'];
+      break;
+    case 'unresolved':
+      appState.searchQuery.resolutionStatus = 'unresolved';
+      break;
+    case '7days':
+      appState.searchQuery.timeRange = { preset: '7days', startDate: weekAgo, endDate: today };
+      break;
+    case '30days':
+      appState.searchQuery.timeRange = { preset: '30days', startDate: monthAgo, endDate: today };
+      break;
+  }
+
+  updateFilterUI();
+  executeSearch();
+}
+
+// Time Range Filters
+function initializeTimeRangeFilters() {
+  const datePresetBtns = document.querySelectorAll('.date-preset-btn');
+  const customDateRange = document.querySelector('.custom-date-range');
+  const dateFromInput = document.getElementById('dateFrom');
+  const dateToInput = document.getElementById('dateTo');
+
+  datePresetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class from all buttons
+      datePresetBtns.forEach(b => b.classList.remove('active'));
+      // Add active class to clicked button
+      btn.classList.add('active');
+
+      const range = btn.dataset.range;
+      applyDatePreset(range);
+
+      // Show/hide custom date inputs
+      if (range === 'custom') {
+        customDateRange.style.display = 'flex';
+      } else {
+        customDateRange.style.display = 'none';
+      }
+    });
+  });
+
+  // Custom date inputs
+  dateFromInput.addEventListener('change', () => {
+    appState.searchQuery.timeRange.startDate = dateFromInput.value;
+    executeSearch();
+  });
+
+  dateToInput.addEventListener('change', () => {
+    appState.searchQuery.timeRange.endDate = dateToInput.value;
+    executeSearch();
+  });
+}
+
+function applyDatePreset(preset) {
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+
+  switch (preset) {
+    case 'all':
+      appState.searchQuery.timeRange = { preset: 'all', startDate: null, endDate: null };
+      break;
+    case 'today':
+      appState.searchQuery.timeRange = { preset: 'today', startDate: today, endDate: today };
+      break;
+    case 'week':
+      const weekStart = new Date(now.getTime() - now.getDay() * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      appState.searchQuery.timeRange = { preset: 'week', startDate: weekStart, endDate: today };
+      break;
+    case 'month':
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+      appState.searchQuery.timeRange = { preset: 'month', startDate: monthStart, endDate: today };
+      break;
+    case 'custom':
+      // Keep existing dates or set defaults
+      if (!appState.searchQuery.timeRange.startDate) {
+        appState.searchQuery.timeRange.startDate = today;
+      }
+      if (!appState.searchQuery.timeRange.endDate) {
+        appState.searchQuery.timeRange.endDate = today;
+      }
+      break;
+  }
+
+  if (preset !== 'custom') {
+    executeSearch();
+  }
+}
+
+// Type Filters
+function initializeTypeFilters() {
+  const typeCheckboxes = document.querySelectorAll('input[name="type"]');
+
+  typeCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      const type = checkbox.value;
+
+      if (checkbox.checked) {
+        if (!appState.searchQuery.types.includes(type)) {
+          appState.searchQuery.types.push(type);
+        }
+      } else {
+        appState.searchQuery.types = appState.searchQuery.types.filter(t => t !== type);
+      }
+
+      executeSearch();
+    });
+  });
+}
+
+// Holon Filters
+function initializeHolonFilters() {
+  const holonChips = document.querySelectorAll('#holonChips .chip');
+
+  holonChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const holon = chip.dataset.holon;
+
+      if (chip.classList.contains('selected')) {
+        chip.classList.remove('selected');
+        appState.searchQuery.holons = appState.searchQuery.holons.filter(h => h !== holon);
+      } else {
+        chip.classList.add('selected');
+        appState.searchQuery.holons.push(holon);
+      }
+
+      executeSearch();
+    });
+  });
+}
+
+// Domain Filters
+function initializeDomainFilters() {
+  const domainSelect = document.getElementById('domainSelect');
+
+  domainSelect.addEventListener('change', () => {
+    appState.searchQuery.domains = Array.from(domainSelect.selectedOptions).map(option => option.value);
+    executeSearch();
+  });
+}
+
+// Status & Quality Filters
+function initializeStatusFilters() {
+  const resolutionSelect = document.getElementById('resolutionStatus');
+  const consensusSelect = document.getElementById('consensusLevel');
+  const importanceSelect = document.getElementById('importance');
+
+  resolutionSelect.addEventListener('change', () => {
+    appState.searchQuery.resolutionStatus = resolutionSelect.value;
+    executeSearch();
+  });
+
+  consensusSelect.addEventListener('change', () => {
+    appState.searchQuery.consensusLevel = consensusSelect.value;
+    executeSearch();
+  });
+
+  importanceSelect.addEventListener('change', () => {
+    appState.searchQuery.importance = importanceSelect.value;
+    executeSearch();
+  });
+}
+
+// Tag Filters
+function initializeTagFilters() {
+  const tagInput = document.getElementById('tagInput');
+  const tagSuggestions = document.getElementById('tagSuggestions');
+  const selectedTagsContainer = document.getElementById('selectedTags');
+
+  // Get all available tags from data
+  const tagCloud = getTagCloud();
+  const availableTags = tagCloud.tags.map(t => t.tag);
+
+  tagInput.addEventListener('input', debounce(() => {
+    const query = tagInput.value.toLowerCase().trim();
+
+    if (query.length > 0) {
+      const suggestions = availableTags
+        .filter(tag => tag.toLowerCase().includes(query) && !appState.searchQuery.tags.includes(tag))
+        .slice(0, 10);
+
+      if (suggestions.length > 0) {
+        tagSuggestions.innerHTML = suggestions
+          .map(tag => `<div class="tag-suggestion" data-tag="${tag}">${tag}</div>`)
+          .join('');
+        tagSuggestions.style.display = 'block';
+      } else {
+        tagSuggestions.style.display = 'none';
+      }
+    } else {
+      tagSuggestions.style.display = 'none';
+    }
+  }, 300));
+
+  tagInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const tag = tagInput.value.trim();
+      if (tag && !appState.searchQuery.tags.includes(tag)) {
+        addTag(tag);
+      }
+    }
+  });
+
+  tagSuggestions.addEventListener('click', (e) => {
+    if (e.target.classList.contains('tag-suggestion')) {
+      const tag = e.target.dataset.tag;
+      addTag(tag);
+    }
+  });
+
+  function addTag(tag) {
+    appState.searchQuery.tags.push(tag);
+    tagInput.value = '';
+    tagSuggestions.style.display = 'none';
+    renderSelectedTags();
+    executeSearch();
+  }
+
+  function removeTag(tag) {
+    appState.searchQuery.tags = appState.searchQuery.tags.filter(t => t !== tag);
+    renderSelectedTags();
+    executeSearch();
+  }
+
+  function renderSelectedTags() {
+    selectedTagsContainer.innerHTML = appState.searchQuery.tags
+      .map(tag => `
+        <div class="selected-tag">
+          ${tag}
+          <span class="remove" onclick="removeTag('${tag}')">×</span>
+        </div>
+      `).join('');
+  }
+
+  // Make removeTag globally available
+  window.removeTag = removeTag;
+}
+
+// Relations Toggle
+function initializeRelationsToggle() {
+  const relationsToggle = document.getElementById('includeRelations');
+
+  relationsToggle.addEventListener('change', () => {
+    appState.searchQuery.includeRelations = relationsToggle.checked;
+    executeSearch();
+  });
+}
+
+// Sort & Page Controls
+function initializeSortAndPageControls() {
+  const sortSelect = document.getElementById('sortBy');
+  const pageSizeSelect = document.getElementById('pageSize');
+
+  sortSelect.addEventListener('change', () => {
+    appState.searchQuery.sortBy = sortSelect.value;
+    appState.searchQuery.currentPage = 1; // Reset to first page
+    executeSearch();
+  });
+
+  pageSizeSelect.addEventListener('change', () => {
+    appState.searchQuery.pageSize = parseInt(pageSizeSelect.value);
+    appState.searchQuery.currentPage = 1; // Reset to first page
+    executeSearch();
+  });
+}
+
+// Saved Searches
+function initializeSavedSearches() {
+  const saveSearchBtn = document.getElementById('saveSearchBtn');
+  const saveSearchModal = document.getElementById('saveSearchModal');
+  const searchNameInput = document.getElementById('searchName');
+  const confirmSaveBtn = document.getElementById('confirmSaveSearch');
+
+  saveSearchBtn.addEventListener('click', () => {
+    saveSearchModal.style.display = 'flex';
+    searchNameInput.focus();
+  });
+
+  confirmSaveBtn.addEventListener('click', () => {
+    const name = searchNameInput.value.trim();
+    if (name) {
+      saveCurrentSearch(name);
+      saveSearchModal.style.display = 'none';
+      searchNameInput.value = '';
+    }
+  });
+
+  renderSavedSearches();
+}
+
+function saveCurrentSearch(name) {
+  const searchToSave = {
+    id: Date.now().toString(),
+    name: name,
+    query: { ...appState.searchQuery },
+    createdAt: new Date().toISOString()
+  };
+
+  appState.savedSearches.push(searchToSave);
+  localStorage.setItem('dynamoSavedSearches', JSON.stringify(appState.savedSearches));
+  renderSavedSearches();
+  showToast(`Search "${name}" saved`);
+}
+
+function loadSavedSearch(searchId) {
+  const savedSearch = appState.savedSearches.find(s => s.id === searchId);
+  if (savedSearch) {
+    appState.searchQuery = { ...savedSearch.query };
+    updateFilterUI();
+    executeSearch();
+    showToast(`Loaded search "${savedSearch.name}"`);
+  }
+}
+
+function deleteSavedSearch(searchId) {
+  appState.savedSearches = appState.savedSearches.filter(s => s.id !== searchId);
+  localStorage.setItem('dynamoSavedSearches', JSON.stringify(appState.savedSearches));
+  renderSavedSearches();
+  showToast('Search deleted');
+}
+
+function renderSavedSearches() {
+  const container = document.getElementById('savedSearches');
+
+  if (appState.savedSearches.length === 0) {
+    container.innerHTML = '<div class="meta" style="text-align:center; padding:8px;">No saved searches</div>';
+    return;
+  }
+
+  container.innerHTML = appState.savedSearches
+    .map(search => `
+      <div class="saved-search" onclick="loadSavedSearch('${search.id}')">
+        <span>${search.name}</span>
+        <span class="remove" onclick="event.stopPropagation(); deleteSavedSearch('${search.id}')" title="Delete">×</span>
+      </div>
+    `).join('');
+}
+
+// Make functions globally available
+window.loadSavedSearch = loadSavedSearch;
+window.deleteSavedSearch = deleteSavedSearch;
+
+// Update Filter UI
+function updateFilterUI() {
+  // Update type checkboxes
+  document.querySelectorAll('input[name="type"]').forEach(checkbox => {
+    checkbox.checked = appState.searchQuery.types.includes(checkbox.value);
+  });
+
+  // Update holon chips
+  document.querySelectorAll('#holonChips .chip').forEach(chip => {
+    const holon = chip.dataset.holon;
+    if (appState.searchQuery.holons.includes(holon)) {
+      chip.classList.add('selected');
+    } else {
+      chip.classList.remove('selected');
+    }
+  });
+
+  // Update domain select
+  const domainSelect = document.getElementById('domainSelect');
+  Array.from(domainSelect.options).forEach(option => {
+    option.selected = appState.searchQuery.domains.includes(option.value);
+  });
+
+  // Update status selects
+  document.getElementById('resolutionStatus').value = appState.searchQuery.resolutionStatus;
+  document.getElementById('consensusLevel').value = appState.searchQuery.consensusLevel;
+  document.getElementById('importance').value = appState.searchQuery.importance;
+
+  // Update relations toggle
+  document.getElementById('includeRelations').checked = appState.searchQuery.includeRelations;
+
+  // Update sort and page size
+  document.getElementById('sortBy').value = appState.searchQuery.sortBy;
+  document.getElementById('pageSize').value = appState.searchQuery.pageSize.toString();
+
+  // Update date inputs if custom
+  if (appState.searchQuery.timeRange.preset === 'custom') {
+    document.getElementById('dateFrom').value = appState.searchQuery.timeRange.startDate || '';
+    document.getElementById('dateTo').value = appState.searchQuery.timeRange.endDate || '';
+  }
+
+  // Render selected tags
+  const selectedTagsContainer = document.getElementById('selectedTags');
+  selectedTagsContainer.innerHTML = appState.searchQuery.tags
+    .map(tag => `
+      <div class="selected-tag">
+        ${tag}
+        <span class="remove" onclick="removeTag('${tag}')">×</span>
+      </div>
+    `).join('');
+}
+
+// Search Execution
+function executeSearch() {
+  const startTime = performance.now();
+  showLoading();
+
+  try {
+    let results = [];
+    const query = appState.searchQuery;
+
+    // Start with all conversations if no specific search
+    if (!query.queryText && isDefaultFilters()) {
+      results = getRecentConversations(1000); // Get all recent
+    } else if (query.queryText) {
+      // Full text search
+      results = searchFullText(query.queryText);
+    } else {
+      // Filter-only search
+      results = getRecentConversations(1000);
+    }
+
+    // Apply filters
+    results = applyFilters(results);
+
+    // Apply sorting
+    results = applySorting(results);
+
+    // Store total results before pagination
+    appState.ui.totalResults = results.length;
+
+    // Apply pagination
+    const paginatedResults = applyPagination(results);
+
+    // Store results and timing
+    appState.ui.currentResults = paginatedResults;
+    appState.ui.elapsedTime = Math.round(performance.now() - startTime);
+
+    // Render results
+    renderResults(paginatedResults);
+    updateResultsHeader();
+    updatePagination();
+
+    // Announce results to screen readers
+    if (window.announceSearchResults) {
+      window.announceSearchResults(results.length, appState.ui.elapsedTime);
+    }
+
+  } catch (error) {
+    console.error('Search error:', error);
+    showErrorState('Search failed. Please try again.');
+
+    // Announce error to screen readers
+    if (window.announceStatus) {
+      window.announceStatus('Search failed. Please try again.');
+    }
+  } finally {
+    hideLoading();
+  }
+}
+
+function isDefaultFilters() {
+  const q = appState.searchQuery;
+  return (
+    q.types.length === 4 && // All types selected
+    q.holons.length === 0 &&
+    q.domains.length === 0 &&
+    q.resolutionStatus === 'all' &&
+    q.consensusLevel === 'all' &&
+    q.importance === 'all' &&
+    q.tags.length === 0 &&
+    (!q.timeRange.startDate && !q.timeRange.endDate)
+  );
+}
+
+function applyFilters(results) {
+  const query = appState.searchQuery;
+
+  return results.filter(result => {
+    const exchange = result.exchange;
+    const ledger = result.ledger;
+
+    // Type filter (simulate types based on content)
+    if (query.types.length > 0) {
+      // For demo purposes, we'll map our data to the expected types
+      // In real implementation, this would be based on actual type fields
+      const hasUserQuestion = query.types.includes('user_question');
+      const hasCouncilResponse = query.types.includes('meta_synthesis') || query.types.includes('holon_response');
+
+      if (!hasUserQuestion && !hasCouncilResponse) {
+        return false;
+      }
+    }
+
+    // Status filter
+    if (query.resolutionStatus !== 'all') {
+      if (exchange.status !== query.resolutionStatus) {
+        return false;
+      }
+    }
+
+    // Domain filter (based on tags)
+    if (query.domains.length > 0) {
+      const allTags = [
+        ...(ledger.globalMetaTags || []),
+        ...(exchange.userMetaTags || []),
+        ...(exchange.councilMetaTags || [])
+      ];
+
+      const hasDomain = query.domains.some(domain =>
+        allTags.some(tag => tag.toLowerCase().includes(domain.toLowerCase()))
+      );
+
+      if (!hasDomain) {
+        return false;
+      }
+    }
+
+    // Tags filter
+    if (query.tags.length > 0) {
+      const allTags = [
+        ...(ledger.globalMetaTags || []),
+        ...(exchange.userMetaTags || []),
+        ...(exchange.councilMetaTags || [])
+      ];
+
+      const hasTag = query.tags.some(tag =>
+        allTags.some(existingTag => existingTag.toLowerCase().includes(tag.toLowerCase()))
+      );
+
+      if (!hasTag) {
+        return false;
+      }
+    }
+
+    // Date filter
+    if (query.timeRange.startDate || query.timeRange.endDate) {
+      const exchangeDate = exchange.timestamp.split('T')[0];
+
+      if (query.timeRange.startDate && exchangeDate < query.timeRange.startDate) {
+        return false;
+      }
+
+      if (query.timeRange.endDate && exchangeDate > query.timeRange.endDate) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+}
+
+function applySorting(results) {
+  const sortBy = appState.searchQuery.sortBy;
+
+  return results.sort((a, b) => {
+    switch (sortBy) {
+      case 'newest':
+        return b.exchange.timestamp.localeCompare(a.exchange.timestamp);
+      case 'oldest':
+        return a.exchange.timestamp.localeCompare(b.exchange.timestamp);
+      case 'importance':
+        // For demo, use status as importance indicator
+        const importanceOrder = { 'unresolved': 3, 'resolved': 2, 'dismissed': 1 };
+        return (importanceOrder[b.exchange.status] || 0) - (importanceOrder[a.exchange.status] || 0);
+      case 'relevance':
+      default:
+        // Use score if available (from full text search), otherwise timestamp
+        return (b.score || 0) - (a.score || 0) || b.exchange.timestamp.localeCompare(a.exchange.timestamp);
+    }
+  });
+}
+
+function applyPagination(results) {
+  const { currentPage, pageSize } = appState.searchQuery;
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+
+  return results.slice(startIndex, endIndex);
+}
+
+function renderResults(results) {
+  const resultsContainer = document.getElementById('resultsList');
+
+  if (results.length === 0) {
+    renderEmptyState();
+    return;
+  }
+
+  resultsContainer.innerHTML = results.map(result => renderResultCard(result)).join('');
+}
+
+function renderResultCard(result) {
+  const { exchange, ledger } = result;
+  const isSelected = appState.selection.selectedRecordIds.includes(`${ledger.ledgerId}_${exchange.exchangeId}`);
+  const isActive = appState.selection.activeRecordId === `${ledger.ledgerId}_${exchange.exchangeId}`;
+
+  const pills = [
+    { text: exchange.status, class: 'status' },
+    { text: ledger.title.split(' ')[0], class: 'type' }
+  ];
+
+  const highlights = result.highlights || [];
+  const preview = truncateText(exchange.userMessage, 150);
+
+  return `
+    <div class="result-card ${isSelected ? 'selected' : ''} ${isActive ? 'active' : ''}"
+         data-ledger-id="${ledger.ledgerId}"
+         data-exchange-id="${exchange.exchangeId}">
+
+      <div class="result-header">
+        <div class="result-pills">
+          ${pills.map(pill => `<span class="pill ${pill.class}">${pill.text}</span>`).join('')}
+        </div>
+        <input type="checkbox"
+               class="result-checkbox"
+               ${isSelected ? 'checked' : ''}
+               onchange="toggleResultSelection('${ledger.ledgerId}', '${exchange.exchangeId}', this.checked)">
+      </div>
+
+      <div class="result-content">
+        <div class="result-title">${ledger.title}</div>
+        <div class="result-preview">${preview}</div>
+        ${highlights.length > 0 ? `<div class="result-highlights">Matches: ${highlights.join(', ')}</div>` : ''}
+      </div>
+
+      <div class="result-metadata">
+        <span>${formatDate(exchange.timestamp)}</span>
+        <span>•</span>
+        <span>${formatTime(exchange.timestamp)}</span>
+        ${exchange.userMetaTags?.length ? `<span>•</span><span>${exchange.userMetaTags.slice(0, 2).join(', ')}</span>` : ''}
+      </div>
+
+      <div class="result-actions">
+        <button class="btn secondary" onclick="openResultDetails('${ledger.ledgerId}', '${exchange.exchangeId}')">
+          View Details
+        </button>
+        <button class="btn secondary" onclick="addToDetailsActions('${ledger.ledgerId}', '${exchange.exchangeId}')">
+          Add to Details & Actions
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderEmptyState() {
+  const resultsContainer = document.getElementById('resultsList');
+
+  if (appState.searchQuery.queryText || !isDefaultFilters()) {
+    // No results for search/filters
+    resultsContainer.innerHTML = `
+      <div class="empty-state">
+        <h3>No results found</h3>
+        <p>Try adjusting your search terms or filters</p>
+        <button class="btn secondary" onclick="clearAllFilters()">Clear all filters</button>
+      </div>
+    `;
+  } else {
+    // Default empty state
+    resultsContainer.innerHTML = `
+      <div class="empty-state">
+        <h3>Start your search</h3>
+        <p>Enter a query below or use the filters to find your memories</p>
+        <div class="example-queries">
+          <p class="meta">Try these:</p>
+          <button class="example-query" onclick="runExampleQuery('spirituality unresolved')">spirituality unresolved</button>
+          <button class="example-query" onclick="runExampleQuery('financial independence')">financial independence</button>
+          <button class="example-query" onclick="runExampleQuery('education homeschooling')">education homeschooling</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function updateResultsHeader() {
+  const { totalResults, elapsedTime, currentResults } = appState.ui;
+  const { currentPage, pageSize } = appState.searchQuery;
+
+  document.getElementById('resultCount').textContent =
+    totalResults === 1 ? '1 result' : `${totalResults} results`;
+
+  document.getElementById('elapsedTime').textContent = `in ${elapsedTime}ms`;
+
+  document.getElementById('currentSort').textContent =
+    `Sort: ${appState.searchQuery.sortBy.charAt(0).toUpperCase() + appState.searchQuery.sortBy.slice(1)}`;
+
+  // Count active filters
+  const activeFilters = countActiveFilters();
+  document.getElementById('activeFilters').textContent =
+    activeFilters === 0 ? 'No filters' :
+    activeFilters === 1 ? '1 filter active' : `${activeFilters} filters active`;
+
+  // Update bulk bar if needed
+  updateBulkBar();
+}
+
+function countActiveFilters() {
+  const q = appState.searchQuery;
+  let count = 0;
+
+  if (q.queryText) count++;
+  if (q.types.length < 4) count++;
+  if (q.holons.length > 0) count++;
+  if (q.domains.length > 0) count++;
+  if (q.resolutionStatus !== 'all') count++;
+  if (q.consensusLevel !== 'all') count++;
+  if (q.importance !== 'all') count++;
+  if (q.tags.length > 0) count++;
+  if (q.timeRange.startDate || q.timeRange.endDate) count++;
+  if (q.includeRelations) count++;
+
+  return count;
+}
+
+function updatePagination() {
+  const { totalResults } = appState.ui;
+  const { currentPage, pageSize } = appState.searchQuery;
+  const totalPages = Math.ceil(totalResults / pageSize);
+
+  const paginationEl = document.getElementById('pagination');
+
+  if (totalPages <= 1) {
+    paginationEl.style.display = 'none';
+    return;
+  }
+
+  paginationEl.style.display = 'flex';
+
+  document.getElementById('currentPage').textContent = currentPage;
+  document.getElementById('totalPages').textContent = totalPages;
+
+  const prevBtn = document.getElementById('prevPage');
+  const nextBtn = document.getElementById('nextPage');
+
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === totalPages;
+}
+
+function updateBulkBar() {
+  const bulkBar = document.getElementById('bulkBar');
+  const selectedCount = appState.selection.selectedRecordIds.length;
+
+  if (selectedCount === 0) {
+    bulkBar.style.display = 'none';
+  } else {
+    bulkBar.style.display = 'flex';
+    document.getElementById('selectedCount').textContent =
+      selectedCount === 1 ? '1 selected' : `${selectedCount} selected`;
+  }
+}
+
+function truncateText(text, maxLength) {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
+}
+
+// Center Column Event Handlers
+
+function toggleResultSelection(ledgerId, exchangeId, isSelected) {
+  const recordId = `${ledgerId}_${exchangeId}`;
+
+  if (isSelected) {
+    if (!appState.selection.selectedRecordIds.includes(recordId)) {
+      appState.selection.selectedRecordIds.push(recordId);
+    }
+  } else {
+    appState.selection.selectedRecordIds = appState.selection.selectedRecordIds.filter(id => id !== recordId);
+  }
+
+  updateBulkBar();
+}
+
+function openResultDetails(ledgerId, exchangeId) {
+  const recordId = `${ledgerId}_${exchangeId}`;
+  appState.selection.activeRecordId = recordId;
+
+  // Switch to details tab
+  switchToTab('details');
+
+  // Re-render results to show active state
+  renderResults(appState.ui.currentResults);
+
+  // This will be implemented in the next step
+  console.log('Opening details for:', ledgerId, exchangeId);
+}
+
+function addToDetailsActions(ledgerId, exchangeId) {
+  const recordId = `${ledgerId}_${exchangeId}`;
+
+  // Add to selection if not already selected
+  if (!appState.selection.selectedRecordIds.includes(recordId)) {
+    appState.selection.selectedRecordIds.push(recordId);
+    updateBulkBar();
+
+    // Re-render the specific card to show selection
+    const cardEl = document.querySelector(`[data-ledger-id="${ledgerId}"][data-exchange-id="${exchangeId}"]`);
+    if (cardEl) {
+      const checkbox = cardEl.querySelector('.result-checkbox');
+      checkbox.checked = true;
+      cardEl.classList.add('selected');
+    }
+  }
+
+  // Set as active record and display in right panel
+  appState.selection.activeRecordId = recordId;
+
+  // Switch to Details tab and populate with content
+  switchRightTab('details');
+  renderRecordDetails(ledgerId, exchangeId);
+
+  // Update preview list as well
+  updatePreviewList();
+
+  showToast('Added to Details & Actions panel');
+}
+
+// Keep the old function for backward compatibility
+function addToPreview(ledgerId, exchangeId) {
+  // Redirect to the new function
+  addToDetailsActions(ledgerId, exchangeId);
+}
+
+function runExampleQuery(query) {
+  document.getElementById('queryInput').value = query;
+  appState.searchQuery.queryText = query;
+  executeSearch();
+}
+
+function clearAllFilters() {
+  // Reset to default state
+  appState.searchQuery = {
+    queryText: '',
+    timeRange: { preset: 'all', startDate: null, endDate: null },
+    types: ['user_question', 'external_response', 'holon_response', 'meta_synthesis'],
+    holons: [],
+    domains: [],
+    resolutionStatus: 'all',
+    consensusLevel: 'all',
+    importance: 'all',
+    tags: [],
+    includeRelations: false,
+    sortBy: 'relevance',
+    pageSize: 25,
+    currentPage: 1
+  };
+
+  // Clear query input
+  document.getElementById('queryInput').value = '';
+
+  // Update UI
+  updateFilterUI();
+
+  // Reset quick filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('.filter-btn[data-preset="all"]')?.classList.add('active');
+
+  // Execute search
+  executeSearch();
+
+  showToast('All filters cleared');
+}
+
+function showErrorState(message) {
+  const resultsContainer = document.getElementById('resultsList');
+  resultsContainer.innerHTML = `
+    <div class="empty-state">
+      <h3>Error</h3>
+      <p>${message}</p>
+      <button class="btn primary" onclick="executeSearch()">Retry</button>
+    </div>
+  `;
+}
+
+// Tab switching function
+function switchToTab(tabName) {
+  // Remove active class from all tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.style.display = 'none';
+    content.classList.remove('active');
+  });
+
+  // Activate selected tab
+  document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+  const tabContent = document.getElementById(`${tabName}Tab`);
+  tabContent.style.display = 'block';
+  tabContent.classList.add('active');
+
+  appState.ui.activeTab = tabName;
+}
+
+// Global functions for onclick handlers
+window.toggleResultSelection = toggleResultSelection;
+window.openResultDetails = openResultDetails;
+window.addToPreview = addToPreview;
+window.addToDetailsActions = addToDetailsActions;
+window.runExampleQuery = runExampleQuery;
+window.clearAllFilters = clearAllFilters;
+
+// Initialize Center Column
+function initializeCenterColumn() {
+  const queryInput = document.getElementById('queryInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const syntaxHelpBtn = document.getElementById('syntaxHelpBtn');
+  const clearFiltersBtn = document.getElementById('clearFilters');
+  const createSummaryBtn = document.getElementById('createSummaryBtn');
+  const prevPageBtn = document.getElementById('prevPage');
+  const nextPageBtn = document.getElementById('nextPage');
+
+  // Query input with debounced search
+  const debouncedSearch = debounce(() => {
+    appState.searchQuery.queryText = queryInput.value.trim();
+    appState.searchQuery.currentPage = 1; // Reset to first page
+    executeSearch();
+  }, 500);
+
+  queryInput.addEventListener('input', debouncedSearch);
+
+  // Enter key to search immediately
+  queryInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      appState.searchQuery.queryText = queryInput.value.trim();
+      appState.searchQuery.currentPage = 1;
+      executeSearch();
+    }
+  });
+
+  // Search button
+  searchBtn.addEventListener('click', () => {
+    appState.searchQuery.queryText = queryInput.value.trim();
+    appState.searchQuery.currentPage = 1;
+    executeSearch();
+  });
+
+  // Syntax help button
+  syntaxHelpBtn.addEventListener('click', () => {
+    document.getElementById('helpModal').style.display = 'flex';
+  });
+
+  // Clear filters button
+  clearFiltersBtn.addEventListener('click', clearAllFilters);
+
+  // Create topic summary button
+  createSummaryBtn.addEventListener('click', () => {
+    if (appState.ui.currentResults.length === 0) {
+      showToast('No results to summarize');
+      return;
+    }
+    // Switch to preview tab and trigger summary
+    switchToTab('preview');
+    showToast('Topic summary feature coming soon');
+  });
+
+  // Pagination buttons
+  prevPageBtn.addEventListener('click', () => {
+    if (appState.searchQuery.currentPage > 1) {
+      appState.searchQuery.currentPage--;
+      executeSearch();
+    }
+  });
+
+  nextPageBtn.addEventListener('click', () => {
+    const totalPages = Math.ceil(appState.ui.totalResults / appState.searchQuery.pageSize);
+    if (appState.searchQuery.currentPage < totalPages) {
+      appState.searchQuery.currentPage++;
+      executeSearch();
+    }
+  });
+
+  // Bulk action buttons
+  initializeBulkActions();
+
+  console.log('Center column initialized');
+}
+
+function initializeBulkActions() {
+  const selectAllPageBtn = document.getElementById('selectAllPage');
+  const selectAllResultsBtn = document.getElementById('selectAllResults');
+  const deselectAllBtn = document.getElementById('deselectAll');
+  const bulkPreviewBtn = document.getElementById('bulkPreview');
+  const bulkExportBtn = document.getElementById('bulkExport');
+  const bulkCopyBtn = document.getElementById('bulkCopy');
+
+  selectAllPageBtn.addEventListener('click', () => {
+    appState.ui.currentResults.forEach(result => {
+      const recordId = `${result.ledger.ledgerId}_${result.exchange.exchangeId}`;
+      if (!appState.selection.selectedRecordIds.includes(recordId)) {
+        appState.selection.selectedRecordIds.push(recordId);
+      }
+    });
+
+    // Update UI
+    renderResults(appState.ui.currentResults);
+    updateBulkBar();
+    showToast(`Selected ${appState.ui.currentResults.length} items on page`);
+  });
+
+  selectAllResultsBtn.addEventListener('click', () => {
+    // This would require confirmation for large result sets
+    const totalResults = appState.ui.totalResults;
+    if (totalResults > 100) {
+      if (!confirm(`Select all ${totalResults} results? This may slow down the interface.`)) {
+        return;
+      }
+    }
+
+    // For demo, just select current page
+    selectAllPageBtn.click();
+  });
+
+  deselectAllBtn.addEventListener('click', () => {
+    appState.selection.selectedRecordIds = [];
+    renderResults(appState.ui.currentResults);
+    updateBulkBar();
+    showToast('All items deselected');
+  });
+
+  bulkPreviewBtn.addEventListener('click', () => {
+    if (appState.selection.selectedRecordIds.length === 0) {
+      showToast('No items selected');
+      return;
+    }
+    switchToTab('preview');
+    showToast(`Added ${appState.selection.selectedRecordIds.length} items to preview`);
+  });
+
+  bulkExportBtn.addEventListener('click', () => {
+    if (appState.selection.selectedRecordIds.length === 0) {
+      showToast('No items selected');
+      return;
+    }
+    exportSelectedRecords();
+  });
+
+  bulkCopyBtn.addEventListener('click', () => {
+    if (appState.selection.selectedRecordIds.length === 0) {
+      showToast('No items selected');
+      return;
+    }
+    copySelectedAsMarkdown();
+  });
+}
+
+function exportSelectedRecords() {
+  const selectedRecords = getSelectedRecords();
+  const jsonData = JSON.stringify(selectedRecords, null, 2);
+
+  const blob = new Blob([jsonData], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `dynamo-export-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast(`Exported ${selectedRecords.length} records`);
+}
+
+function copySelectedAsMarkdown() {
+  const selectedRecords = getSelectedRecords();
+
+  let markdown = `# DYNAMO Memory Export\n\n`;
+  markdown += `Generated: ${new Date().toLocaleString()}\n`;
+  markdown += `Records: ${selectedRecords.length}\n\n`;
+
+  selectedRecords.forEach((record, index) => {
+    const { ledger, exchange } = record;
+    markdown += `## ${index + 1}. ${ledger.title}\n\n`;
+    markdown += `**Date:** ${formatDate(exchange.timestamp)}\n`;
+    markdown += `**Status:** ${exchange.status}\n`;
+    markdown += `**Tags:** ${[...(exchange.userMetaTags || []), ...(exchange.councilMetaTags || [])].join(', ')}\n\n`;
+    markdown += `**User Question:**\n${exchange.userMessage}\n\n`;
+    markdown += `**Council Response:**\n${exchange.councilResponse}\n\n`;
+    markdown += `---\n\n`;
+  });
+
+  navigator.clipboard.writeText(markdown).then(() => {
+    showToast(`Copied ${selectedRecords.length} records as Markdown`);
+  }).catch(() => {
+    showToast('Failed to copy to clipboard');
+  });
+}
+
+function getSelectedRecords() {
+  const selectedRecords = [];
+
+  appState.selection.selectedRecordIds.forEach(recordId => {
+    const [ledgerId, exchangeId] = recordId.split('_');
+    const fullConversation = getFullConversation(ledgerId, exchangeId);
+    if (fullConversation) {
+      selectedRecords.push(fullConversation);
+    }
+  });
+
+  return selectedRecords;
+}
+
+// Initialize Left Sidebar
+function initializeLeftSidebar() {
+  initializeCollapsibleSections();
+  initializeQuickFilters();
+  initializeTimeRangeFilters();
+  initializeTypeFilters();
+  initializeHolonFilters();
+  initializeDomainFilters();
+  initializeStatusFilters();
+  initializeTagFilters();
+  initializeRelationsToggle();
+  initializeSortAndPageControls();
+  initializeSavedSearches();
+
+  console.log('Left sidebar filters initialized');
+}
+
+// Right Sidebar Functions
+
+function initializeRightSidebar() {
+  // Tab navigation
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabName = btn.dataset.tab;
+      switchToTab(tabName);
+    });
+  });
+
+  // Preview controls
+  initializePreviewControls();
+
+  // Send to Council button
+  initializeSendToCouncil();
+
+  console.log('Right sidebar initialized');
+}
+
+function initializePreviewControls() {
+  const summarizeBtn = document.getElementById('summarizeBtn');
+  const previewTitle = document.getElementById('previewTitle');
+
+  summarizeBtn.addEventListener('click', () => {
+    generateSummaryFromSelection();
+  });
+
+  previewTitle.addEventListener('input', () => {
+    updateTokenCount();
+  });
+
+  // Preview mode radio buttons
+  document.querySelectorAll('input[name="previewMode"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      renderPreviewList();
+    });
+  });
+}
+
+function initializeSendToCouncil() {
+  const sendBtn = document.getElementById('sendToCouncilBtn');
+
+  sendBtn.addEventListener('click', () => {
+    if (appState.selection.selectedRecordIds.length === 0) {
+      showToast('No records selected for Council');
+      return;
+    }
+
+    sendToCouncilChat();
+  });
+}
+
+// Record Details Tab Functions
+
+function renderRecordDetails(ledgerId, exchangeId) {
+  const detailsTab = document.getElementById('detailsTab');
+  const conversation = getFullConversation(ledgerId, exchangeId);
+
+  if (!conversation) {
+    detailsTab.innerHTML = `
+      <div class="empty-state">
+        <p>Record not found</p>
+      </div>
+    `;
+    return;
+  }
+
+  const { ledger, exchange, context } = conversation;
+  const allTags = [
+    ...(ledger.globalMetaTags || []),
+    ...(exchange.userMetaTags || []),
+    ...(exchange.councilMetaTags || [])
+  ];
+
+  detailsTab.innerHTML = `
+    <div class="record-detail">
+      <div class="detail-header">
+        <h3>${ledger.title}</h3>
+        <div class="detail-meta">
+          <span class="pill status">${exchange.status}</span>
+          <span class="meta">${formatDate(exchange.timestamp)} at ${formatTime(exchange.timestamp)}</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4>User Question</h4>
+        <div class="detail-content user-message">
+          ${highlightSearchTerms(exchange.userMessage)}
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4>Council Response</h4>
+        <div class="detail-content council-response">
+          ${highlightSearchTerms(exchange.councilResponse)}
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4>Metadata</h4>
+        <div class="metadata-table">
+          <div class="metadata-row">
+            <span class="metadata-label">Ledger ID:</span>
+            <span class="metadata-value">${ledger.ledgerId}</span>
+          </div>
+          <div class="metadata-row">
+            <span class="metadata-label">Exchange ID:</span>
+            <span class="metadata-value">${exchange.exchangeId}</span>
+          </div>
+          <div class="metadata-row">
+            <span class="metadata-label">Status:</span>
+            <span class="metadata-value">${exchange.status}</span>
+          </div>
+          <div class="metadata-row">
+            <span class="metadata-label">Date Created:</span>
+            <span class="metadata-value">${formatDate(ledger.dateCreated)}</span>
+          </div>
+          <div class="metadata-row">
+            <span class="metadata-label">Last Updated:</span>
+            <span class="metadata-value">${formatDate(exchange.timestamp)}</span>
+          </div>
+          <div class="metadata-row">
+            <span class="metadata-label">Tags:</span>
+            <span class="metadata-value">
+              ${allTags.length > 0 ? allTags.map(tag => `<span class="tag-chip">${tag}</span>`).join('') : 'None'}
+            </span>
+          </div>
+          ${context.length > 0 ? `
+            <div class="metadata-row">
+              <span class="metadata-label">Context References:</span>
+              <span class="metadata-value">${context.length} related exchange(s)</span>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <button class="btn secondary" onclick="copyRecordToClipboard('${ledgerId}', '${exchangeId}')">
+          Copy Record
+        </button>
+        <button class="btn secondary" onclick="exportSingleRecord('${ledgerId}', '${exchangeId}')">
+          Export JSON
+        </button>
+        <button class="btn primary" onclick="addToDetailsActions('${ledgerId}', '${exchangeId}')">
+          Add to Details & Actions
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function highlightSearchTerms(text) {
+  const query = appState.searchQuery.queryText.toLowerCase();
+  if (!query) return text;
+
+  const regex = new RegExp(`(${query})`, 'gi');
+  return text.replace(regex, '<mark>$1</mark>');
+}
+
+// Thread View Tab Functions
+
+function renderThreadView(ledgerId, exchangeId) {
+  const threadTab = document.getElementById('threadTab');
+  const conversation = getFullConversation(ledgerId, exchangeId);
+
+  if (!conversation) {
+    threadTab.innerHTML = `
+      <div class="empty-state">
+        <p>Thread not found</p>
+      </div>
+    `;
+    return;
+  }
+
+  const { ledger, exchange, context } = conversation;
+  const allExchanges = [exchange, ...context];
+
+  threadTab.innerHTML = `
+    <div class="thread-view">
+      <div class="thread-header">
+        <h3>Conversation Thread</h3>
+        <div class="thread-meta">
+          <span class="meta">${ledger.title}</span>
+          <span class="meta">•</span>
+          <span class="meta">${allExchanges.length} exchange(s)</span>
+        </div>
+      </div>
+
+      <div class="thread-list">
+        ${renderThreadExchanges(ledger, allExchanges, exchangeId)}
+      </div>
+
+      <div class="thread-actions">
+        <button class="btn secondary" onclick="selectEntireThread('${ledgerId}')">
+          Add Entire Thread to Preview
+        </button>
+        <button class="btn secondary" onclick="copyThreadAsMarkdown('${ledgerId}')">
+          Copy Thread as Markdown
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderThreadExchanges(ledger, exchanges, activeExchangeId) {
+  return exchanges.map(exchange => {
+    const isActive = exchange.exchangeId === activeExchangeId;
+    const isSelected = appState.selection.selectedRecordIds.includes(`${ledger.ledgerId}_${exchange.exchangeId}`);
+
+    return `
+      <div class="thread-exchange ${isActive ? 'active' : ''} ${isSelected ? 'selected' : ''}"
+           data-exchange-id="${exchange.exchangeId}">
+        <div class="thread-exchange-header">
+          <div class="thread-exchange-meta">
+            <span class="pill status">${exchange.status}</span>
+            <span class="meta">${formatDate(exchange.timestamp)}</span>
+          </div>
+          <input type="checkbox"
+                 ${isSelected ? 'checked' : ''}
+                 onchange="toggleResultSelection('${ledger.ledgerId}', '${exchange.exchangeId}', this.checked)">
+        </div>
+
+        <div class="thread-exchange-content">
+          <div class="thread-question">
+            <strong>Q:</strong> ${truncateText(exchange.userMessage, 100)}
+          </div>
+          <div class="thread-response">
+            <strong>A:</strong> ${truncateText(exchange.councilResponse, 150)}
+          </div>
+        </div>
+
+        <div class="thread-exchange-actions">
+          <button class="btn secondary" onclick="openResultDetails('${ledger.ledgerId}', '${exchange.exchangeId}')">
+            View Full
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Preview for Council Tab Functions
+
+function renderPreviewList() {
+  const previewList = document.getElementById('previewList');
+  const selectedRecords = getSelectedRecords();
+
+  if (selectedRecords.length === 0) {
+    previewList.innerHTML = `
+      <div class="empty-state">
+        <p>No items selected for preview</p>
+        <p class="meta">Select records from the results to build your preview</p>
+      </div>
+    `;
+    updateTokenCount();
+    return;
+  }
+
+  const previewMode = document.querySelector('input[name="previewMode"]:checked').value;
+
+  previewList.innerHTML = selectedRecords.map((record, index) => {
+    const { ledger, exchange } = record;
+    const content = previewMode === 'concise'
+      ? truncateText(exchange.userMessage, 100) + '...'
+      : exchange.userMessage + '\n\n' + exchange.councilResponse;
+
+    return `
+      <div class="preview-item" data-index="${index}" draggable="true">
+        <div class="preview-item-header">
+          <span class="preview-item-title">${ledger.title}</span>
+          <button class="remove" onclick="removeFromPreview('${ledger.ledgerId}_${exchange.exchangeId}')">×</button>
+        </div>
+        <div class="preview-item-content">
+          ${content}
+        </div>
+        <div class="preview-item-meta">
+          <span class="meta">${formatDate(exchange.timestamp)}</span>
+          <span class="meta">•</span>
+          <span class="meta">${exchange.status}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Enable drag and drop reordering
+  initializePreviewDragDrop();
+
+  // Update token count and provenance
+  updateTokenCount();
+  updateProvenance();
+}
+
+function initializePreviewDragDrop() {
+  const previewItems = document.querySelectorAll('.preview-item');
+
+  previewItems.forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', e.target.dataset.index);
+      e.target.style.opacity = '0.5';
+    });
+
+    item.addEventListener('dragend', (e) => {
+      e.target.style.opacity = '1';
+    });
+
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    item.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'));
+      const targetIndex = parseInt(e.target.closest('.preview-item').dataset.index);
+
+      if (draggedIndex !== targetIndex) {
+        reorderPreviewItems(draggedIndex, targetIndex);
+      }
+    });
+  });
+}
+
+function reorderPreviewItems(fromIndex, toIndex) {
+  const selectedIds = [...appState.selection.selectedRecordIds];
+  const movedItem = selectedIds.splice(fromIndex, 1)[0];
+  selectedIds.splice(toIndex, 0, movedItem);
+
+  appState.selection.selectedRecordIds = selectedIds;
+  renderPreviewList();
+  showToast('Preview order updated');
+}
+
+function removeFromPreview(recordId) {
+  appState.selection.selectedRecordIds = appState.selection.selectedRecordIds.filter(id => id !== recordId);
+  renderPreviewList();
+  updateBulkBar();
+
+  // Update result card selection if visible
+  const [ledgerId, exchangeId] = recordId.split('_');
+  const cardEl = document.querySelector(`[data-ledger-id="${ledgerId}"][data-exchange-id="${exchangeId}"]`);
+  if (cardEl) {
+    const checkbox = cardEl.querySelector('.result-checkbox');
+    checkbox.checked = false;
+    cardEl.classList.remove('selected');
+  }
+
+  showToast('Removed from preview');
+}
+
+function updateTokenCount() {
+  const selectedRecords = getSelectedRecords();
+  const previewTitle = document.getElementById('previewTitle').value;
+  const previewMode = document.querySelector('input[name="previewMode"]:checked').value;
+
+  let totalTokens = previewTitle.length / 4; // Rough token estimate for title
+
+  selectedRecords.forEach(record => {
+    const { exchange } = record;
+    if (previewMode === 'concise') {
+      totalTokens += exchange.userMessage.length / 4;
+    } else {
+      totalTokens += (exchange.userMessage.length + exchange.councilResponse.length) / 4;
+    }
+  });
+
+  totalTokens = Math.round(totalTokens);
+  const maxTokens = 16000;
+  const percentage = Math.min((totalTokens / maxTokens) * 100, 100);
+
+  document.getElementById('tokenCount').textContent = totalTokens;
+  document.getElementById('tokenMeter').style.width = percentage + '%';
+
+  // Warning colors
+  const meter = document.getElementById('tokenMeter');
+  if (percentage > 90) {
+    meter.style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
+  } else if (percentage > 75) {
+    meter.style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
+  } else {
+    meter.style.background = 'linear-gradient(90deg, var(--success), var(--warn))';
+  }
+}
+
+function updateProvenance() {
+  const activeFilters = [];
+
+  if (appState.searchQuery.queryText) {
+    activeFilters.push(`Query: "${appState.searchQuery.queryText}"`);
+  }
+
+  if (appState.searchQuery.resolutionStatus !== 'all') {
+    activeFilters.push(`Status: ${appState.searchQuery.resolutionStatus}`);
+  }
+
+  if (appState.searchQuery.tags.length > 0) {
+    activeFilters.push(`Tags: ${appState.searchQuery.tags.join(', ')}`);
+  }
+
+  if (appState.searchQuery.timeRange.startDate || appState.searchQuery.timeRange.endDate) {
+    activeFilters.push('Date filtered');
+  }
+
+  const provenanceText = activeFilters.length > 0 ? activeFilters.join(' • ') : 'No filters applied';
+  document.getElementById('provenanceInfo').textContent = provenanceText;
+}
+
+function generateSummaryFromSelection() {
+  const selectedRecords = getSelectedRecords();
+
+  if (selectedRecords.length === 0) {
+    showToast('No records selected to summarize');
+    return;
+  }
+
+  // For demo purposes, generate a simple summary
+  const topics = new Set();
+  const statuses = { resolved: 0, unresolved: 0, dismissed: 0 };
+
+  selectedRecords.forEach(record => {
+    const { ledger, exchange } = record;
+    topics.add(ledger.title);
+    statuses[exchange.status]++;
+  });
+
+  const summary = `
+## Topic Summary
+
+**Records Analyzed:** ${selectedRecords.length}
+**Unique Topics:** ${topics.size}
+**Status Distribution:** ${statuses.resolved} resolved, ${statuses.unresolved} unresolved, ${statuses.dismissed} dismissed
+
+**Key Topics:**
+${Array.from(topics).slice(0, 5).map(topic => `• ${topic}`).join('\n')}
+
+**Overview:**
+This collection represents conversations spanning multiple domains including ${Array.from(topics).slice(0, 3).join(', ')}. The discussions range from practical questions to deeper philosophical inquiries, reflecting the breadth of topics addressed by the DYNAMO Council.
+
+*Generated on ${new Date().toLocaleString()}*
+  `.trim();
+
+  // Add summary as a new preview item
+  const summaryItem = {
+    type: 'summary',
+    content: summary,
+    title: 'Generated Topic Summary',
+    timestamp: new Date().toISOString()
+  };
+
+  // For demo, just show as toast - in real implementation would add to preview
+  showToast('Summary generated (see console for details)');
+  console.log('Generated Summary:', summary);
+}
+
+// Council Transfer Functions
+
+function sendToCouncilChat() {
+  const selectedRecords = getSelectedRecords();
+  const previewTitle = document.getElementById('previewTitle').value.trim() || 'Memory Retrieval Context';
+  const previewMode = document.querySelector('input[name="previewMode"]:checked').value;
+
+  // Create envelope for Council
+  const envelope = {
+    title: previewTitle,
+    seedContext: formatContextForCouncil(selectedRecords, previewMode),
+    sourceFilters: { ...appState.searchQuery },
+    metadata: {
+      recordCount: selectedRecords.length,
+      retrievalDate: new Date().toISOString(),
+      dashboardVersion: '1.0.0',
+      totalTokens: Math.round(document.getElementById('tokenCount').textContent)
+    }
+  };
+
+  // Store in localStorage for Council Chat to pick up
+  try {
+    localStorage.setItem('dynamoCouncilEnvelope', JSON.stringify(envelope));
+    showToast('Sent to Council Chat successfully!');
+
+    // Announce success to screen readers
+    if (window.announceStatus) {
+      window.announceStatus('Successfully sent to Council Chat.');
+    }
+
+    // In real implementation, would navigate to Council Chat page
+    console.log('Council Envelope:', envelope);
+
+    // For demo, show success message with link simulation
+    setTimeout(() => {
+      if (confirm('Context sent to Council Chat. Open Council Chat page? (This would navigate in real implementation)')) {
+        // window.location.href = '../index.html';
+        console.log('Would navigate to Council Chat with context loaded');
+      }
+    }, 1500);
+
+  } catch (error) {
+    console.error('Failed to send to Council:', error);
+    showToast('Failed to send to Council Chat');
+  }
+}
+
+function formatContextForCouncil(records, mode) {
+  let context = '';
+
+  records.forEach((record, index) => {
+    const { ledger, exchange } = record;
+
+    context += `--- Record ${index + 1}: ${ledger.title} ---\n`;
+    context += `Date: ${formatDate(exchange.timestamp)}\n`;
+    context += `Status: ${exchange.status}\n\n`;
+
+    context += `User Question:\n${exchange.userMessage}\n\n`;
+
+    if (mode === 'full') {
+      context += `Previous Council Response:\n${exchange.councilResponse}\n\n`;
+    }
+
+    context += `Tags: ${[...(exchange.userMetaTags || []), ...(exchange.councilMetaTags || [])].join(', ')}\n\n`;
+  });
+
+  return context;
+}
+
+// Helper Functions for Right Sidebar
+
+function copyRecordToClipboard(ledgerId, exchangeId) {
+  const conversation = getFullConversation(ledgerId, exchangeId);
+  if (!conversation) return;
+
+  const { ledger, exchange } = conversation;
+  const markdown = `# ${ledger.title}\n\n**Date:** ${formatDate(exchange.timestamp)}\n**Status:** ${exchange.status}\n\n**Question:**\n${exchange.userMessage}\n\n**Response:**\n${exchange.councilResponse}`;
+
+  navigator.clipboard.writeText(markdown).then(() => {
+    showToast('Record copied to clipboard');
+  }).catch(() => {
+    showToast('Failed to copy record');
+  });
+}
+
+function exportSingleRecord(ledgerId, exchangeId) {
+  const conversation = getFullConversation(ledgerId, exchangeId);
+  if (!conversation) return;
+
+  const jsonData = JSON.stringify(conversation, null, 2);
+  const blob = new Blob([jsonData], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `dynamo-record-${ledgerId}-${exchangeId}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast('Record exported');
+}
+
+function selectEntireThread(ledgerId) {
+  const ledger = getFullLedger(ledgerId);
+  if (!ledger) return;
+
+  ledger.conversations.forEach(exchange => {
+    const recordId = `${ledgerId}_${exchange.exchangeId}`;
+    if (!appState.selection.selectedRecordIds.includes(recordId)) {
+      appState.selection.selectedRecordIds.push(recordId);
+    }
+  });
+
+  renderPreviewList();
+  updateBulkBar();
+  showToast(`Added ${ledger.conversations.length} exchanges to preview`);
+}
+
+function copyThreadAsMarkdown(ledgerId) {
+  const ledger = getFullLedger(ledgerId);
+  if (!ledger) return;
+
+  let markdown = `# ${ledger.title}\n\n`;
+  markdown += `**Date Created:** ${formatDate(ledger.dateCreated)}\n`;
+  markdown += `**Exchanges:** ${ledger.conversations.length}\n\n`;
+
+  ledger.conversations.forEach((exchange, index) => {
+    markdown += `## Exchange ${index + 1}\n\n`;
+    markdown += `**Date:** ${formatDate(exchange.timestamp)}\n`;
+    markdown += `**Status:** ${exchange.status}\n\n`;
+    markdown += `**Question:**\n${exchange.userMessage}\n\n`;
+    markdown += `**Response:**\n${exchange.councilResponse}\n\n`;
+    markdown += `---\n\n`;
+  });
+
+  navigator.clipboard.writeText(markdown).then(() => {
+    showToast('Thread copied as Markdown');
+  }).catch(() => {
+    showToast('Failed to copy thread');
+  });
+}
+
+// Update the openResultDetails function to render details
+function openResultDetails(ledgerId, exchangeId) {
+  const recordId = `${ledgerId}_${exchangeId}`;
+  appState.selection.activeRecordId = recordId;
+
+  // Switch to details tab and render
+  switchToTab('details');
+  renderRecordDetails(ledgerId, exchangeId);
+
+  // Re-render results to show active state
+  renderResults(appState.ui.currentResults);
+}
+
+// Global functions for onclick handlers
+window.copyRecordToClipboard = copyRecordToClipboard;
+window.exportSingleRecord = exportSingleRecord;
+window.selectEntireThread = selectEntireThread;
+window.copyThreadAsMarkdown = copyThreadAsMarkdown;
+window.removeFromPreview = removeFromPreview;
+
+// Modal Functions
+function initializeModals() {
+  // Close modal handlers
+  document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modalId = btn.dataset.close;
+      document.getElementById(modalId).style.display = 'none';
+    });
+  });
+
+  // Click outside to close
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.style.display = 'none';
+      }
+    });
+  });
+
+  // Help button
+  document.getElementById('helpBtn').addEventListener('click', () => {
+    document.getElementById('helpModal').style.display = 'flex';
+  });
+}
+
+// Initialize Navigation
+function initializeNavigation() {
+  const councilChatNavBtn = document.getElementById('councilChatNavBtn');
+
+  councilChatNavBtn.addEventListener('click', () => {
+    console.log('Go To DYNAMO Council Chat clicked');
+    showToast('Opening Council Chat...');
+    // Navigate to parent directory index.html (the main DYNAMO app)
+    window.location.href = "../index.html";
+  });
+}
+
+// Helper function for logging (if not already defined)
+function log(message) {
+  console.log(message);
+}
+
+// Initialize Application
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('DYNAMO Memory Retrieval Dashboard loaded');
+  console.log('Past conversations data available:', typeof pastConversations !== 'undefined');
+
+  initializeLeftSidebar();
+  initializeCenterColumn();
+  initializeModals();
+  initializeNavigation();
+  initializeKeyboardShortcuts();
+  initializeAccessibility();
+
+  // Set initial filter UI state
+  updateFilterUI();
+
+  // Load initial results (show recent conversations by default)
+  executeSearch();
+
+  console.log('Dashboard initialization complete');
+});
+
+// Keyboard Shortcuts Implementation
+function initializeKeyboardShortcuts() {
+  document.addEventListener('keydown', function(e) {
+    // Global shortcuts (always active)
+    if (e.key === '/') {
+      e.preventDefault();
+      focusQueryInput();
+      return;
+    }
+
+    if (e.key === 'Escape') {
+      closeModals();
+      clearFocus();
+      return;
+    }
+
+    // Cmd/Ctrl + K for help
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      showHelpModal();
+      return;
+    }
+
+    // Enter for search (when query input is focused)
+    if (e.key === 'Enter' && document.activeElement.id === 'queryInput') {
+      e.preventDefault();
+      executeSearch();
+      return;
+    }
+
+    // Cmd/Ctrl + S to save search
+    if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+      e.preventDefault();
+      if (appState.results.data.length > 0) {
+        showSaveSearchModal();
+      }
+      return;
+    }
+
+    // Cmd/Ctrl + A to select all (when results area is focused)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+      const resultsContainer = document.getElementById('resultsList');
+      if (resultsContainer.contains(document.activeElement) ||
+          document.activeElement === resultsContainer) {
+        e.preventDefault();
+        selectAllOnPage();
+      }
+      return;
+    }
+
+    // Page navigation with [ and ]
+    if (e.key === '[' && appState.results.pagination.page > 1) {
+      e.preventDefault();
+      navigateToPage(appState.results.pagination.page - 1);
+      return;
+    }
+
+    if (e.key === ']' && appState.results.pagination.page < appState.results.pagination.totalPages) {
+      e.preventDefault();
+      navigateToPage(appState.results.pagination.page + 1);
+      return;
+    }
+
+    // Tab shortcuts (only when right sidebar is visible)
+    if (appState.ui.rightSidebarVisible) {
+      if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        switchRightTab('preview');
+        return;
+      }
+
+      if (e.key === 't' || e.key === 'T') {
+        e.preventDefault();
+        switchRightTab('thread');
+        return;
+      }
+
+      if (e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        switchRightTab('details');
+        return;
+      }
+    }
+
+    // Send to Council (when Preview tab is focused and valid)
+    if ((e.key === 'c' || e.key === 'C') &&
+        appState.ui.activeRightTab === 'preview' &&
+        appState.selection.selectedRecordIds.length > 0) {
+      e.preventDefault();
+      sendToCouncilChat();
+      return;
+    }
+  });
+}
+
+function focusQueryInput() {
+  const queryInput = document.getElementById('queryInput');
+  queryInput.focus();
+  queryInput.select();
+}
+
+function closeModals() {
+  // Close any open modals
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.style.display = 'none';
+  });
+}
+
+function clearFocus() {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
+}
+
+function selectAllOnPage() {
+  const checkboxes = document.querySelectorAll('.result-card input[type="checkbox"]');
+  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+  checkboxes.forEach(cb => {
+    cb.checked = !allChecked;
+    const recordId = cb.getAttribute('data-record-id');
+    if (recordId) {
+      updateRecordSelection(recordId, cb.checked);
+    }
+  });
+
+  updateBulkActionsBar();
+  updatePreviewList();
+}
+
+function navigateToPage(pageNumber) {
+  appState.results.pagination.page = pageNumber;
+  executeSearch();
+}
+
+// Accessibility Implementation
+function initializeAccessibility() {
+  // Add ARIA live regions for dynamic content
+  addAriaLiveRegions();
+
+  // Add focus indicators
+  addFocusIndicators();
+
+  // Add ARIA labels and descriptions
+  addAriaLabels();
+
+  // Add keyboard navigation for custom components
+  addKeyboardNavigation();
+
+  // Add screen reader announcements
+  addScreenReaderSupport();
+}
+
+function addAriaLiveRegions() {
+  // Create live region for search results announcements
+  const resultsAnnouncer = document.createElement('div');
+  resultsAnnouncer.id = 'resultsAnnouncer';
+  resultsAnnouncer.setAttribute('aria-live', 'polite');
+  resultsAnnouncer.setAttribute('aria-atomic', 'true');
+  resultsAnnouncer.className = 'sr-only';
+  document.body.appendChild(resultsAnnouncer);
+
+  // Create live region for status announcements
+  const statusAnnouncer = document.createElement('div');
+  statusAnnouncer.id = 'statusAnnouncer';
+  statusAnnouncer.setAttribute('aria-live', 'assertive');
+  statusAnnouncer.setAttribute('aria-atomic', 'true');
+  statusAnnouncer.className = 'sr-only';
+  document.body.appendChild(statusAnnouncer);
+}
+
+function addFocusIndicators() {
+  // Enhanced focus styles are already in CSS
+  // Add focus management for modal dialogs
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      const modal = document.querySelector('.modal[style*="block"]');
+      if (modal) {
+        trapFocusInModal(e, modal);
+      }
+    }
+  });
+}
+
+function trapFocusInModal(e, modal) {
+  const focusableElements = modal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  if (e.shiftKey) {
+    if (document.activeElement === firstElement) {
+      e.preventDefault();
+      lastElement.focus();
+    }
+  } else {
+    if (document.activeElement === lastElement) {
+      e.preventDefault();
+      firstElement.focus();
+    }
+  }
+}
+
+function addAriaLabels() {
+  // Add semantic labels to all interactive elements
+  const searchInput = document.getElementById('queryInput');
+  if (searchInput) {
+    searchInput.setAttribute('aria-label', 'Search your DYNAMO memory');
+    searchInput.setAttribute('aria-describedby', 'searchHelpText');
+  }
+
+  // Add labels to filter sections
+  document.querySelectorAll('.section-header').forEach((header, index) => {
+    header.setAttribute('role', 'button');
+    header.setAttribute('aria-expanded', 'true');
+    header.setAttribute('aria-controls', `section-${index}`);
+
+    const content = header.nextElementSibling;
+    if (content) {
+      content.id = `section-${index}`;
+      content.setAttribute('role', 'region');
+    }
+  });
+
+  // Add labels to result cards
+  document.querySelectorAll('.result-card').forEach((card, index) => {
+    card.setAttribute('role', 'article');
+    card.setAttribute('aria-labelledby', `result-title-${index}`);
+  });
+
+  // Add labels to tab navigation
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.setAttribute('role', 'tab');
+    const tabId = tab.getAttribute('data-tab');
+    tab.setAttribute('aria-controls', `${tabId}-panel`);
+    tab.setAttribute('aria-selected', tab.classList.contains('active'));
+  });
+}
+
+function addKeyboardNavigation() {
+  // Add arrow key navigation for filter chips
+  document.querySelectorAll('.holon-chips, .domain-chips').forEach(container => {
+    container.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const chips = Array.from(container.querySelectorAll('.chip'));
+        const currentIndex = chips.indexOf(document.activeElement);
+
+        if (currentIndex !== -1) {
+          e.preventDefault();
+          const nextIndex = e.key === 'ArrowRight'
+            ? (currentIndex + 1) % chips.length
+            : (currentIndex - 1 + chips.length) % chips.length;
+          chips[nextIndex].focus();
+        }
+      }
+    });
+  });
+
+  // Add enter/space support for custom buttons
+  document.querySelectorAll('.chip, .filter-btn').forEach(element => {
+    element.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        element.click();
+      }
+    });
+  });
+}
+
+function addScreenReaderSupport() {
+  // Function to announce search results
+  window.announceSearchResults = function(count, elapsed) {
+    const announcer = document.getElementById('resultsAnnouncer');
+    if (announcer) {
+      announcer.textContent = `Search completed. Found ${count} results in ${elapsed} milliseconds.`;
+    }
+  };
+
+  // Function to announce status changes
+  window.announceStatus = function(message) {
+    const announcer = document.getElementById('statusAnnouncer');
+    if (announcer) {
+      announcer.textContent = message;
+    }
+  };
+
+  // Function to announce selection changes
+  window.announceSelection = function(count) {
+    const announcer = document.getElementById('statusAnnouncer');
+    if (announcer) {
+      announcer.textContent = `${count} record${count !== 1 ? 's' : ''} selected.`;
+    }
+  };
+}
+</script>
+
+</body>
+</html>

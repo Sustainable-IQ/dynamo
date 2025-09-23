@@ -46,7 +46,9 @@
   .meta{font-size:12px; color:var(--muted);}
   .hr{border:none;height:1px;background:rgba(255,255,255,0.06);margin:12px 0;}
   /* Memory list */
-  .memory-item{background:rgba(255,255,255,0.03); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);}
+  .memory-item{background:rgba(255,255,255,0.03); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); cursor:pointer; transition:all 0.2s ease;}
+  .memory-item:hover{background:rgba(255,255,255,0.05);}
+  .memory-item.selected{background:rgba(124,58,237,0.25); border:2px solid rgba(124,58,237,0.6); box-shadow:0 0 12px rgba(124,58,237,0.3);}
   .memory-item h4{margin:0; font-size:13px;}
   .memory-item p{margin:6px 0 0 0; color:var(--muted); font-size:12px;}
   /* Right AI-Agent rows */
@@ -249,6 +251,7 @@
     <hr>
     <div class="section-title">Recent Threads</div>
     <div id="memoryList" style="display:flex;flex-direction:column;gap:10px"></div>
+    <button class="btn primary" id="addToChatBtn" style="margin-top:12px;">Add to Chat</button>
     <div style="flex-grow:1;"></div>
     <div class="hr"></div>
     <div>
@@ -386,6 +389,13 @@
     {title:"Sacred Codex Uploaded",       text:"A new draft of 'Living Codex' added to memory with tags: AI_Relationship, Ethics."}
   ];
 
+  // Recentthreadcontent - detailed content for each thread
+  const recentThreadContent = {
+    "Research on Renewable Energy": "to be filled out",
+    "Garden Apprenticeship": "to be filled out",
+    "Sacred Codex Uploaded": "to be filled out"
+  };
+
   const communityProjects = [
     {title:"Building a Website for our Organisation", status:"In Progress",     members:"Team Alpha"},
     {title:"Team X working on Strategy Y",            status:"Planning",        members:"Team X"},
@@ -400,6 +410,7 @@
   const aiAgentStrip = document.getElementById('aiAgentStrip');
   const communityProjectsEl = document.getElementById('communityProjects');
   const logArea = document.getElementById('logArea');
+  let selectedMemoryIndex = -1; // Track selected memory item
 
   function addUser(text){
     const el = document.createElement('div');
@@ -431,11 +442,58 @@
 
   function renderMemory(){
     memoryList.innerHTML = '';
-    memory.forEach(m => {
-      const div = document.createElement('div'); div.className='memory-item';
+    memory.forEach((m, index) => {
+      const div = document.createElement('div');
+      div.className = 'memory-item' + (selectedMemoryIndex === index ? ' selected' : '');
       div.innerHTML = `<h4>${m.title}</h4><p>${m.text}</p>`;
+      div.addEventListener('click', () => {
+        selectedMemoryIndex = index;
+        renderMemory(); // Re-render to update selection
+        updateAddToChatButton();
+      });
       memoryList.appendChild(div);
     });
+  }
+
+  function updateAddToChatButton(){
+    // Button remains always enabled to allow showing the alert
+    // Visual feedback is provided through selection highlighting instead
+  }
+
+  function addMemoryToChat(){
+    if(selectedMemoryIndex === -1) {
+      alert("Please select a Memory Thread in the boxes above before Adding to Chat");
+      return;
+    }
+
+    const selectedMemory = memory[selectedMemoryIndex];
+    const memoryContent = recentThreadContent[selectedMemory.title];
+
+    // Add as a past memory message to chat
+    const el = document.createElement('div');
+    el.className = 'msg assistant';
+    el.innerHTML = `<div class="bubble"><strong>Past Memory: ${selectedMemory.title}</strong><br><br>${memoryContent}</div>`;
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+
+    // Add space and "Thinking..." message
+    setTimeout(() => {
+      addAssistant('<p>Thinking…</p>');
+    }, 500);
+
+    // Add Council acknowledgment after 5 seconds
+    setTimeout(() => {
+      addAssistant('The Council acknowledges the memories. We are listening.');
+    }, 5500);
+
+    // Log the action
+    log(`Added memory "${selectedMemory.title}" to chat`);
+    showToast(`Memory added to chat`);
+
+    // Clear selection after adding
+    selectedMemoryIndex = -1;
+    renderMemory();
+    updateAddToChatButton();
   }
 
   function renderCommunityProjects(){
@@ -583,6 +641,7 @@
 
   // EVENTS
   document.getElementById('askBtn').addEventListener('click', runDemo);
+  document.getElementById('addToChatBtn').addEventListener('click', addMemoryToChat);
   document.getElementById('bypassToggle').addEventListener('change', (e)=>{
     const isChecked = e.target.checked;
     log(`Bypass External LLM ${isChecked ? 'enabled' : 'disabled'}`);

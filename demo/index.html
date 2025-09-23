@@ -621,11 +621,11 @@
     addAssistant(intro);
 
     // 2) Space + “Thinking…” beat
-    await wait(1500);
+    await wait(2500);
     addAssistant('<p>Thinking…</p>');
 
     // small pause so the beat reads
-    await wait(7000);
+    await wait(8000);
 
     // 3) Council Synthesis with proper paragraphs
     addAssistant(`<hr class="hr"><h3>Council Synthesis</h3>${produceSynthesis(q)}`);

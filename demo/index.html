@@ -29,7 +29,7 @@
   .login-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);}
   .app{
     display:grid;
-    grid-template-columns: 240px 1.8fr 360px; /* give the center more space */
+    grid-template-columns: 300px 1.8fr 300px; /* give the center more space */
     gap:18px; padding:26px; max-width:1600px; margin:0 auto;
   }
   .panel{border-radius:14px; padding:18px; box-shadow: 0 6px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.05);}
@@ -39,7 +39,7 @@
     height:86vh; display:flex; flex-direction:column; gap:12px; overflow:hidden;
     background:linear-gradient(180deg, var(--center-1), var(--center-2));
   }
-  h2{margin:6px 0 12px 0; font-size:18px; color:#eef2ff;}
+  h2{margin:6px 0 6px 0; font-size:18px; color:#eef2ff;}
   .section-title{font-size:12px; letter-spacing:.2px; color:var(--muted); margin-bottom:6px; text-transform:uppercase;}
   .btn{background:transparent; border:1px solid rgba(255,255,255,0.10); padding:10px 12px; border-radius:10px; cursor:pointer; color:#dbeafe;}
   .btn.primary{background:linear-gradient(90deg,var(--accent), var(--accent-2)); box-shadow:0 8px 18px rgba(124,58,237,0.28); border:none;}
@@ -247,7 +247,7 @@
   <div class="panel left">
     <h2>Dynamo Memories</h2>
     <hr>
-    <button class="btn" id="showMemoryConsoleBtn" style="background:#06b6d4;color:white;border:none;">Go To Memory Console</button>
+    <button class="btn" id="showMemoryConsoleBtn" style="background:#06b6d4;color:white;border:none;width:fit-content;display:inline-block;">Go To Memory Console</button>
     <hr>
     <div class="section-title">Recent Threads</div>
     <div id="memoryList" style="display:flex;flex-direction:column;gap:10px"></div>
@@ -338,7 +338,7 @@
   <div class="panel right">
     <h2>Dynamo Community</h2>
     <hr>
-    <button class="btn" id="showAllCommsBtn" style="background:#06b6d4;color:white;border:none;">Go To Community Console</button>
+    <button class="btn" id="showAllCommsBtn" style="background:#06b6d4;color:white;border:none;width:fit-content;display:inline-block;">Go To Community Console</button>
     <hr>
     <div class="section-title">Recent Community Projects</div>
     <div id="communityProjects" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;"></div>

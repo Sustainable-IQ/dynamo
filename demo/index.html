@@ -274,7 +274,17 @@
         <div style="font-size:18px;font-weight:700">DYNAMO Council Chat</div>
       </div>
       <div class="model-badge">
-        External LLM: <strong>ChatGpt-5</strong>
+        <sup class="help-icon-info" style="position:relative;" onmouseover="this.children[0].style.opacity='1';this.children[0].style.visibility='visible';" onmouseout="this.children[0].style.opacity='0';this.children[0].style.visibility='hidden';">1
+          <div style="position:absolute;top:20px;left:-150px;background:#1a202c;color:#fff;padding:8px 12px;border-radius:6px;font-size:11px;white-space:nowrap;opacity:0;visibility:hidden;transition:opacity 0.3s;z-index:1000;max-width:250px;white-space:normal;width:max-content;">The model and variant will be updated in the LIVE version of DYNAMO</div>
+        </sup>
+        External LLM:
+        <select id="llmSelect" style="background:rgba(10,16,32,0.9);border:1px solid rgba(255,255,255,0.2);color:#e6eef6;padding:2px 6px;border-radius:4px;font-size:12px;cursor:pointer;">
+          <option value="ChatGPT" style="background:#0a1020;color:#e6eef6;">ChatGPT</option>
+          <option value="Claude" style="background:#0a1020;color:#e6eef6;">Claude</option>
+          <option value="Gemini" style="background:#0a1020;color:#e6eef6;">Gemini</option>
+          <option value="Deepseek" style="background:#0a1020;color:#e6eef6;">Deepseek</option>
+          <option value="Grok" style="background:#0a1020;color:#e6eef6;">Grok</option>
+        </select>
       </div>
     </div>
 
@@ -640,6 +650,11 @@
 
   // EVENTS
   document.getElementById('askBtn').addEventListener('click', runDemo);
+  document.getElementById('llmSelect').addEventListener('change', (e)=>{
+    const selectedLLM = e.target.value;
+    log(`External LLM changed to ${selectedLLM}`);
+    showToast(`LLM switched to ${selectedLLM}`);
+  });
   document.getElementById('addToChatBtn').addEventListener('click', addMemoryToChat);
   document.getElementById('bypassToggle').addEventListener('change', (e)=>{
     const isChecked = e.target.checked;

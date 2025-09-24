@@ -27,7 +27,7 @@
   .app{
     display:grid;
     grid-template-columns: 320px 1fr 360px;
-    gap:18px; padding:26px; max-width:1600px; margin:0 auto; height:calc(100vh - 60px);
+    gap:18px; padding:8px 26px 26px 26px; max-width:1600px; margin:0 auto; height:calc(100vh - 60px);
   }
 
   .panel{border-radius:14px; padding:18px; box-shadow: 0 6px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.05); overflow:auto;}
@@ -329,7 +329,7 @@
 <!-- TOP NAVIGATION BAR -->
 <div class="top-nav" role="banner">
   <a href="../index.html" class="dynamo-logo">DYNAMO</a>
-  <div class="tagline">Dynamo Retrieval</div>
+  <div class="tagline">Dynamo Memory Retrieval</div>
   <div class="nav-right">
     <button class="help-btn" id="helpBtn" title="Keyboard Shortcuts">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
@@ -342,7 +342,7 @@
 </div>
 
 <!-- GO TO COUNCIL CHAT BUTTON -->
-<div style="padding: 12px 26px; display: flex; justify-content: flex-end;">
+<div style="padding: 8px 26px 4px 26px; display: flex; justify-content: flex-end;">
   <button class="btn" id="councilChatNavBtn" style="background:#06b6d4;color:white;border:none;padding:8px 12px;width:fit-content;font-weight:normal;">
     Go to Dynamo Council Chat
   </button>
@@ -627,7 +627,7 @@
       <div class="query-input-wrapper">
         <textarea
           id="queryInput"
-          placeholder="Search your Dynamo memory: try 'show meta_synthesis on project Atlas unresolved last 30 days'"
+          placeholder="Search Your Dynamo Memories"
           rows="3"
         ></textarea>
         <div class="query-actions">

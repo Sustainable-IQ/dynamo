@@ -69,9 +69,9 @@
     background:linear-gradient(180deg, rgba(124,58,237,0.05), rgba(124,58,237,0.03) 30%, rgba(255,255,255,0.02) 100%);
   }
   .msg{max-width:900px; line-height:1.5; font-size:14px;}
-  .msg.user{align-self:flex-end; background:rgba(124,58,237,0.12); border:1px solid rgba(124,58,237,0.35);}
-  .msg.assistant{align-self:flex-start; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);}
-  .bubble{padding:12px 14px; border-radius:14px; }
+  .msg.user{align-self:flex-end; text-align:right;}
+  .msg.assistant{align-self:flex-start;}
+  .bubble{padding:0; }
   .ai-agent-strip{display:flex; gap:8px; flex-wrap:wrap; font-size:12px; color:var(--muted);}
   .ai-agent-pill{padding:6px 8px; border-radius:999px; border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.03);}
   .input-wrap{
@@ -484,13 +484,13 @@ const recentThreadContent = {
   function addUser(text){
     const el = document.createElement('div');
     el.className = 'msg user';
-    el.innerHTML = `<div class="bubble">${escapeHtml(text)}</div>`;
+    el.innerHTML = `<div class="bubble" style="color:#eab676">${escapeHtml(text)}</div>`;
     chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
   }
   function addAssistant(text){
     const el = document.createElement('div');
     el.className = 'msg assistant';
-    el.innerHTML = `<div class="bubble">${text}</div>`;
+    el.innerHTML = text;
     chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
   }
 
@@ -557,7 +557,7 @@ const recentThreadContent = {
 
     // Add space and "Thinking..." message
     setTimeout(() => {
-      addAssistant('<p>Thinking…</p>');
+      addAssistant('<p style="color:#999">Thinking…</p>');
     }, 500);
 
     // Add Council acknowledgment after 5 seconds
@@ -692,13 +692,13 @@ const recentThreadContent = {
 
     // 2) Space + “Thinking…” beat
     await wait(2500);
-    addAssistant('<p>Thinking…</p>');
+    addAssistant('<p style="color:#999">Thinking…</p>');
 
     // small pause so the beat reads
     await wait(8000);
 
     // 3) Council Synthesis with proper paragraphs
-    addAssistant(`<hr class="hr"><h3>Council Synthesis</h3>${produceSynthesis(q)}`);
+    addAssistant(`<hr class="hr"><h3 style="color:#76aaea">Council Synthesis</h3>${produceSynthesis(q)}`);
 
     document.getElementById('statusLine').innerText = 'Synthesis ready';
     log('Synthesis produced');

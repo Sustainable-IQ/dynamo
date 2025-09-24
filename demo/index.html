@@ -46,11 +46,16 @@
   .meta{font-size:12px; color:var(--muted);}
   .hr{border:none;height:1px;background:rgba(255,255,255,0.06);margin:12px 0;}
   /* Memory list */
-  .memory-item{background:rgba(255,255,255,0.03); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); cursor:pointer; transition:all 0.2s ease;}
+  .memory-list-container{height:360px; overflow-y:auto; overflow-x:hidden; padding-right:8px; margin-bottom:12px;}
+  .memory-list-container::-webkit-scrollbar{width:6px;}
+  .memory-list-container::-webkit-scrollbar-track{background:rgba(255,255,255,0.05); border-radius:3px;}
+  .memory-list-container::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2); border-radius:3px;}
+  .memory-list-container::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.3);}
+  .memory-item{background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); cursor:pointer; transition:all 0.2s ease;}
   .memory-item:hover{background:rgba(255,255,255,0.05);}
   .memory-item.selected{background:rgba(124,58,237,0.25); border:2px solid rgba(124,58,237,0.6); box-shadow:0 0 12px rgba(124,58,237,0.3);}
   .memory-item h4{margin:0; font-size:13px;}
-  .memory-item p{margin:6px 0 0 0; color:var(--muted); font-size:12px;}
+  .memory-item p{margin:4px 0 0 0; color:var(--muted); font-size:12px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;}
   /* Right AI-Agent rows */
   .ai-agent-row{display:flex; justify-content:space-between; gap:8px; align-items:center; padding:10px; border-radius:10px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06);}
   /* CHAT-FOCUSED CENTER */
@@ -250,8 +255,10 @@
     <button class="btn" id="showMemoryConsoleBtn" style="background:#06b6d4;color:white;border:none;width:fit-content;display:inline-block;">Go To Memory Console</button>
     <hr>
     <div class="section-title">Recent Threads</div>
-    <div id="memoryList" style="display:flex;flex-direction:column;gap:10px"></div>
-    <button class="btn primary" id="addToChatBtn" style="margin-top:12px;">Add to Chat</button>
+    <div class="memory-list-container">
+      <div id="memoryList" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+    <button class="btn primary" id="addToChatBtn">Add to Chat</button>
     <div style="flex-grow:1;"></div>
     <div class="hr"></div>
     <div>
@@ -393,17 +400,70 @@
   ];
 
   let memory = [
-    {title:"Research on Renewable Energy", text:"How AI can help reduce GHGs"},
-    {title:"Garden Apprenticeship",       text:"Luc taught two local apprentices tree grafting, outcome: micro-nursery."},
-    {title:"Sacred Codex Uploaded",       text:"A new draft of 'Living Codex' added to memory with tags: AI_Relationship, Ethics."}
+{title:"Educational Choice Dilemma", text:"Should I homeschool my children or send them to public school?"},
+{title:"Homeschooling Risk Preparation", text:"What are the biggest risks of homeschooling that I should prepare for?"},
+{title:"Corporate Spiritual Practice", text:"How can I maintain spiritual practice while working in a corporate environment?"},
+{title:"Ethical Work Alignment", text:"Is it hypocritical to work for a company whose values don't align with my spiritual beliefs?"},
+{title:"Media Manipulation Detection", text:"How can I tell when news reports are manipulating me versus informing me?"},
+{title:"News Source Strategy", text:"Should I just avoid all mainstream news to protect myself from manipulation?"},
+{title:"Boundary Setting Without Damage", text:"How do I set boundaries without damaging my relationships?"},
+{title:"Boundary Violation Response", text:"What if someone gets angry or guilt-trips me when I try to set boundaries?"},
+{title:"Financial Independence Viability", text:"Is financial independence still achievable with inflation destroying savings?"},
+{title:"Crypto vs Traditional Assets", text:"Should I invest in cryptocurrency or stick to traditional investments like stocks?"},
+{title:"Health Decision Sovereignty", text:"How do I make informed health decisions when I don't trust mainstream medical advice?"},
+{title:"Health Research Methodology", text:"What's the most effective way to research health information without getting overwhelmed by conflicting studies?"},
+{title:"Digital Surveillance Concerns", text:"How concerned should I be about digital surveillance and privacy?"},
+{title:"Essential Privacy Tools", text:"What are the most important privacy tools I should start using immediately?"},
+{title:"Artistic Integrity Balance", text:"How do I maintain artistic integrity while needing to make money from creative work?"},
+{title:"Social Media Algorithm Adaptation", text:"Should I change my art to fit what's popular on social media platforms?"},
+{title:"Community Building Challenge", text:"How do I build meaningful community when everyone seems isolated and busy?"},
+{title:"Community Sustainability Factors", text:"What makes some communities last while others fall apart quickly?"},
+{title:"Spiritual Progress Assessment", text:"How do I know if I'm making real spiritual progress or just having interesting experiences?"},
+{title:"Individual vs Collective Awakening", text:"Should I focus on individual spiritual development or community engagement for awakening?"}
   ];
 
   // Recentthreadcontent - detailed content for each thread
-  const recentThreadContent = {
-    "Research on Renewable Energy": "to be filled out",
-    "Garden Apprenticeship": "to be filled out",
-    "Sacred Codex Uploaded": "to be filled out"
-  };
+const recentThreadContent = {
+    "Educational Choice Dilemma": "userMessage: Should I homeschool my children or send them to public school? --- councilResponse: The choice between homeschooling and public schooling reflects deeper questions about educational sovereignty and institutional trust. Public schools provide standardized credentials and socialization but often suppress individual curiosity through rigid curricula designed for compliance rather than learning. Homeschooling preserves educational freedom and allows customized learning but requires significant parental investment and intentional community building. Consider your family's capacity for educational leadership, your children's learning styles, and your tolerance for institutional compromise versus personal responsibility.",
+
+    "Homeschooling Risk Preparation": "userMessage: What are the biggest risks of homeschooling that I should prepare for? --- councilResponse: The primary risks include social isolation, gaps in specialized subjects, and parental burnout. Combat isolation by joining homeschool cooperatives, sports teams, and community activities - children need diverse adult mentors and peer relationships. Address subject gaps by networking with other homeschool families, using online resources, or hiring tutors for advanced topics. Prevent burnout by sharing teaching responsibilities with your spouse, taking breaks when needed, and remembering that learning happens everywhere, not just during formal lessons. The biggest long-term risk is actually over-protection - ensure your children face age-appropriate challenges and develop independence.",
+
+    "Corporate Spiritual Practice": "userMessage: How can I maintain spiritual practice while working in a corporate environment? --- councilResponse: Corporate environments often operate through extraction and competition that can conflict with spiritual development, but they also provide laboratories for practicing compassion under pressure. Establish non-negotiable daily practices before and after work hours - meditation, prayer, or journaling that ground you in your values. Use workplace challenges as spiritual curriculum: difficult colleagues become teachers of patience, ethical dilemmas become opportunities for moral clarity. Create subtle ritual anchors throughout your day without drawing attention to yourself.",
+
+    "Ethical Work Alignment": "userMessage: Is it hypocritical to work for a company whose values don't align with my spiritual beliefs? --- councilResponse: Hypocrisy lies in contradiction between stated values and actions, not in working within imperfect systems while maintaining personal integrity. Most people need income to survive, and complete ethical purity in employment is nearly impossible under current economic structures. The key questions are: Can you do your specific role with integrity? Are you actively participating in harm or simply working within a flawed system? Can you use your position to influence positive change, even incrementally? Sometimes working from within corrupt systems while maintaining your values creates more positive impact than pure withdrawal.",
+
+    "Media Manipulation Detection": "userMessage: How can I tell when news reports are manipulating me versus informing me? --- councilResponse: Media manipulation operates through recognizable patterns: emotional amplification without proportional evidence, repetitive messaging across outlets using identical phrases, focus on reactions rather than root causes, omission of historical context, and artificial urgency demanding immediate response. Legitimate information provides multiple viewpoints, acknowledges uncertainty, includes historical precedent, and allows reflection time. Always ask: Who benefits from me believing this? What am I being asked to feel or do? What voices are excluded? What historical patterns does this echo?",
+
+    "News Source Strategy": "userMessage: Should I just avoid all mainstream news to protect myself from manipulation? --- councilResponse: Complete news avoidance creates dangerous blind spots, while exclusive mainstream consumption limits perspective. Develop a diverse information diet: read mainstream sources to understand dominant narratives, follow independent journalists for suppressed perspectives, study historical context to recognize recurring patterns, and maintain direct community connections for local reality checks. The goal isn't finding perfect sources but developing discernment across multiple viewpoints. Spend more time analyzing information patterns than consuming information volume. Quality discernment matters more than information quantity.",
+
+    "Boundary Setting Without Damage": "userMessage: How do I set boundaries without damaging my relationships? --- councilResponse: Healthy boundaries actually strengthen relationships by creating clarity and preventing resentment. Start by being clear about your own needs and limits before communicating them. Frame boundaries in terms of what you can do rather than what others must do: I need to leave by 9 PM rather than You always keep me too late. Expect some pushback initially - people may test new boundaries. Stay consistent and kind but firm. Remember that people who truly care about you want to know your actual limits rather than having you secretly resent them for crossing unknown lines.",
+
+    "Boundary Violation Response": "userMessage: What if someone gets angry or guilt-trips me when I try to set boundaries? --- councilResponse: Anger or guilt-tripping in response to reasonable boundaries reveals that person's investment in controlling or using you rather than having an authentic relationship. This reaction is actually valuable information about their character and intentions. Respond with calm consistency: acknowledge their feelings without changing your boundary. I understand you're disappointed, but this is what I need. Don't argue, justify extensively, or negotiate core boundaries. People who respect you will adjust; those who don't will reveal themselves as unsuitable for close relationship. Short-term conflict often leads to long-term clarity and healthier dynamics.",
+
+    "Financial Independence Viability": "userMessage: Is financial independence still achievable with inflation destroying savings? --- councilResponse: Traditional financial independence through savings alone has been undermined by currency debasement, but alternative strategies remain viable. Focus on inflation-resistant assets: real estate, productive land, business ownership, hard assets, and skills that retain value regardless of monetary conditions. Develop multiple income streams rather than depending on single employment. Build local economic networks and barter capabilities. The key is creating antifragile systems that benefit from instability rather than depending on institutional stability. This requires higher financial literacy and entrepreneurial thinking than previous generations needed.",
+
+    "Crypto vs Traditional Assets": "userMessage: Should I invest in cryptocurrency or stick to traditional investments like stocks? --- councilResponse: Both crypto and traditional investments carry different risk profiles during monetary transition. Traditional assets (stocks, bonds) remain anchored to established systems but face devaluation through currency printing and institutional capture. Crypto offers potential hedge against traditional system collapse but carries volatility and regulatory risk. A balanced approach: maintain traditional assets for stability, allocate small percentage to crypto for asymmetric upside, but prioritize tangible assets (land, tools, skills, relationships) that retain value regardless of monetary system. The fundamental question isn't which investment vehicle but how to preserve wealth during systemic change.",
+
+    "Health Decision Sovereignty": "userMessage: How do I make informed health decisions when I don't trust mainstream medical advice? --- councilResponse: Medical sovereignty requires developing personal health literacy while strategically engaging institutional healthcare when beneficial. Build foundational knowledge of anatomy, nutrition, and preventive principles. Cultivate relationships with practitioners who respect patient autonomy and integrate multiple healing modalities. Use institutional medicine for acute emergencies and diagnostic tools while maintaining decision-making authority. Develop alternative health support networks and learn traditional healing methods. Document your health choices and reasoning to maintain consistency under pressure.",
+
+    "Health Research Methodology": "userMessage: What's the most effective way to research health information without getting overwhelmed by conflicting studies? --- councilResponse: Focus on research methodology and funding sources rather than just conclusions. Look for studies with proper control groups, adequate sample sizes, and longer time frames. Identify who funded the research and whether they benefit from specific outcomes. Prioritize meta-analyses and systematic reviews over single studies. Pay attention to biological plausibility - does the mechanism make sense? Cross-reference findings across different research traditions (Western medical, traditional medicine, biochemistry). Most importantly, observe your own body's responses to different interventions. Your direct experience, properly tracked, provides valuable data alongside formal research.",
+
+    "Digital Surveillance Concerns": "userMessage: How concerned should I be about digital surveillance and privacy? --- councilResponse: Digital surveillance has reached unprecedented levels with direct implications for personal freedom and social control. Every digital interaction creates behavioral profiles used for influence and potential exclusion from economic opportunities. However, complete digital withdrawal is impractical. Strategic approach: understand your threat model (who might target you and why), use privacy tools proportional to your risk level, maintain alternative communication channels, and develop digital literacy to recognize manipulation. The goal isn't perfect privacy but maintaining agency and choice while resisting normalization of total surveillance.",
+
+    "Essential Privacy Tools": "userMessage: What are the most important privacy tools I should start using immediately? --- councilResponse: Start with high-impact, low-friction changes: use Signal for messaging, switch to a privacy-focused browser like Brave or Firefox with uBlock Origin, use a VPN for browsing, and enable two-factor authentication on important accounts. For email, consider ProtonMail or Tutanota. Use privacy-focused search engines like DuckDuckGo or Startpage. Most importantly, change your default mindset: assume everything digital is being monitored and ask whether you need to make each digital interaction. The most powerful privacy tool is often choosing not to create the digital record in the first place.",
+
+    "Artistic Integrity Balance": "userMessage: How do I maintain artistic integrity while needing to make money from creative work? --- councilResponse: The tension between artistic integrity and commercial viability requires strategic balance rather than choosing one over the other. Develop multiple revenue streams so no single source controls your creative choices. Build direct relationships with audiences who value your authentic voice rather than competing in algorithmic attention markets. Create different creative tracks - some commercial, some purely artistic - and price your authentic work to reflect its true value. Remember that commercial success can provide resources for more experimental work. The key is conscious choice rather than unconscious compromise.",
+
+    "Social Media Algorithm Adaptation": "userMessage: Should I change my art to fit what's popular on social media platforms? --- councilResponse: Algorithmic platforms reward engagement over quality, creating a race to the bottom of human attention. Adapting your art to platform algorithms often compromises the very qualities that make it meaningful and unique. Instead, use platforms strategically to showcase your authentic work while building direct relationships that exist independent of any platform. Share your creative process, values, and story alongside finished work. Focus on attracting the right audience rather than the largest audience. The artists with lasting careers typically maintain creative integrity while learning to communicate their vision effectively, not by chasing trends.",
+
+    "Community Building Challenge": "userMessage: How do I build meaningful community when everyone seems isolated and busy? --- councilResponse: Community building requires swimming against cultural currents toward individualism and digital substitution. Start with shared activities that create natural interaction: skill sharing, food production, tool libraries, or study groups. Focus on mutual benefit rather than social networking - people bond through working together toward common goals. Establish regular rhythms people can depend on. Be prepared to invest time and vulnerability before receiving reciprocal investment. Most people crave real connection but don't know how to create it. By taking initiative, you're often providing something others desperately want.",
+
+    "Community Sustainability Factors": "userMessage: What makes some communities last while others fall apart quickly? --- councilResponse: Lasting communities share several characteristics: clear shared values that guide decision-making, effective conflict resolution processes that preserve relationships while addressing problems, distributed leadership that prevents both chaos and authoritarianism, economic cooperation that creates interdependence, and cultural traditions that maintain identity across time. They also adapt to circumstances without losing core identity. Fragmenting communities typically suffer from unclear values, poor communication, concentrated power, economic competition between members, or inability to integrate newcomers. Build resilient social architecture rather than depending on charismatic leadership alone.",
+
+    "Spiritual Progress Assessment": "userMessage: How do I know if I'm making real spiritual progress or just having interesting experiences? --- councilResponse: Authentic spiritual progress manifests through sustained changes in daily behavior and relationship quality rather than peak experiences or esoteric knowledge. Real progress includes: increased capacity for patience under stress, reduced reactive patterns and ego defensiveness, improved discernment between truth and illusion, and expanded capacity for service without attachment to recognition. Spiritual experiences can catalyze growth but don't constitute growth themselves. The test is integration - do insights translate into wisdom in ordinary circumstances? Do you become easier to live with, more trustworthy, more genuinely loving?",
+
+    "Individual vs Collective Awakening": "userMessage: Should I focus on individual spiritual development or community engagement for awakening? --- councilResponse: Individual and collective awakening are interdependent processes that mutually catalyze each other. Personal development creates capacity for authentic relationship and clear discernment - essential for healthy collective function. Collective engagement provides supportive environment and larger purpose that accelerate individual growth. However, neither alone is sufficient. Individual focus without community can become narcissistic bypassing. Community focus without personal work can become groupthink or mob dynamics. The integration requires individuals committed to their own growth who also engage responsibly in collective transformation. Both levels must evolve together for sustainable awakening."
+};
 
   const communityProjects = [
     {title:"Building a Website for our Organisation", status:"In Progress",     members:"Team Alpha"},
@@ -478,10 +538,20 @@
     const selectedMemory = memory[selectedMemoryIndex];
     const memoryContent = recentThreadContent[selectedMemory.title];
 
+    // Split content at --- separator and format labels
+    const contentParts = memoryContent ? memoryContent.split('---').map(part => part.trim()) : [''];
+    const formattedContent = contentParts
+      .map(part => {
+        return part
+          .replace(/userMessage:/g, '<strong style="color:#eab676">userMessage:</strong>')
+          .replace(/councilResponse:/g, '<strong style="color:#76aaea">councilResponse:</strong>');
+      })
+      .join('<br><br>');
+
     // Add as a past memory message to chat
     const el = document.createElement('div');
     el.className = 'msg assistant';
-    el.innerHTML = `<div class="bubble"><strong>Past Memory: ${selectedMemory.title}</strong><br><br>${memoryContent}</div>`;
+    el.innerHTML = `<div class="bubble"><strong>Past Memory: ${selectedMemory.title}</strong><br><br>${formattedContent}</div>`;
     chat.appendChild(el);
     chat.scrollTop = chat.scrollHeight;
 

@@ -359,7 +359,7 @@
         <button class="filter-btn" data-preset="unresolved">Unresolved Threads</button>
         <button class="filter-btn" data-preset="7days">Last 7 Days</button>
         <button class="filter-btn" data-preset="30days">Last 30 Days</button>
-      </div>\
+      </div>
     </div>
 
     <div class="hr"></div>
@@ -791,7 +791,7 @@ const appState = {
   searchQuery: {
     queryText: '',
     timeRange: { preset: 'all', startDate: null, endDate: null },
-    types: ['user_question', 'external_response', 'holon_response', 'meta_synthesis'],
+    types: [],
     holons: [],
     domains: [],
     resolutionStatus: 'all',
@@ -1396,7 +1396,7 @@ function executeSearch() {
 function isDefaultFilters() {
   const q = appState.searchQuery;
   return (
-    q.types.length === 4 && // All types selected
+    q.types.length === 0 && // No types selected (new default)
     q.holons.length === 0 &&
     q.domains.length === 0 &&
     q.resolutionStatus === 'all' &&
@@ -1415,7 +1415,10 @@ function applyFilters(results) {
     const ledger = result.ledger;
 
     // Type filter (simulate types based on content)
-    if (query.types.length > 0) {
+    if (query.types.length === 0) {
+      // No types selected = show nothing
+      return false;
+    } else if (query.types.length > 0) {
       // For demo purposes, we'll map our data to the expected types
       // In real implementation, this would be based on actual type fields
       const hasUserQuestion = query.types.includes('user_question');
@@ -1759,7 +1762,7 @@ function clearAllFilters() {
   appState.searchQuery = {
     queryText: '',
     timeRange: { preset: 'all', startDate: null, endDate: null },
-    types: ['user_question', 'external_response', 'holon_response', 'meta_synthesis'],
+    types: [],
     holons: [],
     domains: [],
     resolutionStatus: 'all',

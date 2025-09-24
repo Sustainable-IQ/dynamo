@@ -345,4 +345,4 @@ Deliverables:
 •	Strong typing for entities and events.
 •	Clear TODO comments where backend endpoints will attach.
 •	No business logic in components; use a small state store (Zustand) with actions matching the event contracts.
-Do not output any code in your first message. Start by restating your plan, mapping components to the spec, and listing any clarifying assumptions you’ll make before you generate files. Your plan will include breaking down the implementation coding into steps that will be taken one by one, and validated by the human in the loop.
+Do not output any code in your first message. Start by restating your plan, mapping components to the spec, and listing any clarifying assumptions you’ll make before you generate files. Your plan will include breaking down the impl

@@ -355,11 +355,11 @@
         <button class="filter-btn" data-preset="all">Everything</button>
         <button class="filter-btn" data-preset="questions">My Questions</button>
         <button class="filter-btn" data-preset="synthesis">Final Answers Only</button>
-        <button class="filter-btn" data-preset="holon">Holon Responses Only</button>
+        <button class="filter-btn" data-preset="holon">Council Responses Only</button>
         <button class="filter-btn" data-preset="unresolved">Unresolved Threads</button>
         <button class="filter-btn" data-preset="7days">Last 7 Days</button>
         <button class="filter-btn" data-preset="30days">Last 30 Days</button>
-      </div>
+      </div>\
     </div>
 
     <div class="hr"></div>
@@ -404,7 +404,7 @@
         </label>
         <label class="checkbox-label">
           <input type="checkbox" name="type" value="holon_response" checked>
-          <span>Holon Responses</span>
+          <span>Council Responses</span>
         </label>
         <label class="checkbox-label">
           <input type="checkbox" name="type" value="meta_synthesis" checked>
@@ -418,17 +418,16 @@
     <!-- Holons Filter -->
     <div class="filter-section collapsible">
       <div class="section-header">
-        <span class="section-title">Holons</span>
+        <span class="section-title">AI Agents</span>
         <span class="toggle-icon">�</span>
       </div>
       <div class="section-content">
         <div class="chip-container" id="holonChips">
-          <div class="chip" data-holon="truth">Truth-Seeking</div>
-          <div class="chip" data-holon="compassion">Compassion</div>
-          <div class="chip" data-holon="strategic">Strategic Systems</div>
-          <div class="chip" data-holon="justice">Justice</div>
-          <div class="chip" data-holon="creative">Creative Wisdom</div>
-          <div class="chip" data-holon="historical">Historical Pattern</div>
+          <div class="chip" data-holon="authority">Authority</div>
+          <div class="chip" data-holon="iconoclast">Iconoclast</div>
+          <div class="chip" data-holon="strategist">Strategist</div>
+          <div class="chip" data-holon="archivist">Archivist</div>
+          <div class="chip" data-holon="secretariat">Secretariat</div>
         </div>
       </div>
     </div>
@@ -442,14 +441,14 @@
         <span class="toggle-icon">�</span>
       </div>
       <div class="section-content">
-        <select id="domainSelect" multiple size="5">
-          <option value="work">Work</option>
-          <option value="personal_growth">Personal Growth</option>
-          <option value="relationships">Relationships</option>
-          <option value="creative">Creative</option>
-          <option value="learning">Learning</option>
-          <option value="spiritual">Spiritual</option>
-        </select>
+        <div id="domainChips" class="chip-container">
+          <div class="chip" data-domain="work">Work</div>
+          <div class="chip" data-domain="personal_growth">Personal Growth</div>
+          <div class="chip" data-domain="relationships">Relationships</div>
+          <div class="chip" data-domain="creative">Creative</div>
+          <div class="chip" data-domain="learning">Learning</div>
+          <div class="chip" data-domain="spiritual">Spiritual</div>
+        </div>
       </div>
     </div>
 
@@ -810,6 +809,7 @@ const appState = {
   },
   ui: {
     activeTab: 'details',
+    activeRightTab: 'details',
     isLoading: false,
     currentResults: [],
     totalResults: 0,
@@ -1065,11 +1065,15 @@ function initializeHolonFilters() {
 
 // Domain Filters
 function initializeDomainFilters() {
-  const domainSelect = document.getElementById('domainSelect');
+  const domainChips = document.querySelectorAll('#domainChips .chip');
 
-  domainSelect.addEventListener('change', () => {
-    appState.searchQuery.domains = Array.from(domainSelect.selectedOptions).map(option => option.value);
-    executeSearch();
+  domainChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+      appState.searchQuery.domains = Array.from(document.querySelectorAll('#domainChips .chip.selected'))
+        .map(el => el.dataset.domain);
+      executeSearch();
+    });
   });
 }
 
@@ -1292,10 +1296,13 @@ function updateFilterUI() {
     }
   });
 
-  // Update domain select
-  const domainSelect = document.getElementById('domainSelect');
-  Array.from(domainSelect.options).forEach(option => {
-    option.selected = appState.searchQuery.domains.includes(option.value);
+  // Update domain chips
+  document.querySelectorAll('#domainChips .chip').forEach(chip => {
+    if (appState.searchQuery.domains.includes(chip.dataset.domain)) {
+      chip.classList.add('selected');
+    } else {
+      chip.classList.remove('selected');
+    }
   });
 
   // Update status selects
@@ -1711,32 +1718,36 @@ function openResultDetails(ledgerId, exchangeId) {
   console.log('Opening details for:', ledgerId, exchangeId);
 }
 
-function addToDetailsActionsNew(ledgerId, exchangeId) {
-  console.log('SIMPLE TEST: addToDetailsActions called with:', ledgerId, exchangeId);
-
-  // Just test the basic functionality without any other function calls
+function addToDetailsActions(ledgerId, exchangeId) {
   const recordId = `${ledgerId}_${exchangeId}`;
+  const wasSelected = appState.selection.selectedRecordIds.includes(recordId);
 
-  if (!appState.selection.selectedRecordIds.includes(recordId)) {
+  if (!wasSelected) {
     appState.selection.selectedRecordIds.push(recordId);
-    console.log('Added to selection:', appState.selection.selectedRecordIds);
   }
 
   appState.selection.activeRecordId = recordId;
-  console.log('Set active record:', recordId);
 
-  // Only call renderRecordDetails - the core function we need
+  // Keep the details pane in sync with the newly selected record
   renderRecordDetails(ledgerId, exchangeId);
+  switchToTab('details');
 
-  console.log('Function completed successfully');
+  // Refresh the middle pane so the active card is highlighted
+  renderResults(appState.ui.currentResults);
+  updateBulkBar();
+
+  // Update downstream surfaces that depend on the current selection
+  renderPreviewList();
+  if (window.announceSelection) {
+    window.announceSelection(appState.selection.selectedRecordIds.length);
+  }
 }
 
 // Keep the old function for backward compatibility
 function addToPreview(ledgerId, exchangeId) {
-  // Redirect to the new function
-  addToDetailsActionsNew(ledgerId, exchangeId);
+  // Redirect to the updated handler
+  addToDetailsActions(ledgerId, exchangeId);
 }
-
 function runExampleQuery(query) {
   document.getElementById('queryInput').value = query;
   appState.searchQuery.queryText = query;
@@ -1814,17 +1825,23 @@ function switchToTab(tabName) {
   }
 
   appState.ui.activeTab = tabName;
+  appState.ui.activeRightTab = tabName;
   console.log('Tab switch completed. Active tab:', tabName);
 }
 
+function switchRightTab(tabName) {
+  console.warn('switchRightTab is deprecated. Use switchToTab instead.');
+  switchToTab(tabName);
+}
 // Global functions for onclick handlers
 window.toggleResultSelection = toggleResultSelection;
 window.openResultDetails = openResultDetails;
 window.addToPreview = addToPreview;
-window.addToDetailsActions = addToDetailsActionsNew;
+window.addToDetailsActions = addToDetailsActions;
 window.runExampleQuery = runExampleQuery;
 window.clearAllFilters = clearAllFilters;
 window.switchToTab = switchToTab;
+window.switchRightTab = switchRightTab;
 
 // Initialize Center Column
 function initializeCenterColumn() {
@@ -1945,14 +1962,25 @@ function initializeBulkActions() {
     showToast('All items deselected');
   });
 
-  bulkPreviewBtn.addEventListener('click', () => {
-    if (appState.selection.selectedRecordIds.length === 0) {
-      showToast('No items selected');
-      return;
-    }
-    switchToTab('preview');
-    showToast(`Added ${appState.selection.selectedRecordIds.length} items to preview`);
-  });
+bulkPreviewBtn.addEventListener('click', () => {
+  const ids = appState.selection.selectedRecordIds;
+  if (ids.length === 0) {
+    showToast('No items selected');
+    return;
+  }
+
+  // choose the first selected record
+  const [first] = ids;
+  const sep = first.indexOf('_');
+  const ledgerId = first.slice(0, sep);
+  const exchangeId = first.slice(sep + 1);
+
+  appState.selection.activeRecordId = first;
+  renderRecordDetails(ledgerId, exchangeId); // populate right panel content
+  switchToTab('details');                    // keep user in Details & Actions
+  showToast('Added selection to Details & Actions');
+});
+
 
   bulkExportBtn.addEventListener('click', () => {
     if (appState.selection.selectedRecordIds.length === 0) {
@@ -2296,6 +2324,11 @@ function renderThreadExchanges(ledger, exchanges, activeExchangeId) {
 
 function renderPreviewList() {
   const previewList = document.getElementById('previewList');
+  if (!previewList) {
+    console.warn('Preview list container not found');
+    return;
+  }
+
   const selectedRecords = getSelectedRecords();
 
   if (selectedRecords.length === 0) {
@@ -2309,26 +2342,29 @@ function renderPreviewList() {
     return;
   }
 
-  const previewMode = document.querySelector('input[name="previewMode"]:checked').value;
+  const previewModeInput = document.querySelector('input[name="previewMode"]:checked');
+  const previewMode = previewModeInput ? previewModeInput.value : 'concise';
 
   previewList.innerHTML = selectedRecords.map((record, index) => {
     const { ledger, exchange } = record;
     const content = previewMode === 'concise'
       ? truncateText(exchange.userMessage, 100) + '...'
-      : exchange.userMessage + '\n\n' + exchange.councilResponse;
+      : `${exchange.userMessage}
+
+${exchange.councilResponse}`;
 
     return `
       <div class="preview-item" data-index="${index}" draggable="true">
         <div class="preview-item-header">
           <span class="preview-item-title">${ledger.title}</span>
-          <button class="remove" onclick="removeFromPreview('${ledger.ledgerId}_${exchange.exchangeId}')">×</button>
+          <button class="remove" onclick="removeFromPreview('${ledger.ledgerId}_${exchange.exchangeId}')">?</button>
         </div>
         <div class="preview-item-content">
           ${content}
         </div>
         <div class="preview-item-meta">
           <span class="meta">${formatDate(exchange.timestamp)}</span>
-          <span class="meta">•</span>
+          <span class="meta">?</span>
           <span class="meta">${exchange.status}</span>
         </div>
       </div>
@@ -2779,7 +2815,7 @@ function initializeKeyboardShortcuts() {
     // Cmd/Ctrl + S to save search
     if ((e.metaKey || e.ctrlKey) && e.key === 's') {
       e.preventDefault();
-      if (appState.results.data.length > 0) {
+      if (appState.ui.currentResults.length > 0) {
         showSaveSearchModal();
       }
       return;
@@ -2797,20 +2833,25 @@ function initializeKeyboardShortcuts() {
     }
 
     // Page navigation with [ and ]
-    if (e.key === '[' && appState.results.pagination.page > 1) {
+    const totalPages = Math.max(1, Math.ceil(appState.ui.totalResults / appState.searchQuery.pageSize));
+
+    if (e.key === '[' && appState.searchQuery.currentPage > 1) {
       e.preventDefault();
-      navigateToPage(appState.results.pagination.page - 1);
+      navigateToPage(appState.searchQuery.currentPage - 1);
       return;
     }
 
-    if (e.key === ']' && appState.results.pagination.page < appState.results.pagination.totalPages) {
+    if (e.key === ']' && appState.searchQuery.currentPage < totalPages) {
       e.preventDefault();
-      navigateToPage(appState.results.pagination.page + 1);
+      navigateToPage(appState.searchQuery.currentPage + 1);
       return;
     }
 
     // Tab shortcuts (only when right sidebar is visible)
-    if (appState.ui.rightSidebarVisible) {
+    const rightSidebar = document.querySelector('.panel.right');
+    const rightSidebarVisible = rightSidebar ? rightSidebar.offsetParent !== null : false;
+
+    if (rightSidebarVisible) {
       if (e.key === 'p' || e.key === 'P') {
         e.preventDefault();
         switchToTab('preview');
@@ -2832,7 +2873,7 @@ function initializeKeyboardShortcuts() {
 
     // Send to Council (when Preview tab is focused and valid)
     if ((e.key === 'c' || e.key === 'C') &&
-        appState.ui.activeRightTab === 'preview' &&
+        appState.ui.activeTab === 'preview' &&
         appState.selection.selectedRecordIds.length > 0) {
       e.preventDefault();
       sendToCouncilChat();
@@ -2861,23 +2902,13 @@ function clearFocus() {
 }
 
 function selectAllOnPage() {
-  const checkboxes = document.querySelectorAll('.result-card input[type="checkbox"]');
-  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-
-  checkboxes.forEach(cb => {
-    cb.checked = !allChecked;
-    const recordId = cb.getAttribute('data-record-id');
-    if (recordId) {
-      updateRecordSelection(recordId, cb.checked);
-    }
-  });
-
-  updateBulkActionsBar();
-  updatePreviewList();
+  const selectAllPageBtn = document.getElementById('selectAllPage');
+  if (selectAllPageBtn) {
+    selectAllPageBtn.click();
+  }
 }
-
 function navigateToPage(pageNumber) {
-  appState.results.pagination.page = pageNumber;
+  appState.searchQuery.currentPage = pageNumber;
   executeSearch();
 }
 

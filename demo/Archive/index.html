@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -86,7 +86,7 @@
   .toast{position:fixed; right:26px; bottom:26px; background:#07122a; padding:12px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.10); display:none;}
   /* Modal styles */
   .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:1000;}
-  .modal-content{background:linear-gradient(180deg,#0a1c2d,#0b1526);border-radius:14px;padding:24px;width:700px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+  .modal-content{background:linear-gradient(180deg,#0a1c2d,#0b1526);border-radius:14px;padding:24px;width:400px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 10px 30px rgba(0,0,0,0.5);}
   .modal-content h3{margin:0 0 16px 0;color:#eef2ff;font-size:18px;}
   .modal-content label{display:block;margin-bottom:8px;color:var(--muted);font-size:14px;}
   .modal-content input{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#e6eef6;font-size:14px;margin-bottom:20px;}
@@ -363,28 +363,6 @@
 
 <div class="toast" id="toast">Saved</div>
 
-<div class="modal-overlay" id="welcomeModal" style="display:flex;">
-  <div class="modal-content">
-    <h3 style="margin-bottom: 20px; color: #fbbf24;">Welcome to the DYNAMO Mock Demo</h3>
-    <p style="margin-bottom: 16px;">The Dynamic AI Memory Organizer Platform</p>
-    
-    <p style="margin-bottom: 16px;">This is an illustrative demo only. Please note the following before exploring:</p>
-    <ul style="margin: 16px 0 20px 0; padding-left: 20px; color: #e6eef6;">
-      <li style="margin-bottom: 8px;">No live AI LLMs are running — all responses, interactions, and council activity are simulated</li>
-      <li style="margin-bottom: 8px;">Pre-seeded sample data is included to show how the system might look in use</li>
-      <li style="margin-bottom: 8px;">Buttons, sliders, and text inputs work, but outputs are for demonstration purposes only</li>
-      <li style="margin-bottom: 8px;">Nothing you enter is saved — your input will not persist beyond this session</li>
-      <li style="margin-bottom: 8px;">Not all features are animated or interactive — some panels are placeholders for future functionality</li>
-    </ul>
-    
-    <p style="margin-bottom: 20px;">To learn more about DYNAMO go to: <a href="https://dynamo-ai.tech/" target="_blank" style="color: #06b6d4; text-decoration: underline;">https://dynamo-ai.tech/</a></p>
-    
-    <div class="modal-buttons">
-      <button class="btn modal-send" id="welcomeCloseBtn">Enter DYNAMO</button>
-    </div>
-  </div>
-</div>
-
 <!-- Community Thread Modal -->
 <div class="modal-overlay" id="communityModal" style="display:none;">
   <div class="modal-content">
@@ -402,6 +380,7 @@
   </div>
 </div>
 
+<script src="../assets/demodata.js?v=2"></script>
 <script>
   // Demo data
   const gauges = [
@@ -413,20 +392,12 @@
   ];
 
   const aiAgents = [
-    {id:"authority",   name:"Authority", symbol:"🛡️", value:70},
-    {id:"iconoclast", name:"Iconoclast", symbol:"🔍", value:80},
-    {id:"strategist",  name:"Strategist", symbol:"🎯", value:65},
-    {id:"archivist",   name:"Archivist", symbol:"⚖️", value:55},
-    {id:"secretariat", name:"Secretariat", symbol:"🧠", value:80},
+    {id:"authority",   name:"Authority", symbol:"ðŸ›¡ï¸", value:70},
+   {id:"iconoclast", name:"Iconoclast", symbol:"ðŸ”", value:80},
+    {id:"strategist",  name:"Strategist", symbol:"ðŸŽ¯", value:65},
+    {id:"archivist",   name:"Archivist", symbol:"âš–ï¸", value:55},
+    {id:"secretariat", name:"Secretariat", symbol:"ðŸ§ ", value:80},
   ];
-
-  // // Define threads data (was missing)
-  // const threads = [
-  //   {title: "Community Garden Planning", members: 12, activity: "active"},
-  //   {title: "Local Food Network", members: 8, activity: "planning"},
-  //   {title: "Skill Share Coordination", members: 15, activity: "active"},
-  //   {title: "Emergency Preparedness", members: 6, activity: "review"}
-  // ];
 
   let memory = [
 {title:"Educational Choice Dilemma", text:"Should I homeschool my children or send them to public school?"},
@@ -451,7 +422,7 @@
 {title:"Individual vs Collective Awakening", text:"Should I focus on individual spiritual development or community engagement for awakening?"}
   ];
 
-  // Recent thread content - detailed content for each thread
+  // Recentthreadcontent - detailed content for each thread
 const recentThreadContent = {
     "Educational Choice Dilemma": "userMessage: Should I homeschool my children or send them to public school? --- councilResponse: The choice between homeschooling and public schooling reflects deeper questions about educational sovereignty and institutional trust. Public schools provide standardized credentials and socialization but often suppress individual curiosity through rigid curricula designed for compliance rather than learning. Homeschooling preserves educational freedom and allows customized learning but requires significant parental investment and intentional community building. Consider your family's capacity for educational leadership, your children's learning styles, and your tolerance for institutional compromise versus personal responsibility.",
 
@@ -522,11 +493,6 @@ const recentThreadContent = {
     el.innerHTML = text;
     chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
   }
-
-  // Define seedChat function (was missing)
-//   function seedChat() {
- //    addAssistant('DYNAMO Council Interface');
- //  }
 
   function renderGauges(){
     gauges.forEach(g => {
@@ -724,7 +690,7 @@ const recentThreadContent = {
     const intro = "Council acknowledgment received. Beginning parallel deliberation across AI-Agents.";
     addAssistant(intro);
 
-    // 2) Space + "Thinking…" beat
+    // 2) Space + “Thinking…” beat
     await wait(2500);
     addAssistant('<p style="color:#999">Thinking…</p>');
 
@@ -753,21 +719,7 @@ const recentThreadContent = {
 
   function pct(v){ return Math.round(v*100) + "%" }
 
-  // WELCOME MODAL EVENT HANDLERS
-  document.getElementById('welcomeCloseBtn').addEventListener('click', () => {
-    document.getElementById('welcomeModal').style.display = 'none';
-    log('Welcome box closed - user entered DYNAMO');
-  });
-
-  // Close welcome modal when clicking outside
-  document.getElementById('welcomeModal').addEventListener('click', (e) => {
-    if(e.target.id === 'welcomeModal') {
-      document.getElementById('welcomeModal').style.display = 'none';
-      log('Welcome box closed - user entered DYNAMO');
-    }
-  });
-
-  // EXISTING EVENT HANDLERS
+  // EVENTS
   document.getElementById('askBtn').addEventListener('click', runDemo);
   document.getElementById('llmSelect').addEventListener('change', (e)=>{
     const selectedLLM = e.target.value;

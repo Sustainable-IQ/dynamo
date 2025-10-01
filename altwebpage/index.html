@@ -122,6 +122,18 @@
             letter-spacing: 0.03em;
         }
 
+        .hero .subtitle-line:first-of-type {
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.05); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.05); }
+            56% { transform: scale(1); }
+        }
+
         .hero .intro-paragraph {
             font-size: clamp(1rem, 2vw, 1.15rem);
             color: rgba(250,247,240,0.85);
@@ -210,9 +222,15 @@
 
         .problem-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 2.5rem;
             margin: 3rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .problem-card {
@@ -364,6 +382,204 @@
         .workflow-card h3 {
             font-size: 1.6rem;
             margin-bottom: 1.2rem;
+        }
+
+        /* In Action Section */
+        .action-example {
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+
+        .team-roster {
+            background: rgba(250,247,240,0.06);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .team-roster h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .roster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .member {
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .human-member {
+            background: linear-gradient(135deg, rgba(201,162,39,0.15), rgba(201,162,39,0.08));
+            border: 2px solid rgba(201,162,39,0.4);
+        }
+
+        .ai-member {
+            background: linear-gradient(135deg, rgba(46,139,192,0.15), rgba(46,139,192,0.08));
+            border: 2px solid rgba(46,139,192,0.4);
+        }
+
+        .member:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(201,162,39,0.3);
+        }
+
+        .member strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .member span {
+            color: var(--sand);
+            font-size: 0.9rem;
+        }
+
+        .member small {
+            display: block;
+            margin-top: 0.5rem;
+            color: rgba(250,247,240,0.7);
+            font-size: 0.85rem;
+        }
+
+        .workflow-example {
+            background: rgba(250,247,240,0.04);
+            border: 1px solid rgba(201,162,39,0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .workflow-example h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .workflow-steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(201,162,39,0.2);
+        }
+
+        .step:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .step-label {
+            min-width: 80px;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+            color: var(--sky);
+            font-size: 0.9rem;
+        }
+
+        .step-content {
+            flex: 1;
+            color: rgba(250,247,240,0.9);
+            line-height: 1.6;
+        }
+
+        .step-content strong {
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .outcome-box {
+            background: linear-gradient(135deg, rgba(46,139,192,0.15), rgba(201,162,39,0.1));
+            border: 2px solid var(--sky);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+
+        .outcome-box h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .outcome-box ul {
+            list-style: none;
+            padding: 0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .outcome-box li {
+            padding: 1rem 0 1rem 2rem;
+            position: relative;
+            color: rgba(250,247,240,0.9);
+            line-height: 1.6;
+        }
+
+        .outcome-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--sky);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .outcome-box li strong {
+            color: var(--gold);
+        }
+
+        .customization-note {
+            max-width: 1000px;
+            margin: 3rem auto 0;
+            background: rgba(250,247,240,0.04);
+            border: 2px solid rgba(201,162,39,0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+
+        .customization-note h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .customization-note > p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--sand);
+        }
+
+        .custom-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .custom-example {
+            background: linear-gradient(135deg, rgba(46,139,192,0.1), rgba(201,162,39,0.05));
+            border: 1px solid rgba(46,139,192,0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .custom-example strong {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
         }
 
         /* Buttons */
@@ -685,6 +901,123 @@
                     <h3>From Extraction to Partnership</h3>
                     <p>Current AI is designed to extract engagement and data from you. DYNAMO is designed for genuine partnership—technology that serves your growth, respects your sovereignty, and amplifies your capabilities.</p>
                 </div>
+            </div>
+        </section>
+
+        <section id="in-action">
+            <h2>See It In Action</h2>
+            <p class="lead">Here's what Tuesday morning looks like for a product team using DYNAMO. Every team customizes their own AI Agents and workflows—whether you're a startup, enterprise, government agency, or military unit.</p>
+            
+            <div class="action-example">
+                <div class="team-roster">
+                    <h3>Your Product Team Thread</h3>
+                    <div class="roster-grid">
+                        <div class="member human-member">
+                            <strong>Sarah</strong><br>
+                            <span>Product Lead</span><br>
+                            <small>Defines vision & priorities</small>
+                        </div>
+                        <div class="member ai-member">
+                            <strong>Documentation AI Agent</strong><br>
+                            <small>Writes specs as decisions emerge</small>
+                        </div>
+                        <div class="member human-member">
+                            <strong>Marcus</strong><br>
+                            <span>Engineering Lead</span><br>
+                            <small>Technical architecture</small>
+                        </div>
+                        <div class="member ai-member">
+                            <strong>Synthesis AI Agent</strong><br>
+                            <small>Tracks what's decided & why</small>
+                        </div>
+                        <div class="member human-member">
+                            <strong>Li</strong><br>
+                            <span>Design Lead</span><br>
+                            <small>User experience & interface</small>
+                        </div>
+                        <div class="member ai-member">
+                            <strong>Schedule AI Agent</strong><br>
+                            <small>Coordinates timelines & dependencies</small>
+                        </div>
+                        <div class="member ai-member">
+                            <strong>Strategy AI Agent</strong><br>
+                            <small>Identifies risks & opportunities</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-example">
+                    <h3>How They Actually Work Together</h3>
+                    <div class="workflow-steps">
+                        <div class="step">
+                            <div class="step-label">9:00 AM</div>
+                            <div class="step-content">
+                                <strong>Sarah posts:</strong> "We need to decide on the onboarding flow today. Three user types to consider: individual, team admin, enterprise."
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-label">9:03 AM</div>
+                            <div class="step-content">
+                                <strong>Strategy AI Agent surfaces:</strong> "Historical data shows enterprise users need compliance documentation upfront. Individual users drop off if onboarding > 2 minutes. Recommend different flows per user type."
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-label">9:15 AM</div>
+                            <div class="step-content">
+                                <strong>Marcus + Li + Sarah discuss</strong> approaches in thread. Synthesis AI Agent tracks: 3 open questions, 2 constraints identified, 1 decision pending.
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-label">10:00 AM</div>
+                            <div class="step-content">
+                                <strong>Team decides:</strong> Progressive disclosure for all user types, customize based on role. Documentation AI Agent immediately generates spec draft with decision rationale.
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-label">10:30 AM</div>
+                            <div class="step-content">
+                                <strong>Schedule AI Agent updates:</strong> "This decision unblocks design sprint 3. Marcus, Li now ready to proceed. Flagging: authentication flow still has 2 open questions from last week."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="outcome-box">
+                    <h3>What Just Happened</h3>
+                    <ul>
+                        <li><strong>No separate meeting needed</strong> - Decision made asynchronously in thread</li>
+                        <li><strong>AI agents contributed context</strong> - Historical data, blockers, dependencies surfaced automatically</li>
+                        <li><strong>Documentation happened live</strong> - Spec written as decision was made, not days later</li>
+                        <li><strong>Project stayed on track</strong> - Schedule agent identified what's now unblocked and what still needs attention</li>
+                        <li><strong>All context preserved</strong> - Future team members can see entire decision thread with AI contributions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="lead" style="margin-top: 3rem;">
+                This is how work gets done when AI agents are actual team members. Not tools you use. Colleagues you work with.
+            </p>
+
+            <div class="customization-note">
+                <h3>Fully Customizable for Your Mission</h3>
+                <p>This product team example is just one configuration. DYNAMO lets every organization create AI Agents tailored to their specific needs:</p>
+                <div class="custom-examples">
+                    <div class="custom-example">
+                        <strong>Government Agency:</strong> Compliance AI Agent, Policy Analysis AI Agent, Inter-Department Coordination AI Agent, Public Communication AI Agent
+                    </div>
+                    <div class="custom-example">
+                        <strong>Military Unit:</strong> Intel Synthesis AI Agent, Mission Planning AI Agent, Logistics Coordination AI Agent, After-Action Review AI Agent
+                    </div>
+                    <div class="custom-example">
+                        <strong>Research Lab:</strong> Literature Review AI Agent, Data Analysis AI Agent, Methodology Critique AI Agent, Publication Draft AI Agent
+                    </div>
+                    <div class="custom-example">
+                        <strong>Startup:</strong> Market Research AI Agent, Product Strategy AI Agent, Technical Documentation AI Agent, Investor Relations AI Agent
+                    </div>
+                </div>
+                <p style="margin-top: 2rem; text-align: center; color: var(--sand);">
+                    Each AI Agent can guide, organize, and even direct workflow when appropriate—helping teams move faster while humans maintain strategic oversight.
+                </p>
             </div>
         </section>
 

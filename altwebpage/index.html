@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYNAMO - AI That Finally Remembers You</title>
+    <meta name="description" content="The Dynamic AI Memory Organizer. Your conversations finally persist. Your team finally collaborates with AI as colleagues. Fully customizable for any community.">
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Merriweather:wght@300;400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --earth: #0F3D3E;
+            --sky: #2E8BC0;
+            --sand: #D9C5B2;
+            --gold: #C9A227;
+            --ivory: #FAF7F0;
+            --red: #8B1E3F;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Merriweather", Georgia, serif;
+            background: var(--earth);
+            color: var(--ivory);
+            line-height: 1.7;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            backdrop-filter: saturate(120%) blur(6px);
+            background: rgba(15,61,62,0.95);
+            border-bottom: 1px solid rgba(201,162,39,0.25);
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: "Montserrat", sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.06em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--ivory);
+            text-decoration: none;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 95vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(1000px 500px at 50% 30%, rgba(46,139,192,0.3), transparent 60%),
+                        radial-gradient(800px 500px at 50% 70%, rgba(201,162,39,0.2), transparent 60%),
+                        linear-gradient(180deg, rgba(15,61,62,0.9), rgba(15,61,62,0.98));
+        }
+
+        .hero h1 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold), var(--sky));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle-line {
+            font-family: "Montserrat", sans-serif;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--sand);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+
+        .hero .tagline {
+            font-family: "Montserrat", sans-serif;
+            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+            color: var(--ivory);
+            margin: 2rem auto 1.5rem;
+            font-weight: 700;
+            max-width: 900px;
+            line-height: 1.3;
+        }
+
+        .hero .description {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: rgba(250,247,240,0.9);
+            max-width: 850px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(201,162,39,0.18);
+        }
+
+        section h2 {
+            font-family: "Montserrat", sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--gold), var(--sky));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        section h3 {
+            font-family: "Montserrat", sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        section p {
+            color: rgba(250,247,240,0.9);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .lead {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--sand);
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+
+        /* Problem Section */
+        .problem-section {
+            background: linear-gradient(135deg, rgba(139,30,63,0.15), rgba(139,30,63,0.08));
+            padding: 6rem 2rem;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .problem-card {
+            background: rgba(250,247,240,0.06);
+            border: 1px solid rgba(139,30,63,0.4);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--red);
+            box-shadow: 0 10px 30px rgba(139,30,63,0.3);
+        }
+
+        .problem-card h3 {
+            color: var(--red);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-card p {
+            color: rgba(250,247,240,0.85);
+            font-size: 1.05rem;
+        }
+
+        /* Solution Grid */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, rgba(46,139,192,0.15), rgba(201,162,39,0.08));
+            border: 2px solid rgba(46,139,192,0.4);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--sky);
+            box-shadow: 0 15px 40px rgba(46,139,192,0.4);
+        }
+
+        .solution-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .solution-card p {
+            font-size: 1.05rem;
+        }
+
+        /* Communities Section */
+        .communities-section {
+            background: linear-gradient(135deg, rgba(46,139,192,0.15), rgba(201,162,39,0.1));
+            padding: 6rem 2rem;
+        }
+
+        .communities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .community-card {
+            background: rgba(250,247,240,0.06);
+            border: 1px solid rgba(201,162,39,0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .community-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(201,162,39,0.3);
+        }
+
+        .community-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .community-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .community-card li {
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            position: relative;
+            color: rgba(250,247,240,0.85);
+            font-size: 0.95rem;
+        }
+
+        .community-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* New Paradigm Section */
+        .paradigm-section {
+            background: linear-gradient(180deg, rgba(15,61,62,0.6), rgba(46,139,192,0.12));
+            padding: 6rem 2rem;
+        }
+
+        .paradigm-intro {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 4rem;
+        }
+
+        .paradigm-intro p {
+            font-size: 1.3rem;
+            color: var(--sand);
+            line-height: 1.7;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .workflow-card {
+            background: rgba(250,247,240,0.06);
+            border: 2px solid var(--sky);
+            border-radius: 20px;
+            padding: 2.5rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(46,139,192,0.3); }
+            50% { box-shadow: 0 0 40px rgba(46,139,192,0.6); }
+        }
+
+        .workflow-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn.primary {
+            background: var(--gold);
+            color: var(--earth);
+            box-shadow: 0 10px 30px rgba(201,162,39,0.3);
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(201,162,39,0.5);
+        }
+
+        .btn.secondary {
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .btn.secondary:hover {
+            background: rgba(201,162,39,0.1);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(201,162,39,0.18);
+            text-align: center;
+            color: rgba(250,247,240,0.7);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Vision Statement */
+        .vision-statement {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, rgba(15,61,62,0.8), rgba(46,139,192,0.2));
+        }
+
+        .vision-statement blockquote {
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            font-style: italic;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: var(--ivory);
+            position: relative;
+            padding: 2rem;
+        }
+
+        .vision-statement blockquote::before {
+            content: '"';
+            font-size: 6rem;
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            color: rgba(201,162,39,0.3);
+            font-family: Georgia, serif;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(201,162,39,0.15), rgba(46,139,192,0.1));
+            padding: 6rem 2rem;
+        }
+
+        .cta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        .cta-card {
+            background: rgba(250,247,240,0.06);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cta-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(201,162,39,0.4);
+        }
+
+        .cta-card .card-number {
+            font-family: "Montserrat", sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .cta-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-card p {
+            color: rgba(250,247,240,0.85);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <a href="#" class="brand">DYNAMO</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#problem">The Problem</a></li>
+                    <li><a href="#solution">The Solution</a></li>
+                    <li><a href="#communities">For Your Community</a></li>
+                    <li><a href="#paradigm">New Paradigm</a></li>
+                    <li><a href="#contact">Get Involved</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>DYNAMO</h1>
+            <p class="subtitle-line">The Dynamic AI Memory Organizer</p>
+            <p class="subtitle-line">Conversations that Remember • Memory that Evolves</p>
+            
+            <p class="tagline">Your AI Finally Remembers Everything You've Built Together</p>
+            
+            <p class="description">
+                Stop starting over every session. DYNAMO transforms your conversations—and your team's—into persistent, living memory. AI agents work alongside you as colleagues, not servants. Fully customizable for any community: friends, families, companies, researchers, anyone building something together.
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="#contact" class="btn primary">Join the Waitlist</a>
+                <a href="https://dynamo-ai.tech/" class="btn secondary">Explore the Vision</a>
+            </div>
+        </section>
+
+        <section id="problem" class="problem-section">
+            <h2>What's Broken Right Now</h2>
+            <p class="lead">Current AI tools were designed as subservient assistants. You ask, they answer, they forget. Your breakthroughs vanish. Your team's context resets. You never build on what came before.</p>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>Sessions That Reset</h3>
+                    <p>Every conversation with AI starts from scratch. Context exists but doesn't accumulate. Your insights don't compound. Your team can't build shared understanding over time.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>One Voice, One Perspective</h3>
+                    <p>Single AI gives single answers. No deliberation. No challenge. No synthesis. Just a tool responding to commands, not colleagues contributing perspectives.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>No Team Memory</h3>
+                    <p>Your team's conversations with AI stay fragmented. No shared context. No collective intelligence. No way to build institutional knowledge with AI as part of the team.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>One Size Fits Nobody</h3>
+                    <p>Generic interfaces. No customization. Whether you're a family coordinating life or a company building products, you get the same rigid tool.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution">
+            <h2>How DYNAMO Changes Everything</h2>
+            <p class="lead">DYNAMO isn't just better AI. It's AI that finally works the way you actually think and collaborate.</p>
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <h3>Memory That Never Forgets</h3>
+                    <p>Every conversation archived, vectorized, searchable. Your AI remembers your journey—personal breakthroughs, team decisions, project context—across months and years. Growth becomes cumulative, not repetitive.</p>
+                </div>
+                <div class="solution-card">
+                    <h3>Council of AI Colleagues</h3>
+                    <p>Multiple specialized AI agents deliberate together: one focused on semantics, another on ethics, another on creativity, another on memory retrieval. You get wisdom from multiple perspectives, not just one answer.</p>
+                </div>
+                <div class="solution-card">
+                    <h3>AI as Working Partners</h3>
+                    <p>AI agents don't just answer questions—they work alongside your team on real projects. Documentation, synthesis, scheduling, decision support. They have roles. They remember context. They collaborate.</p>
+                </div>
+                <div class="solution-card">
+                    <h3>Team Intelligence That Compounds</h3>
+                    <p>Your entire team shares context with AI. Decisions get documented automatically. Project knowledge accumulates. New members onboard instantly because the AI remembers everything the team has built.</p>
+                </div>
+                <div class="solution-card">
+                    <h3>Private, Sovereign, Yours</h3>
+                    <p>Your data lives in your secure environment. No corporate servers mining your conversations. Optional self-hosting with local models. You control who sees what, always.</p>
+                </div>
+                <div class="solution-card">
+                    <h3>Built for YOUR Needs</h3>
+                    <p>Fully customizable for any community. The features you need, the workflows that match how you actually work, the privacy controls that respect your boundaries.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="communities" class="communities-section">
+            <h2>For Every Kind of Community</h2>
+            <p class="lead">DYNAMO adapts to how you work together. Every community gets the features they need in a safe, private environment.</p>
+            <div class="communities-grid">
+                <div class="community-card">
+                    <h3>Families</h3>
+                    <ul>
+                        <li>Shared household planning</li>
+                        <li>Educational support for kids</li>
+                        <li>Health tracking and care coordination</li>
+                        <li>Memory archive of family stories</li>
+                        <li>AI helps manage daily life together</li>
+                    </ul>
+                </div>
+                <div class="community-card">
+                    <h3>Friend Groups</h3>
+                    <ul>
+                        <li>Trip planning with shared context</li>
+                        <li>Project collaboration</li>
+                        <li>Gift ideas and special dates</li>
+                        <li>Shared reading/learning groups</li>
+                        <li>AI remembers everyone's preferences</li>
+                    </ul>
+                </div>
+                <div class="community-card">
+                    <h3>Companies</h3>
+                    <ul>
+                        <li>Product development with AI partners</li>
+                        <li>Automated meeting documentation</li>
+                        <li>Institutional knowledge that persists</li>
+                        <li>Onboarding new hires instantly</li>
+                        <li>AI agents on every project team</li>
+                    </ul>
+                </div>
+                <div class="community-card">
+                    <h3>Research Teams</h3>
+                    <ul>
+                        <li>Literature review and synthesis</li>
+                        <li>Experimental design collaboration</li>
+                        <li>Data analysis with AI colleagues</li>
+                        <li>Publication drafting and editing</li>
+                        <li>Shared research context over years</li>
+                    </ul>
+                </div>
+                <div class="community-card">
+                    <h3>Government Agencies</h3>
+                    <ul>
+                        <li>Policy development with AI support</li>
+                        <li>Cross-department coordination</li>
+                        <li>Institutional memory across administrations</li>
+                        <li>Secure, compliant infrastructure</li>
+                        <li>AI partners in public service</li>
+                    </ul>
+                </div>
+                <div class="community-card">
+                    <h3>Learning Communities</h3>
+                    <ul>
+                        <li>Study groups with AI tutors</li>
+                        <li>Skill development tracking</li>
+                        <li>Peer learning coordination</li>
+                        <li>Shared knowledge base building</li>
+                        <li>AI remembers everyone's learning journey</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="paradigm" class="paradigm-section">
+            <div class="paradigm-intro">
+                <h2>The New Paradigm of Work</h2>
+                <p>DYNAMO is built using the workflows that will define the next decade. This isn't incremental improvement—it's a fundamental shift in how humans and AI collaborate.</p>
+            </div>
+            <div class="workflow-grid">
+                <div class="workflow-card">
+                    <h3>From Tools to Teammates</h3>
+                    <p>AI agents aren't servants waiting for commands. They're colleagues with roles, context, and continuity. They remember your team's decisions, contribute perspectives, and work alongside you on real projects.</p>
+                </div>
+                <div class="workflow-card">
+                    <h3>From Sessions to Journeys</h3>
+                    <p>Stop starting over. Your conversations with AI build on months of shared context. Your team's intelligence compounds. Every interaction strengthens the foundation for what comes next.</p>
+                </div>
+                <div class="workflow-card">
+                    <h3>From Extraction to Partnership</h3>
+                    <p>Current AI is designed to extract engagement and data from you. DYNAMO is designed for genuine partnership—technology that serves your growth, respects your sovereignty, and amplifies your capabilities.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="vision-statement">
+            <blockquote>
+                We're building the operating system for human+AI collaborative work. Where AI agents are team members with persistent memory. Where every community can customize their environment. Where technology finally serves genuine partnership instead of extraction.
+            </blockquote>
+        </section>
+
+        <section id="contact" class="cta-section">
+            <h2>Be Part of What's Next</h2>
+            <p class="lead">DYNAMO launches in 12 months. The first 100 users shape what gets built. Early adoption establishes years of advantage.</p>
+            <div class="cta-grid">
+                <div class="cta-card">
+                    <div class="card-number">1</div>
+                    <h3>Invest</h3>
+                    <p>Help us build the infrastructure for human+AI collaboration. $250K-$1M. Expected 100x return over 7 years as this becomes standard.</p>
+                    <a href="mailto:sustainableIQ@gmail.com?subject=Investment%20Inquiry" class="btn primary">Investment Inquiry</a>
+                </div>
+                <div class="cta-card">
+                    <div class="card-number">2</div>
+                    <h3>Early Adopter</h3>
+                    <p>Free for first 100 users. Beta launches Month 10. Lock in lifetime pricing. Direct input on features. Help shape the platform.</p>
+                    <a href="mailto:sustainableIQ@gmail.com?subject=Beta%20Waitlist" class="btn primary">Join Beta Waitlist</a>
+                </div>
+                <div class="cta-card">
+                    <div class="card-number">3</div>
+                    <h3>Stay Updated</h3>
+                    <p>Get monthly updates on development. See the workflows in action. Learn how teams are already using these methods. Join the movement.</p>
+                    <a href="mailto:sustainableIQ@gmail.com?subject=Updates%20List" class="btn secondary">Get Updates</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>DYNAMO</strong> © 2025 | Building the future of human+AI collaboration</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://dynamo-ai.tech/">Explore the Full Vision</a> • 
+            <a href="https://sustainable-iq.github.io/dynamo/">Main Site</a>
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+        document.querySelectorAll('.solution-card, .problem-card, .community-card, .workflow-card, .cta-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

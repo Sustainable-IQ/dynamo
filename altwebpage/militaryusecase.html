@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DYNAMO • Sovereign Council‑Based AI for Classified Enclaves</title>
+  <meta name="description" content="DYNAMO: sovereign, council‑based, ABAC‑enforced, audit‑first conversational AI for IL5/IL6 classified enclaves. DoD‑ready with RMF/eMASS, provenance, and revocation." />
+  <style>
+    /* ====== US‑gov inspired palette (USWDS‑adjacent), tuned to DOW look ====== */
+    :root {
+      /* Core brand */
+      --gov-black: #000000;
+      --gov-blue-95: #070b11; /* near-black navy */
+      --gov-blue-90: #0b1420; /* deep navy */
+      --gov-blue-85: #0f1722; /* slate navy */
+      --gov-blue-80: #112e51; /* USWDS blue‑80 */
+      --gov-blue-60: #005ea2; /* USWDS blue‑60v */
+      --gov-blue-30: #9ec8ff; /* link tint */
+      --gov-red-50v: #d83933; /* vivid red */
+      --gov-green-60: #0f7b67; /* success */
+      --gov-gray-10: #edf2f7;
+      --gov-gray-20: #dce3ea;
+
+      /* Surface + type */
+      --bg: linear-gradient(180deg, var(--gov-blue-95) 0%, var(--gov-blue-90) 55%, var(--gov-blue-85) 100%);
+      --text: #e6edf5;         /* light text for dark surfaces */
+      --text-muted: #b7c4d6;
+      --text-dark: #1b1b1b;    /* dark text for light cards */
+      --link: var(--gov-blue-30);
+      --shadow: 0 1px 2px rgba(0,0,0,.25), 0 10px 30px rgba(0,0,0,.30);
+      --radius: 14px;
+    }
+
+    /* Base */
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text); background: var(--bg);
+      line-height: 1.6; text-rendering: optimizeLegibility;
+    }
+    a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+    a:hover { text-decoration-thickness: 2px; }
+    .container { width: min(1200px, 92vw); margin: 0 auto; }
+    .pill { display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; font-weight: 700; }
+
+    /* Top banner */
+    .usa-banner { background: #0e2a44; color:#fff; }
+    .usa-banner .container { display: flex; align-items: center; gap: 12px; padding: 10px 16px; font-size: 14px; }
+    .usa-flag { width: 20px; height: 14px; border: 1px solid rgba(255,255,255,.35); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+
+    /* Header & global nav — match DOW: black bar with white text */
+    header { background: var(--gov-black); color:#fff; position: sticky; top: 0; z-index: 40; box-shadow: var(--shadow); }
+    .nav { display:flex; align-items:center; justify-content: space-between; padding: 14px 0; }
+    .brand { display:flex; gap:10px; align-items:center; font-weight: 800; letter-spacing:.02em; }
+    .brand svg { width:28px; height:28px; }
+
+    /* Table of Contents - Fixed Sidebar */
+    .toc-sidebar { position: fixed; right: 16px; top: 80px; width: 180px; max-height: calc(100vh - 100px); overflow-y: auto; background: rgba(15,29,39,0.9); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px; z-index: 30; }
+    .toc-sidebar h4 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #fdb81e; border-bottom: 1px solid rgba(253,184,30,0.3); padding-bottom: 6px; }
+    .toc-sidebar a { display: block; color: #9ca3af; text-decoration: none; padding: 6px 8px; margin: 2px 0; border-radius: 4px; font-size: 12px; transition: all 0.2s ease; border-left: 2px solid transparent; }
+    .toc-sidebar a:hover { background: rgba(158,200,255,0.1); color: var(--gov-blue-30); border-left-color: var(--gov-blue-30); }
+    .toc-sidebar a.active { background: rgba(253,184,30,0.15); color: #fdb81e; border-left-color: #fdb81e; font-weight: 600; }
+    .toc-sidebar::-webkit-scrollbar { width: 4px; }
+    .toc-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .toc-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+    @media (max-width: 1400px) { .toc-sidebar { display: none; } }
+
+    /* Hero slab sits below black bar and blends into dark background */
+    .hero { background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,.06) 100%); }
+    .hero .container { padding: 70px 0 36px; display:grid; grid-template-columns: 1.2fr .8fr; gap: 32px; align-items: end; }
+    .kicker { color: #c9e4ff; font-weight: 800; letter-spacing:.06em; text-transform: uppercase; font-size: 13px; }
+    h1 { font-size: clamp(30px, 4.4vw, 48px); line-height: 1.05; margin: 10px 0 14px; color:#ffffff; }
+    .lead { font-size: clamp(16px, 1.6vw, 20px); color: #dce7f6; max-width: 60ch; }
+    .hero-card { background: #2d3748; color: #d1d5db; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .metrics { display:grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 12px; }
+    .metric { background: #f4f7fb; border-radius: 12px; padding: 12px 14px; color:#0f253e; }
+    .metric b { font-size: 20px; display:block; color:#09213a; }
+
+    /* Sections */
+    section { padding: 54px 0; }
+    section.alt { background: linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.00) 100%); }
+    section.intro { text-align: center; padding: 64px 0; }
+    section.intro .container { max-width: 900px; }
+    section.intro h1 { font-size: clamp(28px, 4vw, 42px); margin: 0 0 24px; color:#ffffff; }
+    section.intro .tagline { font-size: clamp(18px, 2vw, 24px); font-weight: 600; color: var(--gov-blue-30); margin: 0 0 32px; line-height: 1.4; }
+    section.intro p { font-size: clamp(16px, 1.5vw, 18px); color: var(--text); line-height: 1.8; max-width: 800px; margin: 0 auto; }
+    h2 { font-size: clamp(22px, 3vw, 32px); margin: 0 0 8px; color:#ffffff; }
+    .sub { color: var(--text-muted); margin: 0 0 18px; }
+
+    /* Grid & cards */
+    .grid-2 { display:grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+    .grid-3 { display:grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .card { background:#0f1621; color:#d7e3f5; border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .card h3 { color:#ffffff; }
+
+    /* Light cards (callouts where readability is better on light) */
+    .card.light { background:#191e27; color: #d1d5db; border:1px solid #6b7280; }
+
+    /* Callouts */
+    .callout { border-left: 6px solid var(--gov-blue-60); background: rgba(0,94,162,.10); padding: 14px 16px; border-radius: 8px; color:#d7e7fb; }
+    .callout.warn { border-color: var(--gov-red-50v); background: rgba(216,57,51,.10); }
+    .callout.ok { border-color: var(--gov-green-60); background: rgba(15,123,103,.10); }
+
+    /* Details/summary */
+    details { border:1px solid rgba(255,255,255,.12); border-radius: 12px; background: #0f1621; color:#d7e3f5; }
+    details + details { margin-top: 12px; }
+    summary { cursor:pointer; list-style:none; padding: 14px 16px; font-weight: 800; color:#ffffff; }
+    summary::-webkit-details-marker{ display:none; }
+    details > div { padding: 0 16px 16px; }
+
+    /* Lists */
+    ul.tight li { margin: 6px 0; }
+
+    /* Code blocks */
+    pre { background:#0b111a; color:#cde3ff; padding:14px 16px; border-radius:12px; overflow:auto; box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.08); }
+
+    /* Footer */
+    footer { background: var(--gov-black); color:#cfe0f5; padding: 36px 0; }
+
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; gap:10px; padding: 10px 14px; border-radius: 999px; border: 2px solid transparent; font-weight:800; text-decoration:none; }
+    .btn.primary { background: var(--gov-red-50v); color:#fff; }
+    .btn.primary:hover { filter: brightness(1.05); }
+    .btn.ghost { border-color:#5c6a7a; color:#e6eef6; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero .container { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- USA‑style banner (inspired by USWDS, not claiming gov status) -->
+  <div class="usa-banner" role="region" aria-label="site banner">
+    <div class="container">
+      <svg class="usa-flag" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#b50909"/><g fill="#fff"><rect y="2" width="24" height="2"/><rect y="6" width="24" height="2"/><rect y="10" width="24" height="2"/><rect y="14" width="24" height="2"/></g><rect width="10" height="8" fill="#112e51"/><g fill="#fff"><circle cx="2" cy="2" r=".6"/><circle cx="5" cy="2" r=".6"/><circle cx="8" cy="2" r=".6"/><circle cx="3.5" cy="4" r=".6"/><circle cx="6.5" cy="4" r=".6"/><circle cx="2" cy="6" r=".6"/><circle cx="5" cy="6" r=".6"/><circle cx="8" cy="6" r=".6"/></g></svg>
+      <strong>DYNAMO Defense Concept Brief</strong>
+      <span class="pill" style="background:#0e7c95;color:#fff;">Sovereign • IL5/IL6</span>
+    </div>
+  </div>
+
+  <header>
+    <div class="container nav" role="navigation" aria-label="Primary">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+        <span>DYNAMO • Defense</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Table of Contents Sidebar -->
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <nav>
+      <a href="#executive-summary">Executive Summary</a>
+      <a href="#opportunity">Opportunity</a>
+      <a href="#funding">Funding Landscape</a>
+      <a href="#why">Why DYNAMO</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#contracting">Contracting</a>
+      <a href="#strategy">Strategic Play</a>
+      <a href="#feasibility">Feasibility</a>
+      <a href="#proof">AO Plan</a>
+      <a href="#faq">FAQ</a>
+      <a href="#refs">References</a>
+    </nav>
+  </aside>
+
+  <section class="intro">
+    <div class="container">
+      <h1>The Dynamic AI Memory Organizer Platform</h1>
+      <div class="tagline">
+        Conversations that Remember<br>Memory that Evolves
+      </div>
+      <p>The Dynamic AI Memory Organizer (DYNAMO) is a platform that transforms your conversations — and your community's — with large language models (LLMs) into persistent, living memory. It doesn't just store dialogue, it uses those memories to guide growth, spark insight, and weave collective wisdom. Built on a Self-Organizing Holarchic Open (SOHO) architecture, DYNAMO turns dialogue into continuity, and continuity into transformation — supporting personal development, long-term coherence, and community intelligence.</p>
+    </div>
+  </section>
+
+  <section id="executive-summary">
+    <div class="container">
+      <h2>Executive Summary</h2>
+      <p class="sub">Understanding DYNAMO's Defense Application</p>
+
+      <div class="grid-2">
+        <div class="card light">
+          <h3 style="margin-top:0; color:#fdb81e;">What This Is About</h3>
+          <p style="color:#d1d5db;">This document presents DYNAMO's application to military and intelligence operations. Traditional AI chatbots can't be used in classified environments because they lack proper security controls, don't maintain memory across sessions, and can't enforce who sees what information. DYNAMO solves this by bringing conversational AI into secure military networks (called IL5/IL6 classified enclaves) with enterprise-grade security and memory that persists over time.</p>
+        </div>
+
+        <div class="card light">
+          <h3 style="margin-top:0; color:#fdb81e;">The Core Problem</h3>
+          <p style="color:#d1d5db;">Military personnel need AI assistance for decision-making, but commercial AI services like ChatGPT cannot be used with classified information. Current solutions either lack proper access controls, don't maintain continuity of knowledge, or can't meet Department of Defense security requirements. This creates a gap between the AI capabilities available to the commercial world and what's available to warfighters and intelligence analysts.</p>
+        </div>
+      </div>
+
+      <div class="card light" style="margin-top:24px;">
+        <h3 style="margin-top:0; color:#fdb81e;">DYNAMO's Military Solution</h3>
+        <p style="color:#d1d5db;"><strong>What makes DYNAMO different:</strong></p>
+        <ul style="color:#d1d5db;">
+          <li><strong>Deployed in secure enclaves:</strong> Runs entirely within classified networks (IL5/IL6) with no connection to the public internet, keeping sensitive information completely isolated.</li>
+          <li><strong>Attribute-Based Access Control (ABAC):</strong> Automatically controls who can see what based on rank, security clearance, unit assignment, and mission need-to-know. A Private sees different information than a Colonel.</li>
+          <li><strong>Audit-first memory:</strong> Every conversation, every decision, and every piece of information is logged with complete traceability. You can reconstruct who asked what, when, and what answer they received.</li>
+          <li><strong>Council-based AI agents:</strong> Instead of one generic AI, DYNAMO provides specialized AI agents aligned to military structure (enlisted, officer, warrant officer, etc.), each with appropriate knowledge and guardrails.</li>
+          <li><strong>Living memory with provenance:</strong> Information isn't just stored—it's tracked from source to usage. If a document is revoked or updated, the system knows and can prevent outdated information from being used.</li>
+          <li><strong>DoD compliance ready:</strong> Built to meet Risk Management Framework (RMF) requirements, with Security Technical Implementation Guide (STIG) compliance, and a path to Authority to Operate (ATO) certification.</li>
+        </ul>
+
+        <p style="color:#d1d5db; margin-top:16px;"><strong>In plain terms:</strong> DYNAMO brings ChatGPT-like capabilities to classified military operations, but with the security, access controls, audit trails, and compliance that the Department of Defense requires. It remembers context over time, enforces who can access what information, and maintains complete accountability for every interaction.</p>
+      </div>
+    </div>
+  </section>
+
+  <header>
+    <div class="hero">
+      <div class="container">
+        <div>
+          <div class="kicker">Sovereign council‑based AI for classified enclaves</div>
+          <h1>Operational advantage inside IL5/IL6, with ABAC and audit‑first memory.</h1>
+          <p class="lead">We are opening a gap for a full <em>sovereign, council‑based, ABAC‑enforced, audit‑first memory</em> stack, deployed at scale across TS/SCI enclaves. The goal: faster, more compliant decisions under pressure, with full provenance and continuity.</p>
+          <div style="margin-top:18px; display:flex; gap:12px;">
+            <a class="btn primary" href="#proof">See AO Validation Plan</a>
+            <a class="btn ghost" href="#contracting">Contracting & ROM</a>
+          </div>
+        </div>
+        <div class="hero-card" aria-labelledby="metrics-title">
+          <div class="pill" style="background:#ffe8e6;color:#6a110d;">Pilot Gate • Pass/Fail</div>
+          <h3 id="metrics-title" style="margin:10px 0 8px; color:#f3f4f6;">What we will prove in‑enclave</h3>
+          <ul class="tight" style="margin:0; padding-left:16px; color:#d1d5db;">
+            <li><b>p95 ≤ 10s</b> end‑to‑end for N concurrent turns</li>
+            <li><b>≥ 99.9% audit completeness</b> with immutable logs</li>
+            <li><b>ABAC/RBAC</b> across rank, billet, unit, clearance, compartments/caveats, NTK</li>
+            <li><b>RAG by classification/compartment</b> with provenance & revocation</li>
+            <li><b>RMF in eMASS</b> with STIG scans and cATO path</li>
+          </ul>
+          <div class="metrics">
+            <div class="metric"><span>Latency</span><b>p95 ≤ 10s</b></div>
+            <div class="metric"><span>Audit</span><b>≥ 99.9%</b></div>
+            <div class="metric"><span>Status</span><b>cATO path</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Opportunity -->
+    <section id="opportunity" class="alt">
+      <div class="container">
+        <h2>Opportunity</h2>
+        <p class="sub"><b>$500M+ defense contract opportunity.</b> This transforms DYNAMO from a privacy‑focused assistant into <b>candidate infrastructure for mission‑critical decision support, pending ATO</b>. It is a <b>complete vertical strategy</b> that can fund Phases 2–4.</p>
+        <div class="callout warn"><b>Language discipline:</b> We frame deployment as <em>IL5/IL6‑equivalent classified enclaves with no public egress and an offline update channel</em> (not “air‑gapped on SIPR/JWICS”).</div>
+      </div>
+    </section>
+
+    <!-- Funding Landscape -->
+    <section id="funding">
+      <div class="container">
+        <h2>Are other options being funded?</h2>
+        <p class="sub">Short answer: yes — there are functioning GenAI pilots and some early classified deployments. To our knowledge, none combine council‑based support, audit‑first memory, and ABAC inside IL5/IL6 at TS/SCI scale. That gap is our opening.</p>
+        <div class="grid-2">
+          <div class="card">
+            <h3 style="margin-top:0; color:#fdb81e;">Why we say that</h3>
+            <ul class="tight">
+              <li>CIA “Osiris” for thousands of analysts on unclassified/open‑source data; leadership stresses provenance and early stage. <a href="https://apnews.com/article/9471e8c5703306eb29f6c971b6923187" target="_blank" rel="noreferrer noopener">AP News</a>.</li>
+              <li>DoD Task Force Lima & AI Rapid Capabilities Cell; GenAI Guidelines & Guardrails and toolkit signal demand + governance. <a href="https://www.ai.mil/Portals/137/Documents/Resources%20Page/2024-12-TF%20Lima-ExecSum-TAB-A.pdf" target="_blank" rel="noreferrer noopener">AI.mil (PDF)</a>.</li>
+              <li>DISA SIPRNet chatbot pilot for INDOPACOM; <em>pilot</em> and <em>pending accreditation</em> status. <a href="https://defensescoop.com/2025/03/25/disa-siprgpt-chatbot-indopacom-joint-operational-edge-cloud/" target="_blank" rel="noreferrer noopener">DefenseScoop</a>.</li>
+              <li>GAMECHANGER in production for policy search; retrieval/analytics, not ABAC‑gated GenAI counsel. <a href="https://www.ai.mil/Initiatives/Analytic-Tools/" target="_blank" rel="noreferrer noopener">AI.mil</a>.</li>
+              <li>Vendor claims of IL5/IL6 LLM capability (e.g., partnerships) do not equal department‑wide, council‑style assistants with this compliance surface. <a href="https://investors.palantir.com/news-details/2024/Palantir-and-Microsoft-Partner-to-Deliver-Enhanced-Analytics-and-AI-Services-to-Classified-Networks-for-Critical-National-Security-Operations/" target="_blank" rel="noreferrer noopener">Palantir Investors</a>.</li>
+              <li>DIU is still soliciting GenAI for planning/wargaming — evidence the field isn’t “solved.” <a href="https://defensescoop.com/2024/08/26/diu-solicitation-generative-artificial-intelligence-joint-planning-thunderforge/" target="_blank" rel="noreferrer noopener">DefenseScoop</a>.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0; color:#fdb81e;">Bottom line</h3>
+            <p>Assume there are secret pilots and some functional TS apps, but <b>scale ATO + ABAC + provenance</b> remains underserved. If we show p95 latency, audit completeness, and a real RMF/eMASS package inside IL5/IL6 with ABAC and revocation/provenance working, we’re first through the ATO door with something commanders will use.</p>
+            <div class="callout ok">Where DYNAMO wins: enclave‑resident deployment, ABAC/RBAC policy, versioned/provable RAG, eMASS artifacts, STIG/FIPS, Zero Trust mapping, Responsible‑AI docs, and a clean CLIN/ROM pathway. <a href="https://www.ai.mil/Latest/Blog/Article-Display/Article/3994183/genai-toolkit-operationalizes-guidelines-guardrails-memo/" target="_blank" rel="noreferrer noopener">AI.mil</a>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why DYNAMO -->
+    <section id="why" class="alt">
+      <div class="container">
+        <h2>Why DYNAMO Is a Fit</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3 style="margin-top:0; color:#fdb81e;">Current State</h3>
+            <ul class="tight">
+              <li>Use of generic SaaS chat is restricted without sovereign controls.</li>
+              <li>Classified data must not touch public/corporate infrastructure.</li>
+              <li>Chain of command demands audit trails and markings.</li>
+              <li>Operational security favors enclave‑resident deployments.</li>
+              <li>Coalition ops require REL TO/NOFORN handling.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0; color:#fdb81e;">DYNAMO's Architecture</h3>
+            <ul class="tight">
+              <li>Self‑hosted in IL5/IL6‑equivalent enclaves; no public egress; offline updates.</li>
+              <li>Complete audit trail (immutable logs, ≥ 99.9% completeness SLO).</li>
+              <li>ABAC/RBAC across rank, billet, unit, clearance, compartments/caveats, NTK.</li>
+              <li>Multi‑agent council for decision support with ROE/UCMJ/Geneva guardrails.</li>
+              <li>Living memory for continuity across rotations.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card light" style="margin-top:16px">
+          <h3 style="margin-top:0; color:#fdb81e;">Attribute‑Based Agents (aligned to Chain of Command)</h3>
+          <p style="color:#d1d5db;">Map authority and access through attributes — not just rank. Deny‑by‑default and auto‑redaction on share‑down.</p>
+          <div class="grid-3">
+            <div>
+              <h4 style="color:#f3f4f6;">E‑1 Private Agent</h4>
+              <ul class="tight" style="color:#d1d5db;"><li>Field manuals, SOPs, basic protocols</li><li>Guardrails to prevent over‑classification access</li></ul>
+            </div>
+            <div>
+              <h4 style="color:#f3f4f6;">O‑6 Colonel Agent</h4>
+              <ul class="tight" style="color:#d1d5db;"><li>Strategic doctrine, theater planning, joint ops</li><li>Ensures compliance with ROE, UCMJ, Geneva</li></ul>
+            </div>
+            <div>
+              <h4 style="color:#f3f4f6;">W‑4 Warrant Officer Agent</h4>
+              <ul class="tight" style="color:#d1d5db;"><li>Deep technical domains (aviation/cyber/logistics)</li><li>Safety and mission requirement checks</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture: Personal/Team/RAG -->
+    <section id="architecture">
+      <div class="container">
+        <h2>Military Use Case Architecture</h2>
+        <div class="grid-2">
+          <div>
+            <h3 style="color:#fdb81e;">Individual Soldier Access (Personal Tier)</h3>
+            <pre><code>Private (E‑1) logs in:
+- Assigned: Private Agent (basic protocols, field manuals)
+- Can query: SOPs, basic tactics
+- Cannot access: higher‑classification intel or strategic planning
+- Guardrails: "Before you do X, regulation Y requires Z"
+
+Captain (O‑3) logs in:
+- Assigned: Captain Agent (company‑level ops)
+- Can query: tactical planning, logistics, personnel mgmt
+- Clearance: Secret (company‑level)
+- Guardrails: "This order conflicts with ROE ¶3.2.4"
+
+General (O‑10) logs in:
+- Assigned: General Agent (strategic theater ops)
+- Can query: multi‑theater coordination
+- Clearance: TS/SCI compartments
+- Guardrails: "This decision requires SecDef approval"
+</code></pre>
+          </div>
+          <div>
+            <h3 style="color:#fdb81e;">Team Coordination (Community Dashboard)</h3>
+            <pre><code>Mission Planning Thread:
+- O‑6 commander, O‑5 ops, O‑4 intel, W‑4 aviation, E‑9 senior enlisted
+Each member sees:
+- Council deliberation from rank‑appropriate agents
+- Shared mission context (maps, intel, orders)
+- Decision ledger (who/what/when/why)
+- Questions ledger (items needing higher approval)
+
+AI‑Agent Packs:
+- Mission Planning, Logistics, Intelligence, Comms
+- Aviation, SOF, Cyber
+</code></pre>
+          </div>
+        </div>
+
+        <h3 style="margin-top:24px; color:#fdb81e;">RAG Document Library (by access)</h3>
+        <pre><code>E‑1 Private Agent RAG:
+- FM 3‑21.8; AR 670‑1; DA PAM 385‑64; radio & first‑aid SOPs
+
+O‑6 Colonel Agent RAG:
+- JP 3‑0; theater OPLANs; classified ROE; coalition procedures
+
+W‑4 Aviation Agent RAG:
+- UH‑60 TM; AR 95‑1; maintenance TOs; aviation safety; weather mins
+</code></pre>
+      </div>
+    </section>
+
+    <!-- Contract & Revenue -->
+    <section id="contracting" class="alt">
+      <div class="container">
+        <h2>Contracting & Pricing</h2>
+        <div class="grid-2">
+          <div class="card light">
+            <h3 style="margin-top:0; color:#f3f4f6;">$5M Customization Contract (18–24 months)</h3>
+            <ul class="tight" style="color:#d1d5db;">
+              <li><b>Phase 1 — Core Adaptation ($1.5M, 6 mo):</b> ABAC agents, clearance controls, approvals, audit, enclave deployment, military RAG ingest.</li>
+              <li><b>Phase 2 — Guardrails & Compliance ($1M, 6 mo):</b> UCMJ/Geneva/ROE checks, OPSEC leak prevention, spillage detection, JAG flags.</li>
+              <li><b>Phase 3 — Mission Packs ($1.5M, 6 mo):</b> Planning, Intel, Logistics, Comms, Aviation, SOF, Cyber.</li>
+              <li><b>Phase 4 — Training & Deployment ($1M, 6 mo):</b> Soldier curriculum, enclave install, C2 integration, red‑team, ATO support, 24/7 support.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0; color:#fdb81e;">CLIN Structure (DoD‑ready)</h3>
+            <ul class="tight">
+              <li>CLIN 0001 — Platform License (per enclave)</li>
+              <li>CLIN 0002 — Surge Compute</li>
+              <li>CLIN 0003 — Support & Training</li>
+              <li>CLIN 0004 — Security & ATO Maintenance</li>
+              <li>CLIN 0005 — Mission Pack Development</li>
+            </ul>
+            <div class="callout">Per‑seat numbers below are <b>market sizing</b>, not contracting. Use CLINs and ROM bands for acquisition.</div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:24px; color:#fdb81e;">Revenue Model (Market Sizing)</h3>
+        <ul class="tight">
+          <li><b>Initial Pilot:</b> $5M, brigade‑scale (3k–5k personnel), 12–18 months.</li>
+          <li><b>Follow‑On (Army‑wide):</b> ~$50M, with recurring O&M.</li>
+          <li><b>DoD‑wide (recurring):</b> Illustrative per‑seat sizing ≈ $140M/yr across ~1.4M personnel.</li>
+          <li><b>Allied expansion:</b> Five Eyes/NATO and partners; multi‑year potential $500M+.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Strategic Play -->
+    <section id="strategy">
+      <div class="container">
+        <h2>The Strategic Play</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="margin-top:0">MVP (12 mo, ~$200k)</h3>
+            <ul class="tight"><li>Validate multi‑agent council</li><li>Self‑hosted prototype</li><li>5–15 beta users</li></ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0">Bridge to Military (6 mo, $500k–$1M)</h3>
+            <ul class="tight"><li>Military demo</li><li>Agent prototypes (E‑1…O‑10)</li><li>Clearance mockups; DIU pitch</li></ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0">Pilot → Scale</h3>
+            <ul class="tight"><li><b>Pilot:</b> $5M brigade</li><li><b>Scale:</b> $50M–$200M</li><li><b>Allies:</b> $500M+ over 5 years</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feasibility -->
+    <section id="feasibility" class="alt">
+      <div class="container">
+        <h2>Tech & Strategy Feasibility</h2>
+        <p class="sub">Not a “rack a few GPUs” problem. Defense‑grade, multi‑tenant system with hard SLOs and auditability.</p>
+        <div class="grid-2">
+          <div class="card">
+            <h3 style="margin-top:0; color:#fdb81e;">Planning Assumptions</h3>
+            <ul class="tight">
+              <li>70B‑class instruct model; 8–16k context; council ≈ 5 agents.</li>
+              <li>Peak concurrency: 1–5% (1k–5k users).</li>
+              <li>SLO: p95 ≤ 10 s end‑to‑end.</li>
+            </ul>
+            <h3>Deployment Lanes</h3>
+            <ul class="tight"><li><b>On‑prem IL6:</b> multi‑rack GPU + vector/DB tiers.</li><li><b>Cleared cloud:</b> IL5/IL6 region, private networking, KMS/HSM.</li></ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0; color:#fdb81e;">Capacity Planning (honest math)</h3>
+            <p>Measure tokens/sec per inference pod in pilot using your real prompts; size pods to hit p95 ≤ 10s at target concurrency.</p>
+            <pre><code>Pods ≈ ceil((C × K × A) / (T × U × SLO_seconds))
+Where: C=concurrency, K=tokens/turn, A=agents, T=tok/s/pod, U=utilization
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AO Plan -->
+    <section id="proof">
+      <div class="container">
+        <h2>AO Demonstration & Pilot Validation Plan (IL5/IL6)</h2>
+        <p class="sub">Prove p95 latency, ≥99.9% audit completeness, ABAC & RAG controls, and a real RMF/eMASS package toward cATO.</p>
+        <div class="grid-2">
+          <div>
+            <div class="callout ok"><strong>Gate 1:</strong> p95 ≤ 10s • Audit ≥ 99.9% • ABAC/RBAC enforced • RAG by classification/compartment with provenance & revocation • RMF artifacts in eMASS (cATO path)</div>
+            <details open><summary>Phase 1 — Enclave Landing Zone</summary><div>Single‑tenant namespace, no public egress, offline updates; GPU/CPU pools; per‑compartment vector stores; KMS/HSM; WORM audit storage; boundary diagram and ops runbook.</div></details>
+            <details><summary>Phase 2 — Identity & ABAC</summary><div>IdAM/ICAM attributes (rank, billet, unit, clearance, compartments, caveats, NTK). Deny‑by‑default; auto‑redaction; REL TO/NOFORN enforcement.</div></details>
+            <details><summary>Phase 3 — RAG by Classification & Compartment</summary><div>Separate indexes; content registry with versioning & revocation; citations carry provenance; tombstones on revocation with index rebuild.</div></details>
+            <details><summary>Phase 4 — Observability & Audit</summary><div>Trace user → policy → retrieval → model → markings; append‑only, hash‑chained logs; dashboard proves completeness.</div></details>
+            <details><summary>Phase 5 — Latency SLO</summary><div>In‑enclave load harness using real prompts; optimize caches, parallel retrieval, autoscaling; show p50/p95/p99 with traces.</div></details>
+            <details><summary>Phase 6 — RMF/eMASS & cATO</summary><div>SSP, control statements, STIG scans, POA&M, ConMon, contingency; FIPS modules, SBOM, signed images, SLSA provenance; package in eMASS.</div></details>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="margin-top:0">Demo Script (15–20 min)</h3>
+              <ol>
+                <li>Login as E‑3, O‑6, coalition officer → allow/deny, redaction, portion marks.</li>
+                <li>Ask doctrinal Q → click citations → revoke → rebuild → re‑ask.</li>
+                <li>Run load harness → show p95 and spans.</li>
+                <li>Open audit dashboard → reconstruct a turn.</li>
+                <li>Open eMASS → SSP, STIG, POA&M, cATO plan.</li>
+                <li>Trigger guardrail → HITL escalation → rollback model.</li>
+              </ol>
+            </div>
+            <div class="callout warn"><strong>Accuracy note:</strong> Use “deployed to IL5/IL6‑equivalent classified enclaves with no public egress, offline update channel.” Avoid “air‑gapped on SIPR/JWICS.”</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <h3 style="margin-top:0">Summary for the AO</h3>
+          <ul class="tight">
+            <li>p95 ≤ 10 s at target concurrency</li>
+            <li>Audit completeness ≥ 99.9% (immutable, hash‑chained)</li>
+            <li>ABAC across clearance/compartments/caveats/NTK with markings & redaction</li>
+            <li>RAG by classification/compartment with provenance & revocation</li>
+            <li>RMF/eMASS package with STIG evidence and a cATO plan</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="alt">
+      <div class="container">
+        <h2>Plain‑Language FAQ</h2>
+        <div class="grid-2">
+          <div>
+            <details open><summary>Is this “ChatGPT for SIPR”?</summary><div>No. Generic SaaS chat is restricted. DYNAMO is enclave‑resident with ABAC/RBAC, provenance & revocation, and an RMF/eMASS path.</div></details>
+            <details><summary>How do we prevent spillage?</summary><div>Derivative classification safeguards, portion marks, REL TO/NOFORN enforcement, automated quarantine, and auditable traceability.</div></details>
+          </div>
+          <div>
+            <details><summary>How is access controlled?</summary><div>Attribute‑based at query time using rank, billet, unit, clearance, compartments, caveats, and mission need‑to‑know; deny‑by‑default.</div></details>
+            <details><summary>Where does this go after pilot?</summary><div>Scale by enclave and mission packs; optional coalition “REL TO” enclaves with per‑tenant keys and data segregation.</div></details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- References -->
+    <section id="refs">
+      <div class="container">
+        <h2>References (public)</h2>
+        <ul>
+          <li>Associated Press — CIA “Osiris”: <a href="https://apnews.com/article/9471e8c5703306eb29f6c971b6923187" target="_blank" rel="noreferrer noopener">link</a></li>
+          <li>AI.mil — Task Force Lima Executive Summary (PDF): <a href="https://www.ai.mil/Portals/137/Documents/Resources%20Page/2024-12-TF%20Lima-ExecSum-TAB-A.pdf" target="_blank" rel="noreferrer noopener">link</a></li>
+          <li>DefenseScoop — DISA SIPR chatbot pilot: <a href="https://defensescoop.com/2025/03/25/disa-siprgpt-chatbot-indopacom-joint-operational-edge-cloud/" target="_blank" rel="noreferrer noopener">link</a></li>
+          <li>AI.mil — GAMECHANGER: <a href="https://www.ai.mil/Initiatives/Analytic-Tools/" target="_blank" rel="noreferrer noopener">link</a></li>
+          <li>Palantir Investors — classified networks partnership: <a href="https://investors.palantir.com/news-details/2024/Palantir-and-Microsoft-Partner-to-Deliver-Enhanced-Analytics-and-AI-Services-to-Classified-Networks-for-Critical-National-Security-Operations/" target="_blank" rel="noreferrer noopener">link</a></li>
+          <li>AI.mil — GenAI toolkit & guardrails: <a href="https://www.ai.mil/Latest/Blog/Article-Display/Article/3994183/genai-toolkit-operationalizes-guidelines-guardrails-memo/" target="_blank" rel="noreferrer noopener">link</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex; align-items:flex-start; justify-content:space-between; gap:24px;">
+      <div>
+        <div class="kicker" style="color:#9ec8ff">DYNAMO Defense</div>
+        <h3 style="margin:6px 0 8px; color:#fff;">Sovereign council‑based AI for classified enclaves</h3>
+        <p style="max-width:60ch;">This document presents a concept brief for a DoD/IC audience. All external references are illustrative and public. Implementation claims are scoped to pilot objectives and accreditation pathways.</p>
+      </div>
+      <div>
+        <a class="btn primary" href="#proof" aria-label="Jump to AO Validation Plan">AO Validation Plan</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Highlight active section in ToC as user scrolls
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-sidebar a');
+
+    function highlightActiveSection() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', highlightActiveSection);
+    highlightActiveSection(); // Run on page load
+  </script>
+</body>
+</html>

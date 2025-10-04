@@ -807,7 +807,8 @@ const appState = {
   },
   selection: {
     selectedRecordIds: [],
-    activeRecordId: null
+    activeRecordId: null,
+    generatedSummary: null
   },
   ui: {
     activeTab: 'details',
@@ -819,6 +820,31 @@ const appState = {
   },
   savedSearches: JSON.parse(localStorage.getItem('dynamoSavedSearches') || '[]')
 };
+
+function parseRecordId(recordId) {
+  // split on the LAST underscore, so internal underscores are preserved
+  const i = recordId.lastIndexOf('_');
+  if (i === -1) return { ledgerId: recordId, exchangeId: '' };
+  return { ledgerId: recordId.slice(0, i), exchangeId: recordId.slice(i + 1) };
+}
+
+function safeGetConversation(ledgerId, exchangeId) {
+  // try the data API first
+  const conv = (typeof getFullConversation === 'function')
+    ? getFullConversation(ledgerId, exchangeId)
+    : null;
+  if (conv) return conv;
+
+  // fallback: reconstruct from the results we already have
+  const hit = appState.ui.currentResults.find(r =>
+    String(r.ledger?.ledgerId) === String(ledgerId) &&
+    String(r.exchange?.exchangeId) === String(exchangeId)
+  );
+  if (hit) return { ledger: hit.ledger || {}, exchange: hit.exchange || {}, context: hit.context || [] };
+
+  return null;
+}
+
 
 // Utility Functions
 function debounce(func, wait) {
@@ -1695,17 +1721,18 @@ function truncateText(text, maxLength) {
 
 function toggleResultSelection(ledgerId, exchangeId, isSelected) {
   const recordId = `${ledgerId}_${exchangeId}`;
-
   if (isSelected) {
     if (!appState.selection.selectedRecordIds.includes(recordId)) {
       appState.selection.selectedRecordIds.push(recordId);
     }
   } else {
-    appState.selection.selectedRecordIds = appState.selection.selectedRecordIds.filter(id => id !== recordId);
+    appState.selection.selectedRecordIds =
+      appState.selection.selectedRecordIds.filter(id => id !== recordId);
   }
-
   updateBulkBar();
+  renderPreviewList(); // <- add this
 }
+
 
 function openResultDetails(ledgerId, exchangeId) {
   const recordId = `${ledgerId}_${exchangeId}`;
@@ -1723,28 +1750,24 @@ function openResultDetails(ledgerId, exchangeId) {
 
 function addToDetailsActions(ledgerId, exchangeId) {
   const recordId = `${ledgerId}_${exchangeId}`;
-  const wasSelected = appState.selection.selectedRecordIds.includes(recordId);
-
-  if (!wasSelected) {
+  if (!appState.selection.selectedRecordIds.includes(recordId)) {
     appState.selection.selectedRecordIds.push(recordId);
   }
 
-  appState.selection.activeRecordId = recordId;
-
-  // Keep the details pane in sync with the newly selected record
-  renderRecordDetails(ledgerId, exchangeId);
-  switchToTab('details');
-
-  // Refresh the middle pane so the active card is highlighted
+  // Refresh the middle pane so the active card/checkbox reflects selection
   renderResults(appState.ui.currentResults);
   updateBulkBar();
 
-  // Update downstream surfaces that depend on the current selection
+  // Build/refresh multi-item preview and switch to the Preview tab
   renderPreviewList();
+  switchToTab('preview');
+
   if (window.announceSelection) {
     window.announceSelection(appState.selection.selectedRecordIds.length);
   }
 }
+
+
 
 // Keep the old function for backward compatibility
 function addToPreview(ledgerId, exchangeId) {
@@ -1802,19 +1825,22 @@ function showErrorState(message) {
   `;
 }
 
-// Tab switching function
+// Tab switching function for right panel only
 function switchToTab(tabName) {
   console.log('switchToTab called with:', tabName);
 
-  // Remove active class from all tabs
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(content => {
+  const rightPanel = document.querySelector('.panel.right');
+  if (!rightPanel) return;
+
+  // Remove active class from right panel tabs only
+  rightPanel.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  rightPanel.querySelectorAll('.tab-content').forEach(content => {
     content.style.display = 'none';
     content.classList.remove('active');
   });
 
   // Activate selected tab
-  const tabButton = document.querySelector(`[data-tab="${tabName}"]`);
+  const tabButton = rightPanel.querySelector(`[data-tab="${tabName}"]`);
   console.log('Found tab button:', tabButton);
   if (tabButton) {
     tabButton.classList.add('active');
@@ -1827,7 +1853,6 @@ function switchToTab(tabName) {
     tabContent.classList.add('active');
   }
 
-  appState.ui.activeTab = tabName;
   appState.ui.activeRightTab = tabName;
   console.log('Tab switch completed. Active tab:', tabName);
 }
@@ -1966,32 +1991,18 @@ function initializeBulkActions() {
   });
 
 bulkPreviewBtn.addEventListener('click', () => {
-  const ids = appState.selection.selectedRecordIds;
+  const ids = appState.selection.selectedRecordIds || [];
   if (ids.length === 0) {
     showToast('No items selected');
     return;
   }
 
-  // choose the first selected record
-  const [first] = ids;
-  const sep = first.indexOf('_');
-  const ledgerId = first.slice(0, sep);
-  const exchangeId = first.slice(sep + 1);
-
-  appState.selection.activeRecordId = first;
-  renderRecordDetails(ledgerId, exchangeId); // populate right panel content
-  switchToTab('details');                    // keep user in Details & Actions
-  showToast('Added selection to Details & Actions');
+  // Build the multi-item preview and show the Preview tab
+  renderPreviewList();
+  switchToTab('preview');
+  showToast(`Added ${ids.length} record${ids.length > 1 ? 's' : ''} to Details & Actions`);
 });
 
-
-  bulkExportBtn.addEventListener('click', () => {
-    if (appState.selection.selectedRecordIds.length === 0) {
-      showToast('No items selected');
-      return;
-    }
-    exportSelectedRecords();
-  });
 
   bulkCopyBtn.addEventListener('click', () => {
     if (appState.selection.selectedRecordIds.length === 0) {
@@ -2045,22 +2056,45 @@ function copySelectedAsMarkdown() {
   });
 }
 
-function getSelectedRecords() {
-  console.log('Getting selected records for IDs:', appState.selection.selectedRecordIds);
-  const selectedRecords = [];
+// Resolve a conversation from the exact composite recordId without splitting on "_"
+function findConversationByRecordId(recordId) {
+  // 1) Try current page results (fast path)
+  const hit = appState.ui.currentResults.find(r =>
+    `${r.ledger?.ledgerId}_${r.exchange?.exchangeId}` === recordId
+  );
+  if (hit) return { ledger: hit.ledger || {}, exchange: hit.exchange || {}, context: hit.context || [] };
 
-  appState.selection.selectedRecordIds.forEach(recordId => {
-    const [ledgerId, exchangeId] = recordId.split('_');
-    console.log('Looking for ledger:', ledgerId, 'exchange:', exchangeId);
-    const fullConversation = getFullConversation(ledgerId, exchangeId);
-    console.log('Found conversation:', fullConversation);
-    if (fullConversation) {
-      selectedRecords.push(fullConversation);
+  // 2) Try the data API by testing every possible split position (underscores may exist in both parts)
+  if (typeof getFullConversation === 'function') {
+    for (let i = recordId.length - 1; i >= 0; i--) {
+      if (recordId[i] !== '_') continue;
+      const ledgerId = recordId.slice(0, i);
+      const exchangeId = recordId.slice(i + 1);
+      const conv = getFullConversation(ledgerId, exchangeId);
+      if (conv) return conv;
     }
-  });
+  }
 
-  console.log('Total selected records found:', selectedRecords.length);
-  return selectedRecords;
+  // 3) Fallback: scan a larger recent set if available
+  if (typeof getRecentConversations === 'function') {
+    const all = getRecentConversations(10000) || [];
+    const hit2 = all.find(r =>
+      `${r.ledger?.ledgerId}_${r.exchange?.exchangeId}` === recordId
+    );
+    if (hit2) return { ledger: hit2.ledger || {}, exchange: hit2.exchange || {}, context: hit2.context || [] };
+  }
+
+  return null;
+}
+
+function getSelectedRecords() {
+  const out = [];
+  const ids = appState.selection?.selectedRecordIds || [];
+  for (const recordId of ids) {
+    const conv = findConversationByRecordId(recordId);
+    if (conv) out.push(conv);
+  }
+  return out;
 }
 
 // Initialize Left Sidebar
@@ -2138,18 +2172,14 @@ function initializeSendToCouncil() {
 
 function renderRecordDetails(ledgerId, exchangeId) {
   const detailsTab = document.getElementById('detailsTab');
-  const conversation = getFullConversation(ledgerId, exchangeId);
+  const conversation = safeGetConversation(ledgerId, exchangeId);
 
   if (!conversation) {
-    detailsTab.innerHTML = `
-      <div class="empty-state">
-        <p>Record not found</p>
-      </div>
-    `;
+    detailsTab.innerHTML = `<div class="empty-state"><p>Record not found</p></div>`;
     return;
   }
 
-  const { ledger, exchange, context } = conversation;
+  const { ledger = {}, exchange = {}, context = [] } = conversation;
   const allTags = [
     ...(ledger.globalMetaTags || []),
     ...(exchange.userMetaTags || []),
@@ -2159,79 +2189,74 @@ function renderRecordDetails(ledgerId, exchangeId) {
   detailsTab.innerHTML = `
     <div class="record-detail">
       <div class="detail-header">
-        <h3>${ledger.title}</h3>
+        <h3>${ledger.title || 'Untitled'}</h3>
         <div class="detail-meta">
-          <span class="pill status">${exchange.status}</span>
-          <span class="meta">${formatDate(exchange.timestamp)} at ${formatTime(exchange.timestamp)}</span>
+          <span class="pill status">${exchange.status || '—'}</span>
+          <span class="meta">${formatDate(exchange.timestamp || new Date().toISOString())}
+            at ${formatTime(exchange.timestamp || new Date().toISOString())}</span>
         </div>
       </div>
 
       <div class="detail-section">
         <h4>User Question</h4>
-        <div class="detail-content user-message">
-          ${highlightSearchTerms(exchange.userMessage)}
-        </div>
+        <div class="detail-content user-message">${highlightSearchTerms(exchange.userMessage || '')}</div>
       </div>
 
       <div class="detail-section">
         <h4>Council Response</h4>
-        <div class="detail-content council-response">
-          ${highlightSearchTerms(exchange.councilResponse)}
-        </div>
+        <div class="detail-content council-response">${highlightSearchTerms(exchange.councilResponse || '')}</div>
       </div>
 
       <div class="detail-section">
         <h4>Metadata</h4>
         <div class="metadata-table">
-          <div class="metadata-row">
-            <span class="metadata-label">Ledger ID:</span>
-            <span class="metadata-value">${ledger.ledgerId}</span>
+          <div class="metadata-row"><span class="metadata-label">Ledger ID:</span><span class="metadata-value">${ledger.ledgerId || '—'}</span></div>
+          <div class="metadata-row"><span class="metadata-label">Exchange ID:</span><span class="metadata-value">${exchange.exchangeId || '—'}</span></div>
+          <div class="metadata-row"><span class="metadata-label">Status:</span><span class="metadata-value">${exchange.status || '—'}</span></div>
+          <div class="metadata-row"><span class="metadata-label">Date Created:</span><span class="metadata-value">${formatDate(ledger.dateCreated || exchange.timestamp || new Date().toISOString())}</span></div>
+          <div class="metadata-row"><span class="metadata-label">Last Updated:</span><span class="metadata-value">${formatDate(exchange.timestamp || new Date().toISOString())}</span></div>
+          <div class="metadata-row"><span class="metadata-label">Tags:</span>
+            <span class="metadata-value">${allTags.length ? allTags.map(t => `<span class="tag-chip">${t}</span>`).join('') : 'None'}</span>
           </div>
-          <div class="metadata-row">
-            <span class="metadata-label">Exchange ID:</span>
-            <span class="metadata-value">${exchange.exchangeId}</span>
-          </div>
-          <div class="metadata-row">
-            <span class="metadata-label">Status:</span>
-            <span class="metadata-value">${exchange.status}</span>
-          </div>
-          <div class="metadata-row">
-            <span class="metadata-label">Date Created:</span>
-            <span class="metadata-value">${formatDate(ledger.dateCreated)}</span>
-          </div>
-          <div class="metadata-row">
-            <span class="metadata-label">Last Updated:</span>
-            <span class="metadata-value">${formatDate(exchange.timestamp)}</span>
-          </div>
-          <div class="metadata-row">
-            <span class="metadata-label">Tags:</span>
-            <span class="metadata-value">
-              ${allTags.length > 0 ? allTags.map(tag => `<span class="tag-chip">${tag}</span>`).join('') : 'None'}
-            </span>
-          </div>
-          ${context.length > 0 ? `
-            <div class="metadata-row">
-              <span class="metadata-label">Context References:</span>
-              <span class="metadata-value">${context.length} related exchange(s)</span>
-            </div>
-          ` : ''}
+          ${context.length ? `<div class="metadata-row"><span class="metadata-label">Context References:</span><span class="metadata-value">${context.length} related exchange(s)</span></div>` : ''}
         </div>
       </div>
-
-      <div class="detail-actions">
-        <button class="btn secondary" onclick="copyRecordToClipboard('${ledgerId}', '${exchangeId}')">
-          Copy Record
-        </button>
-        <button class="btn secondary" onclick="exportSingleRecord('${ledgerId}', '${exchangeId}')">
-          Export JSON
-        </button>
-        <button class="btn primary" onclick="addToDetailsActions('${ledgerId}', '${exchangeId}')">
-          Add to Details & Actions
-        </button>
-      </div>
-    </div>
-  `;
+    </div>`;
 }
+
+function renderThreadView(ledgerId, exchangeId) {
+  const threadTab = document.getElementById('threadTab');
+  const conversation = safeGetConversation(ledgerId, exchangeId);
+
+  if (!conversation) {
+    threadTab.innerHTML = `<div class="empty-state"><p>Thread not found</p></div>`;
+    return;
+  }
+
+  const { ledger = {}, exchange = {}, context = [] } = conversation;
+  const allExchanges = [exchange, ...context];
+
+  threadTab.innerHTML = `
+    <div class="thread-view">
+      <div class="thread-header">
+        <h3>Conversation Thread</h3>
+        <div class="thread-meta">
+          <span class="meta">${ledger.title || 'Untitled'}</span>
+          <span class="meta">•</span>
+          <span class="meta">${allExchanges.length} exchange(s)</span>
+        </div>
+      </div>
+      <div class="thread-list">
+        ${renderThreadExchanges(ledger, allExchanges, exchangeId)}
+      </div>
+      <div class="thread-actions">
+        <button class="btn secondary" onclick="selectEntireThread('${ledgerId}')">Add Entire Thread to Preview</button>
+        <button class="btn secondary" onclick="copyThreadAsMarkdown('${ledgerId}')">Copy Thread as Markdown</button>
+      </div>
+    </div>`;
+}
+
+
 
 function highlightSearchTerms(text) {
   const query = appState.searchQuery.queryText.toLowerCase();
@@ -2256,7 +2281,7 @@ function renderThreadView(ledgerId, exchangeId) {
     return;
   }
 
-  const { ledger, exchange, context } = conversation;
+  const { ledger = {}, exchange = {}, context = [] } = conversation; // safe default
   const allExchanges = [exchange, ...context];
 
   threadTab.innerHTML = `
@@ -2264,7 +2289,7 @@ function renderThreadView(ledgerId, exchangeId) {
       <div class="thread-header">
         <h3>Conversation Thread</h3>
         <div class="thread-meta">
-          <span class="meta">${ledger.title}</span>
+          <span class="meta">${ledger.title || 'Untitled'}</span>
           <span class="meta">•</span>
           <span class="meta">${allExchanges.length} exchange(s)</span>
         </div>
@@ -2285,6 +2310,7 @@ function renderThreadView(ledgerId, exchangeId) {
     </div>
   `;
 }
+
 
 function renderThreadExchanges(ledger, exchanges, activeExchangeId) {
   return exchanges.map(exchange => {
@@ -2334,7 +2360,7 @@ function renderPreviewList() {
 
   const selectedRecords = getSelectedRecords();
 
-  if (selectedRecords.length === 0) {
+  if (selectedRecords.length === 0 && !appState.selection.generatedSummary) {
     previewList.innerHTML = `
       <div class="empty-state">
         <p>No items selected for preview</p>
@@ -2348,7 +2374,25 @@ function renderPreviewList() {
   const previewModeInput = document.querySelector('input[name="previewMode"]:checked');
   const previewMode = previewModeInput ? previewModeInput.value : 'concise';
 
-  previewList.innerHTML = selectedRecords.map((record, index) => {
+  let summaryHTML = '';
+  if (appState.selection.generatedSummary) {
+    summaryHTML = `
+      <div class="preview-item summary-item">
+        <div class="preview-item-header">
+          <span class="preview-item-title">📊 Generated Topic Summary</span>
+          <button class="remove" onclick="clearSummary()">×</button>
+        </div>
+        <div class="preview-item-content" style="white-space: pre-wrap;">
+${appState.selection.generatedSummary}
+        </div>
+        <div class="preview-item-meta">
+          <span class="meta">${new Date().toLocaleString()}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  previewList.innerHTML = summaryHTML + selectedRecords.map((record, index) => {
     const { ledger, exchange } = record;
     const content = previewMode === 'concise'
       ? truncateText(exchange.userMessage, 100) + '...'
@@ -2422,16 +2466,19 @@ function reorderPreviewItems(fromIndex, toIndex) {
 }
 
 function removeFromPreview(recordId) {
-  appState.selection.selectedRecordIds = appState.selection.selectedRecordIds.filter(id => id !== recordId);
+  appState.selection.selectedRecordIds =
+    appState.selection.selectedRecordIds.filter(id => id !== recordId);
+
   renderPreviewList();
   updateBulkBar();
 
-  // Update result card selection if visible
-  const [ledgerId, exchangeId] = recordId.split('_');
-  const cardEl = document.querySelector(`[data-ledger-id="${ledgerId}"][data-exchange-id="${exchangeId}"]`);
+  // Update result card selection if visible (no parsing, match composite id)
+  const cardEl = Array.from(document.querySelectorAll('.result-card'))
+    .find(el => `${el.dataset.ledgerId}_${el.dataset.exchangeId}` === recordId);
+
   if (cardEl) {
     const checkbox = cardEl.querySelector('.result-checkbox');
-    checkbox.checked = false;
+    if (checkbox) checkbox.checked = false;
     cardEl.classList.remove('selected');
   }
 
@@ -2529,59 +2576,80 @@ This collection represents conversations spanning multiple domains including ${A
 *Generated on ${new Date().toLocaleString()}*
   `.trim();
 
-  // Add summary as a new preview item
-  const summaryItem = {
-    type: 'summary',
-    content: summary,
-    title: 'Generated Topic Summary',
-    timestamp: new Date().toISOString()
-  };
+  // Store summary in app state
+  appState.selection.generatedSummary = summary;
 
-  // For demo, just show as toast - in real implementation would add to preview
-  showToast('Summary generated (see console for details)');
+  // Re-render preview list to show summary
+  renderPreviewList();
+
+  showToast('Summary generated and added to preview');
   console.log('Generated Summary:', summary);
+}
+
+function clearSummary() {
+  appState.selection.generatedSummary = null;
+  renderPreviewList();
+  showToast('Summary cleared');
 }
 
 // Council Transfer Functions
 
 function sendToCouncilChat() {
   const selectedRecords = getSelectedRecords();
-  const previewTitle = document.getElementById('previewTitle').value.trim() || 'Memory Retrieval Context';
+  const summary = appState?.selection?.generatedSummary;
+
+  // Require a summary before sending
+  if (!summary) {
+    showToast('Please generate a summary first');
+    return;
+  }
+
   const previewMode = document.querySelector('input[name="previewMode"]:checked').value;
 
-  // Create envelope for Council
-  const envelope = {
-    title: previewTitle,
-    seedContext: formatContextForCouncil(selectedRecords, previewMode),
-    sourceFilters: { ...appState.searchQuery },
+  // Build compact payload from selected records
+  const items = selectedRecords.map(record => {
+    const { ledger, exchange } = record;
+    return {
+      recordId: `${ledger?.ledgerId || ''}_${exchange?.exchangeId || ''}`,
+      title: ledger?.title || '(untitled)',
+      status: exchange?.status || 'unknown',
+      userMessage: exchange?.userMessage || '',
+      councilResponse: exchange?.councilResponse || '',
+      timestamp: exchange?.timestamp || ledger?.createdAt || ''
+    };
+  });
+
+  // Create payload for Council Chat
+  const payload = {
+    type: 'preview_import',
+    from: 'memory-dashboard',
+    timestamp: Date.now(),
+    summary: summary,
+    items: items,
+    mode: previewMode,
     metadata: {
       recordCount: selectedRecords.length,
       retrievalDate: new Date().toISOString(),
-      dashboardVersion: '1.0.0',
       totalTokens: Math.round(document.getElementById('tokenCount').textContent)
     }
   };
 
-  // Store in localStorage for Council Chat to pick up
+  // Store in sessionStorage (same-tab navigation safe)
   try {
-    localStorage.setItem('dynamoCouncilEnvelope', JSON.stringify(envelope));
-    showToast('Sent to Council Chat successfully!');
+    sessionStorage.setItem('dynamo:previewImport', JSON.stringify(payload));
+    console.log('Council Payload:', payload);
 
     // Announce success to screen readers
     if (window.announceStatus) {
       window.announceStatus('Successfully sent to Council Chat.');
     }
 
-    // In real implementation, would navigate to Council Chat page
-    console.log('Council Envelope:', envelope);
+    showToast('Sending to Council Chat...');
 
-    // For demo, show success message with link simulation
+    // Navigate to Council Chat
     setTimeout(() => {
-      if (confirm('Context sent to Council Chat. Open Council Chat page? (This would navigate in real implementation)')) {
-        // window.location.href = '../index.html';
-        console.log('Would navigate to Council Chat with context loaded');
-      }
-    }, 1500);
+      window.location.href = '../index.html#council?import=preview';
+    }, 500);
 
   } catch (error) {
     console.error('Failed to send to Council:', error);
@@ -2705,6 +2773,7 @@ window.exportSingleRecord = exportSingleRecord;
 window.selectEntireThread = selectEntireThread;
 window.copyThreadAsMarkdown = copyThreadAsMarkdown;
 window.removeFromPreview = removeFromPreview;
+window.clearSummary = clearSummary;
 
 // Modal Functions
 function initializeModals() {
@@ -2731,20 +2800,7 @@ function initializeModals() {
   });
 }
 
-// Initialize Right Sidebar
-function initializeRightSidebar() {
-  // Tab navigation
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tabName = btn.dataset.tab;
-      console.log('Tab clicked:', tabName);
-      switchToTab(tabName);
-    });
-  });
-
-  console.log('Right sidebar tabs initialized');
-}
+// Initialize Right Sidebar (duplicate removed - using the one above with preview controls)
 
 // Initialize Navigation
 function initializeNavigation() {

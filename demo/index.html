@@ -850,8 +850,62 @@ const recentThreadContent = {
     window.location.href = "memorydashboard/index.html";
   });
 
+  // DYNAMO receiver for Memory Dashboard import
+  function checkForMemoryImport() {
+    try {
+      const KEY = 'dynamo:previewImport';
+      const raw = sessionStorage.getItem(KEY);
+      if (!raw) return;
+
+      const payload = JSON.parse(raw);
+      sessionStorage.removeItem(KEY);
+
+      if (payload?.type !== 'preview_import') return;
+
+      // Display summary and context in chat
+      const itemCount = payload.items?.length || 0;
+
+      // Add imported summary to chat
+      addAssistant(`<hr class="hr"><h3 style="color:#76aaea">Imported Memory Context</h3><p><strong>Summary:</strong> ${escapeHtml(payload.summary)}</p>`);
+
+      // Add record details if in full mode
+      if (payload.mode === 'full' && payload.items && payload.items.length > 0) {
+        let recordsHtml = '<div style="margin-top:12px;"><strong>Retrieved Records:</strong></div>';
+        payload.items.forEach((item, index) => {
+          recordsHtml += `
+            <div style="margin:8px 0;padding:8px;background:rgba(255,255,255,0.03);border-radius:6px;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-size:13px;font-weight:600;">${index + 1}. ${escapeHtml(item.title)}</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">Status: ${escapeHtml(item.status)} | ${formatTimestamp(item.timestamp)}</div>
+              ${item.userMessage ? `<div style="margin-top:6px;font-size:12px;"><strong style="color:#eab676;">User:</strong> ${escapeHtml(item.userMessage)}</div>` : ''}
+              ${item.councilResponse ? `<div style="margin-top:4px;font-size:12px;"><strong style="color:#76aaea;">Council:</strong> ${escapeHtml(item.councilResponse.substring(0, 200))}${item.councilResponse.length > 200 ? '...' : ''}</div>` : ''}
+            </div>
+          `;
+        });
+        addAssistant(recordsHtml);
+      }
+
+      // Show success notification
+      showToast(`Imported ${itemCount} memory record${itemCount === 1 ? '' : 's'}`);
+      log(`Imported ${itemCount} record(s) from Memory Dashboard`);
+
+    } catch (e) {
+      console.error('Memory import failed:', e);
+      showToast('Failed to import memory context');
+    }
+  }
+
+  // Helper function to format timestamp
+  function formatTimestamp(timestamp) {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  }
+
   // INIT
   renderGauges(); renderMemory(); renderAiAgentControls(); renderCommunityProjects(); seedChat();
+
+  // Check for memory import after initialization
+  checkForMemoryImport();
 </script>
 </body>
 </html>

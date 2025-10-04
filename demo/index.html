@@ -326,6 +326,7 @@
       <div class="input-row">
         <textarea id="userQuestion" placeholder="Ask the Council..."></textarea>
         <button class="btn primary" id="askBtn">Ask</button>
+        <button class="btn" id="newConversationBtn" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);">Start a New Conversation</button>
       </div>
       <div class="subbar">
         <div><span class="ring"></span><span id="statusLine">Idle</span></div>
@@ -768,8 +769,25 @@ const recentThreadContent = {
     }
   });
 
+  // Function to clear chat and start new conversation
+  function startNewConversation() {
+    // Clear the chat log
+    chat.innerHTML = '';
+
+    // Clear the user input
+    document.getElementById('userQuestion').value = '';
+
+    // Reset status line
+    document.getElementById('statusLine').innerText = 'Idle';
+
+    // Log the action
+    log('Started new conversation - chat cleared');
+    showToast('Chat cleared - ready for new conversation');
+  }
+
   // EXISTING EVENT HANDLERS
   document.getElementById('askBtn').addEventListener('click', runDemo);
+  document.getElementById('newConversationBtn').addEventListener('click', startNewConversation);
   document.getElementById('llmSelect').addEventListener('change', (e)=>{
     const selectedLLM = e.target.value;
     log(`External LLM changed to ${selectedLLM}`);

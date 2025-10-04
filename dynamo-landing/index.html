@@ -1,824 +1,1479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYNAMO - AI That Remembers, Deliberates, and Evolves With You</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DYNAMO - Sovereign AI Collaboration Platform</title>
+  <style>
+    :root {
+      --bg: #0a1020;
+      --bg-gradient-start: #071024;
+      --bg-gradient-end: #081426;
+      --text: #e6eef6;
+      --text-muted: #a9b4c3;
+      --accent: #7c3aed;
+      --accent-2: #4f46e5;
+      --success: #10b981;
+      --warn: #f59e0b;
+      --logo: #fbbf24;
+      --logo-hover: #fcd34d;
+      --border: rgba(255, 255, 255, 0.1);
+      --panel-bg: rgba(255, 255, 255, 0.03);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
 
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #0ea5e9;
-            --text: #1f2937;
-            --text-light: #6b7280;
-            --bg: #ffffff;
-            --bg-alt: #f9fafb;
-            --border: #e5e7eb;
-            --success: #10b981;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--bg);
-        }
+    body {
+      background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 60%);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+    nav {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 120px 0 80px;
-            text-align: center;
-        }
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 24px;
-            line-height: 1.2;
-        }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--logo);
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
 
-        .hero .tagline {
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-            opacity: 0.95;
-        }
+    .logo:hover {
+      color: var(--logo-hover);
+    }
 
-        .hero .subtitle {
-            font-size: 1.125rem;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
 
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 16px 48px;
-            border-radius: 8px;
-            font-size: 1.125rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+    .nav-links a:hover {
+      color: var(--logo);
+    }
 
-        /* Section Styles */
-        section {
-            padding: 80px 0;
-            border-bottom: 1px solid var(--border);
-        }
+    .cta-button {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 8px 18px rgba(124, 58, 237, 0.28);
+    }
 
-        section:nth-child(even) {
-            background: var(--bg-alt);
-        }
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(124, 58, 237, 0.35);
+    }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            padding: 24px 0;
-        }
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
 
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text);
-        }
+    .hero-title {
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: var(--logo);
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+    }
 
-        .section-teaser {
-            margin: 24px 0;
-        }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--logo), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-        .hook {
-            font-size: 1.5rem;
-            color: var(--text-light);
-            margin-bottom: 24px;
-        }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
 
-        .highlights {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
 
-        .highlight-card {
-            background: white;
-            padding: 24px;
-            border-radius: 12px;
-            border: 2px solid var(--border);
-            transition: all 0.3s;
-        }
+    .section {
+      margin: 4rem 0;
+    }
 
-        .highlight-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-        }
+    .section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+      text-align: center;
+    }
 
-        .highlight-card h3 {
-            color: var(--primary);
-            margin-bottom: 12px;
-            font-size: 1.25rem;
-        }
+    .section h3 {
+      font-size: 1.5rem;
+      margin: 1.5rem 0 0.75rem 0;
+      color: var(--text);
+    }
 
-        .expand-button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+    .section h4 {
+      font-size: 1.1rem;
+      margin: 1rem 0 0.5rem 0;
+      color: var(--text);
+    }
 
-        .expand-button:hover {
-            background: var(--primary-dark);
-        }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
 
-        .collapse-button {
-            background: var(--text-light);
-            color: white;
-            border: none;
-            padding: 8px 24px;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 32px;
-        }
+    .card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
 
-        .full-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
+    .card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-4px);
+    }
 
-        .full-content.expanded {
-            max-height: 10000px;
-            transition: max-height 1s ease-in;
-        }
+    .card h3 {
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
 
-        .full-content-inner {
-            padding-top: 32px;
-        }
+    .card h4 {
+      color: var(--text);
+      margin: 1rem 0 0.5rem 0;
+      font-size: 1rem;
+    }
 
-        .full-content h3 {
-            font-size: 1.75rem;
-            margin: 32px 0 16px;
-            color: var(--primary);
-        }
+    .card p, .card li {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
 
-        .full-content h4 {
-            font-size: 1.25rem;
-            margin: 24px 0 12px;
-            color: var(--text);
-        }
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
 
-        .full-content p {
-            margin-bottom: 16px;
-            font-size: 1.0625rem;
-            line-height: 1.7;
-        }
+    .stat {
+      text-align: center;
+    }
 
-        .full-content ul {
-            margin: 16px 0 16px 24px;
-        }
+    .stat-number {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--logo);
+      display: block;
+    }
 
-        .full-content li {
-            margin-bottom: 8px;
-            font-size: 1.0625rem;
-        }
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
 
-        .full-content strong {
-            color: var(--text);
-        }
+    .highlight {
+      background: rgba(124, 58, 237, 0.1);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
 
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 40px;
-            margin: 32px 0;
-        }
+    .highlight h3 {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--primary);
-        }
+    .highlight p {
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
 
-        .timeline-item {
-            position: relative;
-            margin-bottom: 32px;
-            padding-bottom: 32px;
-            border-bottom: 1px solid var(--border);
-        }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
 
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -47px;
-            top: 0;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--primary);
-            border: 3px solid white;
-        }
+    .expandable {
+      margin: 1rem 0;
+    }
 
-        .timeline-item h4 {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
+    .expandable-header {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s;
+    }
 
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 32px;
-            margin: 40px 0;
-            text-align: center;
-        }
+    .expandable-header:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
 
-        .stat {
-            padding: 24px;
-        }
+    .expandable-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 1rem;
+    }
 
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-        }
+    .expandable-content.open {
+      max-height: 10000px;
+      padding: 1rem;
+    }
 
-        .stat-label {
-            font-size: 1rem;
-            color: var(--text-light);
-            margin-top: 8px;
-        }
+    .arrow {
+      transition: transform 0.3s;
+    }
 
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 80px 0;
-        }
+    .arrow.open {
+      transform: rotate(180deg);
+    }
 
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 24px;
-        }
+    ul {
+      list-style-position: inside;
+      color: var(--text-muted);
+      margin: 1rem 0;
+    }
 
-        .cta-section p {
-            font-size: 1.25rem;
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
+    li {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
 
-        /* Footer */
-        footer {
-            background: var(--text);
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-        }
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+    }
 
-            .hero .tagline {
-                font-size: 1.25rem;
-            }
+    .timeline-item {
+      position: relative;
+      padding: 1rem 0;
+    }
 
-            .section-header h2 {
-                font-size: 2rem;
-            }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: 1.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
 
-            .hook {
-                font-size: 1.25rem;
-            }
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
 
-            .highlights {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .callout {
+      background: rgba(251, 191, 36, 0.1);
+      border-left: 4px solid var(--warn);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .callout p {
+      color: var(--text-muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .code-block {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="container">
-            <h1>DYNAMO</h1>
-            <p class="tagline">AI That Remembers, Deliberates, and Evolves With You</p>
-            <p class="subtitle">Unlike ChatGPT or Claude that reset with every session, DYNAMO builds living memory across months and years—with multi-agent councils that challenge your thinking, not just validate it.</p>
-            <a href="#problem" class="cta-button">Discover Why This Matters</a>
-        </div>
+  <nav>
+    <div class="nav-container">
+      <a href="https://dynamo-ai.tech/" class="logo">DYNAMO</a>
+      <div class="nav-links">
+        <a href="#executive">Executive Summary</a>
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#technical">Technical</a>
+        <a href="#security">Security</a>
+        <a href="#use-cases">Use Cases</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#budget">Budget</a>
+        <button class="cta-button" onclick="window.location.href='mailto:dynamoai.tech@gmail.com'">Join Beta</button>
+      </div>
     </div>
+  </nav>
 
-    <!-- Executive Summary -->
-    <section id="executive">
-        <div class="container">
-            <div class="section-teaser">
-                <h2>The Vision: Beyond ChatGPT</h2>
-                <p class="hook">Transform ephemeral AI conversations into persistent, multi-perspective collaboration with complete data control.</p>
-                
-                <div class="stats">
-                    <div class="stat">
-                        <span class="stat-number">5</span>
-                        <span class="stat-label">AI Agents Deliberating</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">10-12</span>
-                        <span class="stat-label">Months to MVP</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">$200K</span>
-                        <span class="stat-label">MVP Budget</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">$1B+</span>
-                        <span class="stat-label">Category Potential</span>
-                    </div>
-                </div>
+  <div class="hero">
+    <div class="hero-title">PROJECT BRIEF</div>
+    <h1>AI That Remembers, Challenges, and Evolves With You</h1>
+    <p>The first sovereign collaboration platform where AI agents deliberate as a council, memory persists forever, and you control your data.</p>
+    <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem;">
+      <strong>Version 3.0</strong> | October 2, 2025 | Target: MVP in 10-12 months, $200K budget
+    </p>
+    <button class="cta-button" style="font-size: 1.1rem; padding: 1rem 2rem;">Request Early Access</button>
+  </div>
 
-                <button class="expand-button" onclick="toggleSection('executive')">Learn More</button>
-            </div>
+  <div class="container">
+    <section class="section" id="executive">
+      <h2>Executive Summary</h2>
+      <p style="text-align: center; color: var(--text-muted); max-width: 900px; margin: 0 auto 2rem;">
+        DYNAMO is a web-based platform that transforms ephemeral AI conversations into persistent, multi-perspective collaboration with user-controlled infrastructure. Unlike corporate AI platforms (ChatGPT, Claude, Gemini) that reset with every session and store data on external servers, DYNAMO provides a multi-agent council architecture with living memory—all processed on infrastructure users control.
+      </p>
 
-            <div class="full-content" id="executive-content">
-                <div class="full-content-inner">
-                    <h3>Core Innovation</h3>
-                    <p>Five specialized AI Agents (Authority, Iconoclast, Strategist, Archivist, Secretariat) deliberate on each query through a dual-ledger system, providing synthesized wisdom while preserving complete deliberation transparency. All processing occurs on self-hosted open-source LLMs, ensuring genuine data privacy and security.</p>
-
-                    <h3>Strategic Vision</h3>
-                    <p><strong>MVP (10-12 months):</strong> Proof-of-concept with 5-15 beta testers validating that human+AI collaboration with persistent memory delivers transformational user experience.</p>
-                    <p><strong>Phase 2 ($2-5M funding):</strong> Scale the platform with full collaboration features and enterprise deployment options.</p>
-                    <p><strong>Phase 3:</strong> Establish DYNAMO as the collaboration standard for human+AI teams, competing with Slack + Notion + Linear + GitHub combined.</p>
-
-                    <h3>Not Just a Better ChatGPT</h3>
-                    <p>DYNAMO is infrastructure for the next era of work where AI agents are first-class team members. If executed: $1B+ category-creating platform.</p>
-
-                    <button class="collapse-button" onclick="toggleSection('executive')">Collapse</button>
-                </div>
-            </div>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-number">5</span>
+          <span class="stat-label">AI Agents Deliberating</span>
         </div>
+        <div class="stat">
+          <span class="stat-number">&lt;8s</span>
+          <span class="stat-label">Council Response Time</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Data Sovereignty</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">Memory Persistence</span>
+        </div>
+      </div>
+
+      <div class="highlight">
+        <span class="badge">Strategic Vision</span>
+        <p>DYNAMO is not just a better ChatGPT—it's infrastructure for the next era of work where AI agents are first-class team members. The MVP proves the technology; Phase 2 ($2-5M funding) scales the platform; Phase 3 establishes DYNAMO as the collaboration standard for human+AI teams, competing with Slack + Notion + Linear + GitHub combined.</p>
+      </div>
     </section>
 
-    <!-- Problem Statement -->
-    <section id="problem">
-        <div class="container">
-            <div class="section-teaser">
-                <h2>The Problem: 5 Critical Failures</h2>
-                <p class="hook">ChatGPT forgets. Claude resets. Your conversations vanish. Every AI platform today fails in the same ways.</p>
-                
-                <div class="highlights">
-                    <div class="highlight-card">
-                        <h3>Memory Fragmentation</h3>
-                        <p>Users spend 20-30% of time re-contextualizing AI on previous discussions. Valuable insights lost between sessions.</p>
-                    </div>
-                    <div class="highlight-card">
-                        <h3>Single Perspective</h3>
-                        <p>One LLM voice. No intellectual challenge. No dialectical synthesis. Critical thinking atrophies.</p>
-                    </div>
-                    <div class="highlight-card">
-                        <h3>Data Extraction</h3>
-                        <p>Your conversations train their models. Stored on corporate servers. Zero control. Zero privacy.</p>
-                    </div>
-                </div>
-
-                <button class="expand-button" onclick="toggleSection('problem')">See All 5 Failures</button>
-            </div>
-
-            <div class="full-content" id="problem-content">
-                <div class="full-content-inner">
-                    <h3>1. Memory Fragmentation</h3>
-                    <p><strong>Current State:</strong> Every conversation starts from scratch. Users spend 20-30% of interaction time re-contextualizing AI on previous discussions, decisions, and preferences.</p>
-                    <p><strong>Impact:</strong> Valuable insights lost between sessions. No continuity in personal development or project work. Users treat AI as disposable tool rather than developmental partner.</p>
-
-                    <h3>2. Single Perspective Limitation</h3>
-                    <p><strong>Current State:</strong> One LLM voice provides flattened responses reflecting training biases and corporate guardrails of the provider (OpenAI, Anthropic, Google).</p>
-                    <p><strong>Impact:</strong> No intellectual challenge. No multi-perspective deliberation. Users receive averaged consensus rather than dialectical synthesis. Critical thinking atrophies.</p>
-
-                    <h3>3. Extractive Design</h3>
-                    <p><strong>Current State:</strong> Platforms optimized for engagement metrics and data collection. All conversations stored on corporate servers. Content used for model training without meaningful consent.</p>
-                    <p><strong>Impact:</strong> Users are products, not partners. Zero control over their data. Cannot verify how data is used. No option for air-gapped deployment.</p>
-
-                    <h3>4. Zero Collaboration Infrastructure</h3>
-                    <p><strong>Current State:</strong> Isolated individual use only. Microsoft Copilot and similar tools provide assistance to individuals, but no infrastructure for human+AI teams to coordinate on real projects.</p>
-                    <p><strong>Impact:</strong> Teams cannot leverage AI as collaborative partners. No shared context across team members. No persistent threads for project coordination. AI remains assistant, not teammate.</p>
-
-                    <h3>5. Corporate Data Ownership</h3>
-                    <p><strong>Current State:</strong> Government agencies, military, schools, families—anyone with serious privacy requirements—cannot use corporate AI platforms without compromising data privacy and security.</p>
-                    <p><strong>Impact:</strong> Entire categories of users excluded. Organizations build inferior internal tools. Innovation constrained by surveillance capitalism architecture.</p>
-
-                    <h3>Why This Matters Now</h3>
-                    <ul>
-                        <li>AI capabilities crossing threshold where multi-month continuous relationships become valuable</li>
-                        <li>Organizations seeking alternatives to corporate AI surveillance</li>
-                        <li>Post-ChatGPT era: Users understand AI value but frustrated by limitations</li>
-                        <li>Infrastructure exists (affordable GPU VMs, OSS models) to build privacy-focused alternatives</li>
-                    </ul>
-
-                    <button class="collapse-button" onclick="toggleSection('problem')">Collapse</button>
-                </div>
-            </div>
+    <section class="section" id="problem">
+      <h2>The Problem with Current AI Platforms</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Five critical failures plaguing corporate AI</p>
+      
+      <div class="grid">
+        <div class="card">
+          <h3>1. Memory Fragmentation</h3>
+          <p><strong>Current State:</strong> Every conversation starts from scratch. Users spend 20-30% of interaction time re-contextualizing AI.</p>
+          <p style="margin-top: 0.5rem;"><strong>Impact:</strong> Valuable insights lost between sessions. No continuity in personal development. Users treat AI as disposable tool rather than developmental partner.</p>
         </div>
+        
+        <div class="card">
+          <h3>2. Single Perspective</h3>
+          <p><strong>Current State:</strong> One LLM voice provides flattened responses reflecting training biases and corporate guardrails.</p>
+          <p style="margin-top: 0.5rem;"><strong>Impact:</strong> No intellectual challenge. No multi-perspective deliberation. Critical thinking atrophies.</p>
+        </div>
+        
+        <div class="card">
+          <h3>3. Extractive Design</h3>
+          <p><strong>Current State:</strong> Platforms optimized for engagement metrics. All conversations stored on corporate servers.</p>
+          <p style="margin-top: 0.5rem;"><strong>Impact:</strong> Users are products, not partners. Zero control over data. No option for air-gapped deployment.</p>
+        </div>
+        
+        <div class="card">
+          <h3>4. No Collaboration</h3>
+          <p><strong>Current State:</strong> Isolated individual use only. No infrastructure for human+AI teams to coordinate on real projects.</p>
+          <p style="margin-top: 0.5rem;"><strong>Impact:</strong> Teams cannot leverage AI as collaborative partners. AI remains assistant, not teammate.</p>
+        </div>
+
+        <div class="card">
+          <h3>5. Corporate Data Ownership</h3>
+          <p><strong>Current State:</strong> Government, military, schools, families—anyone with privacy requirements—cannot use corporate AI.</p>
+          <p style="margin-top: 0.5rem;"><strong>Impact:</strong> Entire categories of users excluded. Innovation constrained by surveillance capitalism.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p><strong>Why This Matters Now:</strong> AI capabilities crossing threshold where multi-month continuous relationships become valuable. Organizations seeking alternatives to corporate AI surveillance. Infrastructure exists (affordable GPU VMs, OSS models) to build privacy-focused alternatives.</p>
+      </div>
     </section>
 
-    <!-- Solution -->
-    <section id="solution">
-        <div class="container">
-            <div class="section-teaser">
-                <h2>The Solution: Three Integrated Systems</h2>
-                <p class="hook">Multi-agent councils. Living memory. Human+AI collaboration infrastructure.</p>
-                
-                <div class="highlights">
-                    <div class="highlight-card">
-                        <h3>🧠 Multi-Agent Council</h3>
-                        <p>Authority, Iconoclast, Strategist, Archivist, Secretariat—five perspectives deliberating on every query. See full transparency or just the synthesis.</p>
-                    </div>
-                    <div class="highlight-card">
-                        <h3>💾 Living Memory System</h3>
-                        <p>Every conversation vectorized, searchable, persistent. Semantic search across months of dialogue. Your infrastructure, your control.</p>
-                    </div>
-                    <div class="highlight-card">
-                        <h3>🤝 Collaboration Platform</h3>
-                        <p>Teams coordinate with AI as first-class members. Shared context, persistent threads, decision tracking—not Slack, not Notion, but both.</p>
-                    </div>
-                </div>
+    <section class="section" id="solution">
+      <h2>The DYNAMO Solution</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Three integrated capabilities addressing all five problem dimensions</p>
 
-                <button class="expand-button" onclick="toggleSection('solution')">Deep Dive Into Technology</button>
-            </div>
-
-            <div class="full-content" id="solution-content">
-                <div class="full-content-inner">
-                    <h3>1. Multi-Agent Council Architecture</h3>
-                    <h4>Five Specialized AI Agents</h4>
-                    <ul>
-                        <li><strong>Authority Agent:</strong> Institutional consensus and established knowledge</li>
-                        <li><strong>Iconoclast Agent:</strong> Challenges assumptions and surfaces contradictions</li>
-                        <li><strong>Strategist Agent:</strong> Long-term consequences and systemic implications</li>
-                        <li><strong>Archivist Agent:</strong> Retrieves relevant context from conversation history</li>
-                        <li><strong>Secretariat Agent:</strong> Synthesizes all perspectives into actionable response</li>
-                    </ul>
-
-                    <h4>Dual-Ledger System</h4>
-                    <p><strong>Full Ledger:</strong> Complete agent deliberations preserved for transparency and debugging</p>
-                    <p><strong>User Ledger:</strong> Clean synthesis for actionable use</p>
-                    <p>Users can toggle between synthesized view and full deliberation at any time.</p>
-
-                    <h4>Critical Design Principle: A + B, Not A vs B</h4>
-                    <p>The multi-agent council is an additive feature, not a replacement for standard LLM chat. Users can always choose to:</p>
-                    <ul>
-                        <li>Use the Council - Get multi-perspective analysis with full deliberation transparency</li>
-                        <li>Bypass to External LLM - Direct access to Claude, ChatGPT, or other providers</li>
-                        <li>Toggle Between Both - Council for complex decisions, external LLM for quick queries</li>
-                    </ul>
-                    <p><strong>Value proposition:</strong> "Everything you already have with ChatGPT/Claude, PLUS multi-agent deliberation when you want it."</p>
-
-                    <h3>2. Living Memory System</h3>
-                    <p><strong>Persistent Conversation Storage:</strong> Every utterance vectorized and stored with rich metadata. Per-user Qdrant collections on your infrastructure.</p>
-                    <p><strong>Semantic Search:</strong> Natural language queries across all conversations. Hybrid retrieval (dense semantic + sparse keyword). Average search time: <3 seconds.</p>
-                    <p><strong>Resolution Tracking:</strong> Mark conversations as open/closed. Track personal evolution and growth over time.</p>
-
-                    <h3>3. Human+AI Collaboration Platform</h3>
-                    <h4>Three Integrated Dashboards</h4>
-                    <p><strong>Main Dashboard:</strong> Three-panel council chat interface with memory thread browser, council deliberation, and community activity feed.</p>
-                    <p><strong>Memory Retrieval Dashboard:</strong> Semantic search across all conversations with multi-dimensional filtering and export functionality.</p>
-                    <p><strong>Community Dashboard:</strong> Multi-user project coordination with Living Threads (Dialogue, Synthesis, Decisions, Questions views).</p>
-
-                    <h3>Key Differentiators</h3>
-                    <ul>
-                        <li>AI agents as first-class team members with roles (not assistants)</li>
-                        <li>Designed for human+AI collaboration from first principles</li>
-                        <li>Persistent memory across months/years on user-controlled infrastructure</li>
-                        <li>Complete transparency: full audit trail, no hidden prompts</li>
-                        <li>Platform architecture: competing with Slack + Notion + Linear, not ChatGPT</li>
-                    </ul>
-
-                    <button class="collapse-button" onclick="toggleSection('solution')">Collapse</button>
-                </div>
-            </div>
+      <div class="highlight" style="margin-bottom: 2rem;">
+        <span class="badge">Core Design Principle</span>
+        <h3>Enhancement, Not Replacement</h3>
+        <p><strong>DYNAMO is A + B, not A vs B.</strong> You always have direct access to ChatGPT, Claude, or other external LLMs for instant baseline responses. The council is an additive feature you choose when you want multi-perspective analysis.</p>
+        <p style="margin-top: 0.5rem;">The council cannot perform worse than typical LLMs because you have instant fallback. The value proposition: "Everything you already have with ChatGPT/Claude, PLUS multi-agent deliberation when you want it."</p>
+      </div>
+      
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>1. Multi-Agent Council Architecture</h3>
+          <span class="arrow">▼</span>
         </div>
+        <div class="expandable-content">
+          <p><strong>Five Specialized AI Agents provide multi-perspective analysis:</strong></p>
+          <ul>
+            <li><strong>Authority Agent:</strong> Institutional consensus and established knowledge</li>
+            <li><strong>Iconoclast Agent:</strong> Challenges assumptions and surfaces contradictions</li>
+            <li><strong>Strategist Agent:</strong> Long-term consequences and systemic implications</li>
+            <li><strong>Archivist Agent:</strong> Retrieves relevant context from conversation history at start, archives at end</li>
+            <li><strong>Secretariat Agent:</strong> Synthesizes all perspectives into actionable response</li>
+          </ul>
+
+          <div class="callout">
+            <p><strong>Archivist Timing Logic:</strong> The Archivist runs twice per conversation: (1) At conversation start to surface relevant prior discussions, and (2) At conversation end (after 30 minutes of inactivity or when you start a new thread) to archive with metadata and embeddings. This keeps memory retrieval focused and avoids redundant searches during active dialogue.</p>
+          </div>
+
+          <h4>Sequential Pipeline</h4>
+          <div class="code-block">
+1. User query received<br>
+2. Each agent processes with specialized prompt<br>
+3. Later agents see earlier agents' responses (dialectical synthesis)<br>
+4. Secretariat creates unified response from all five perspectives<br>
+5. User receives synthesis + can view full deliberation
+          </div>
+          
+          <div class="highlight">
+            <span class="badge">Dual-Ledger System</span>
+            <h3>Complete Transparency</h3>
+            <p><strong>Full Ledger:</strong> Complete agent deliberations preserved for transparency and debugging</p>
+            <p><strong>User Ledger:</strong> Clean synthesis for actionable use</p>
+            <p>User can toggle between synthesized view and full deliberation at any time.</p>
+          </div>
+
+          <div class="callout" style="background: rgba(124, 58, 237, 0.1); border-left-color: var(--accent);">
+            <p><strong>Latency Governor:</strong> If response time exceeds 10s or queue depth is high, the system automatically switches to 3-agent mode (Authority, Iconoclast, Secretariat) for that turn, marked in the Full Ledger. This preserves the 8-10s target while maintaining dialectical synthesis.</p>
+          </div>
+
+          <h4>Configuration Options</h4>
+          <ul>
+            <li>Enable/disable individual agents</li>
+            <li>Bypass council for direct external LLM access (baseline comparison)</li>
+            <li>Toggle between synthesis view and full deliberation</li>
+            <li>Future: Customize agent prompts and roles</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>2. Living Memory System</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <h4>Persistent Conversation Storage</h4>
+          <ul>
+            <li>Every utterance vectorized and stored with rich metadata</li>
+            <li>Per-user Qdrant collections on YOUR infrastructure</li>
+            <li>Semantic search with hybrid retrieval (dense + sparse)</li>
+            <li>Resolution status tracking (open questions surface automatically)</li>
+            <li>Average search time: &lt;3 seconds</li>
+          </ul>
+
+          <h4>Metadata Schema</h4>
+          <ul>
+            <li><strong>Session:</strong> ID, title, timestamps, resolution status</li>
+            <li><strong>Turn:</strong> index, speaker (user/agent), ledger type</li>
+            <li><strong>Classification:</strong> domain tags, emotional tone, complexity, importance weight</li>
+            <li><strong>Provenance:</strong> character offsets, context windows for verification</li>
+          </ul>
+
+          <h4>Retrieval Architecture</h4>
+          <ul>
+            <li>Nomic Embed v1.5 for semantic embeddings (CPU on VPS)</li>
+            <li>Hybrid search: semantic + keyword matching</li>
+            <li>Reciprocal Rank Fusion for result merging</li>
+            <li>Optional reranking with bge-reranker-base</li>
+            <li>Average search time: &lt;3 seconds</li>
+          </ul>
+          
+          <div class="highlight">
+            <span class="badge">Operational Sovereignty</span>
+            <h3>You Control Everything</h3>
+            <p>PostgreSQL + Qdrant on your VPS (Hostinger). Open-source LLMs on GPU VM (RunPod/Vast.ai). Zero external dependencies for core functionality. Complete audit trail of all operations. User-controlled data export and deletion.</p>
+          </div>
+
+          <h4>Performance Optimization</h4>
+          <div class="callout">
+            <p><strong>GPU Auto-Shutdown with Pre-Warming Strategy:</strong> The "Council Assembly" animation with agent personalities appears ONLY ONCE when you first login for your session. After the initial login warmup (~90 seconds), the GPU VM remains running for active users, so subsequent queries in the same session receive normal 8-second council responses with no additional warmup delay. The animation is a session-initialization experience, not a per-query delay.</p>
+            <p style="margin-top: 0.5rem;">When a user logs in, the GPU begins warming in the background. By the time they browse the dashboard and formulate their first question (typically 30-60 seconds), only 20-40 seconds of warmup remains. This approach saves ~$250-320/month during MVP ($2,800-3,800 over 12 months) while keeping typical user wait times under 30 seconds.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>3. Human+AI Collaboration Platform</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <p><strong>Three Integrated Dashboards designed for teams:</strong></p>
+          
+          <h4>Main Dashboard: Three-Panel Council Chat Interface</h4>
+          <ul>
+            <li><strong>Left Panel:</strong> Memory thread browser</li>
+            <li><strong>Center Panel:</strong> Council deliberation with real-time agent processing</li>
+            <li><strong>Right Panel:</strong> Community activity feed</li>
+            <li><strong>Usage Gauges:</strong> API budget consumption, context window capacity, personal memory storage, community contributions</li>
+            <li><strong>Agent Controls:</strong> Toggle agents, configure options, bypass to external LLM</li>
+            <li><strong>Thread Management:</strong> Create, archive, search threads, branch for alternative explorations, mark resolution status</li>
+            <li>User profile and preferences</li>
+            <li>Onboarding tutorial</li>
+          </ul>
+
+          <h4>Memory Retrieval Dashboard</h4>
+          <ul>
+            <li><strong>Natural Language Queries:</strong> "unresolved questions about Rust"</li>
+            <li><strong>Hybrid Retrieval:</strong> Dense semantic + sparse keyword matching</li>
+            <li><strong>Multi-Dimensional Filters:</strong> date range, domain/topic tags, complexity level, emotional tone, importance weight, resolution status (open/closed)</li>
+            <li><strong>Search Results:</strong> Relevance scores, surrounding conversation snippets, jump to full conversation, preview builder for council context injection</li>
+            <li><strong>Export Functionality:</strong> Conversation summaries, search results in .txt/.doc/.pdf formats with timestamps and metadata</li>
+          </ul>
+
+          <h4>Community Dashboard (Basic MVP)</h4>
+          <ul>
+            <li>Multi-user account creation and authentication</li>
+            <li>Project/thread creation with ownership</li>
+            <li>Basic permission model (owner/member)</li>
+            <li>Real-time messaging between users (text communication, message history)</li>
+            <li>Council integration for community threads (shared context across team members)</li>
+            <li>External LLM access within community (clearly marked when used)</li>
+            <li><strong>Living Thread Structure:</strong> Dialogue view (chronological messages), Synthesis view (AI-generated understanding), Decisions view (structured proposals), Questions view (open inquiries)</li>
+            <li>Thread participant management</li>
+          </ul>
+
+          <div class="callout" style="background: rgba(16, 185, 129, 0.1); border-left-color: var(--success);">
+            <p><strong>Community POC Success Criteria:</strong> Two authenticated users, in a shared project thread, exchange ≥3 messages each. Council responds within ≤10s with a synthesis that appears in both users' Synthesis view. One line item is promoted into the Decisions view.</p>
+          </div>
+
+          <h4>In Scope (Must Ship)</h4>
+          <p style="color: var(--text-muted); margin: 0.5rem 0;">Single shared thread per project, text chat only, no file uploads, minimal read receipts ("delivered"), no reactions, no presence indicators beyond "last seen."</p>
+
+          <h4>Out of Scope (Phase 2 or Grayed Out)</h4>
+          <p style="color: var(--text-muted); margin: 0.5rem 0;">Advanced permissions, multiple projects per user, typing indicators, notifications, calendar, tasking, agent packs, SSO, mobile polish.</p>
+        </div>
+      </div>
+
+      <div class="highlight">
+        <span class="badge">Key Differentiators</span>
+        <ul style="margin-top: 0.5rem;">
+          <li>AI agents as first-class team members with roles (not assistants)</li>
+          <li>Designed for human+AI collaboration from first principles</li>
+          <li>Persistent memory across months/years on user-controlled infrastructure</li>
+          <li>Complete transparency: full audit trail, no hidden prompts</li>
+          <li>Platform architecture: not competing with ChatGPT, competing with Slack + Notion + Linear</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- Target Markets -->
-    <section id="markets">
-        <div class="container">
-            <div class="section-teaser">
-                <h2>Target Markets: From Beta to Billions</h2>
-                <p class="hook">Start with 5-15 visionary beta testers. Scale to institutional markets worth $1B+.</p>
-                
-                <div class="stats">
-                    <div class="stat">
-                        <span class="stat-number">$175M</span>
-                        <span class="stat-label">K-12 Education Market</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">$600M</span>
-                        <span class="stat-label">Healthcare Market</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">$500M</span>
-                        <span class="stat-label">Military/Defense Market</span>
-                    </div>
-                </div>
-
-                <button class="expand-button" onclick="toggleSection('markets')">See Full Market Strategy</button>
-            </div>
-
-            <div class="full-content" id="markets-content">
-                <div class="full-content-inner">
-                    <h3>Primary: MVP Beta Testers (5-15 people)</h3>
-                    <p><strong>Profile:</strong> Value data privacy and security in AI interactions. Tech-savvy. Interested in AI as developmental tool, not just productivity hack. Willing to test without payment during 10-12 month proof-of-concept phase.</p>
-                    <p><strong>Goals:</strong> Build genuine wisdom through AI partnership. Maintain data privacy and control. Develop discernment capacity through multi-perspective thinking.</p>
-
-                    <h3>Phase 2+ Target Markets</h3>
-                    <h4>Personal Tier ($20/month)</h4>
-                    <p>Knowledge workers requiring continuity. Writers, researchers, students with long-term projects. Users prioritizing data privacy and security.</p>
-
-                    <h4>Team Tier ($200-500/month)</h4>
-                    <p>Startups building products with human+AI teams. Research groups. Design/creative teams. Small businesses managing operations with AI partners.</p>
-
-                    <h4>Enterprise Tier (Custom pricing)</h4>
-                    <p>Companies adopting AI-driven development. Organizations with compliance requirements (HIPAA, SOC 2). Government agencies requiring air-gapped deployment.</p>
-
-                    <h3>High-Value Institutional Verticals</h3>
-                    
-                    <h4>Military and Defense ($500M+ Market)</h4>
-                    <p>Rank-based agent hierarchy maps to military chain of command. RAG libraries with field manuals, joint publications, ROE, UCMJ. Automatic guardrails preventing classification spillage and OPSEC violations. Air-gapped SIPRNET/JWICS deployment with zero corporate dependencies.</p>
-                    <p><strong>Revenue potential:</strong> $5M initial pilot (single brigade) → $50M Army-wide → $140M/year across DoD → $500M+ NATO expansion</p>
-
-                    <h4>K-12 Education ($175M-350M/year Market)</h4>
-                    <p>Role-specific agents for every position—Principal, Teachers, Counselors, Special Ed Coordinators. Multilingual family communication. Compliance tracking (FERPA/IDEA/Title IX). Self-hosted deployment addresses privacy barriers preventing schools from using corporate AI.</p>
-                    <p><strong>Revenue potential:</strong> 130,000+ US schools × 3.5M staff × $50-100/user/year = $175M-350M/year addressable market</p>
-
-                    <h4>Healthcare Systems ($600M-900M/year Market)</h4>
-                    <p>Role-specific agents spanning entire care delivery hierarchy. HIPAA-compliant with data never leaving hospital infrastructure. Real-time clinical decision support. Automated compliance tracking (Joint Commission, CMS standards).</p>
-                    <p><strong>Revenue potential:</strong> 6,000+ hospitals × 6M+ clinical/administrative staff × $100-150/user/year = $600M-900M/year addressable market</p>
-
-                    <button class="collapse-button" onclick="toggleSection('markets')">Collapse</button>
-                </div>
-            </div>
+    <section class="section" id="validation">
+      <h2>Validation Metrics</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Instrumented now, proven later</p>
+      
+      <div class="grid">
+        <div class="card">
+          <h3>Ledger Lift</h3>
+          <p>Percentage of sessions where Full Ledger is opened at least once. Measures transparency engagement.</p>
         </div>
+        
+        <div class="card">
+          <h3>Council Delta</h3>
+          <p>Blind A/B win-rate of council synthesis vs. single-LLM baseline. Proves multi-agent value.</p>
+        </div>
+        
+        <div class="card">
+          <h3>Memory Pull-through</h3>
+          <p>Percentage of turns using memory retrieval with click-through into council context.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- MVP Roadmap -->
-    <section id="roadmap">
-        <div class="container">
-            <div class="section-teaser">
-                <h2>MVP Roadmap: 10-12 Months to Launch</h2>
-                <p class="hook">$200K budget. Solo developer + support engineer. Proof-of-concept with 5-15 beta testers.</p>
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <h4>Month 1-2: Foundation</h4>
-                        <p>Infrastructure setup (VPS, GPU VM, databases). FastAPI skeleton with authentication. React conversion. Test Ollama inference speed.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h4>Month 3-4: Core Council Logic</h4>
-                        <p>Implement 5 AI agents. Sequential pipeline end-to-end. Dual-ledger system. Conversation saving + embedding generation.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h4>Month 5-6: Memory Features</h4>
-                        <p>Memory Retrieval Dashboard. Semantic search with hybrid retrieval. Reranking. Export functionality. Usage gauges.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h4>Month 7-8: Basic Community</h4>
-                        <p>Multi-user auth. Project/thread creation. WebSocket chat. Council integration. Living Thread views.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h4>Month 9-12: Beta & Validation</h4>
-                        <p>Testing, polish, security audit. Beta tester recruitment. Active beta testing. Case study collection. Technical documentation. Phase 2 funding preparation.</p>
-                    </div>
-                </div>
-
-                <button class="expand-button" onclick="toggleSection('roadmap')">See Full Technical Details</button>
-            </div>
-
-            <div class="full-content" id="roadmap-content">
-                <div class="full-content-inner">
-                    <h3>MVP Success Criteria</h3>
-                    
-                    <h4>User Acquisition</h4>
-                    <ul>
-                        <li>5-15 committed beta testers actively using platform by Month 10-12</li>
-                        <li>80% onboarding completion rate</li>
-                        <li>Average session duration >15 minutes</li>
-                        <li>Users engage with council (not just bypass to external LLMs)</li>
-                        <li>40% of queries utilize memory retrieval features</li>
-                    </ul>
-
-                    <h4>Technical Validation</h4>
-                    <ul>
-                        <li>Multi-agent council pipeline functional and reliable</li>
-                        <li>API response time <10s for full council deliberation</li>
-                        <li>Memory search <3s for semantic queries</li>
-                        <li>System uptime >99%</li>
-                        <li>Operating costs <$650/month (within budget)</li>
-                    </ul>
-
-                    <h4>Experience Validation</h4>
-                    <ul>
-                        <li>Qualitative testimonials confirming transformational value</li>
-                        <li>Users mark conversation resolution status (validates growth tracking)</li>
-                        <li>Basic Community features demonstrate collaboration viability</li>
-                        <li>Users prefer council synthesis over single LLM baseline</li>
-                    </ul>
-
-                    <h3>What We Are NOT Measuring in MVP</h3>
-                    <p>MVP is technology validation, not business validation. We are NOT measuring revenue, customer acquisition cost, conversion rates, churn rates, or any commercial KPIs in MVP phase.</p>
-
-                    <h3>Budget Breakdown</h3>
-                    <p><strong>Total: $200,000 (10-12 months)</strong></p>
-                    <ul>
-                        <li>Development: $180K (primary developer 18 months × $10K/month)</li>
-                        <li>Support: $20K (professional dev engineer for consultation)</li>
-                        <li>Operating Costs: $6,000-9,000 (VPS $40/mo + GPU VM $200-570/mo + APIs $50-150/mo)</li>
-                    </ul>
-
-                    <button class="collapse-button" onclick="toggleSection('roadmap')">Collapse</button>
-                </div>
-            </div>
+    <section class="section" id="mvp-success">
+      <h2>MVP Success Criteria (10-12 months)</h2>
+      
+      <div class="two-column">
+        <div class="card">
+          <h3>User Acquisition</h3>
+          <ul>
+            <li>✅ 5-15 committed beta testers actively using platform by Month 10-12</li>
+            <li>✅ 80% onboarding completion rate</li>
+            <li>✅ Average session duration >15 minutes</li>
+            <li>✅ Users engage with council (not just bypass to external LLMs)</li>
+            <li>✅ 40% of queries utilize memory retrieval features</li>
+          </ul>
         </div>
+
+        <div class="card">
+          <h3>Technical Validation</h3>
+          <ul>
+            <li>✅ Multi-agent council pipeline functional and reliable</li>
+            <li>✅ API response time <10s for full council deliberation</li>
+            <li>✅ Memory search <3s for semantic queries</li>
+            <li>✅ System uptime >99%</li>
+            <li>✅ Operating costs <$650/month (within budget)</li>
+            <li>✅ VPS handles 5-15 concurrent users without degradation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="two-column">
+        <div class="card">
+          <h3>Experience Validation</h3>
+          <ul>
+            <li>✅ Qualitative testimonials confirming transformational value</li>
+            <li>✅ Users mark conversation resolution status (validates growth tracking)</li>
+            <li>✅ Basic Community features demonstrate collaboration viability</li>
+            <li>✅ Users prefer council synthesis over single LLM baseline</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Phase 2 Readiness</h3>
+          <ul>
+            <li>✅ Technical documentation complete for scaling</li>
+            <li>✅ Compelling case studies for $2-5M funding narrative</li>
+            <li>✅ Architecture validated for self-hosted LLM approach</li>
+            <li>✅ User testimonials and beta advocates for funding process</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444;">
+        <p><strong>What We Are NOT Measuring in MVP:</strong> Revenue, MRR, Customer Acquisition Cost, Conversion rates, Churn rates, or ANY commercial KPIs. MVP is technology validation, not business validation. Commercial metrics come after proving the concept works.</p>
+      </div>
     </section>
 
-    <!-- Security & Infrastructure -->
-    <section id="security">
-        <div class="container">
-            <div class="section-teaser">
-                <h2>Security & Infrastructure</h2>
-                <p class="hook">Bank-level encryption. User-controlled infrastructure. Two paths to complete data sovereignty.</p>
-                
-                <div class="highlights">
-                    <div class="highlight-card">
-                        <h3>MVP Security</h3>
-                        <p>Full-disk encryption (LUKS). TLS 1.3 in transit. Role-based access controls. Immutable audit logs. <100ms performance impact.</p>
-                    </div>
-                    <div class="highlight-card">
-                        <h3>Track 1: Enhanced Hosted</h3>
-                        <p>End-to-end encryption. Zero-knowledge architecture. SOC 2 Type II + HIPAA-ready. Platform operators cannot decrypt user data.</p>
-                    </div>
-                    <div class="highlight-card">
-                        <h3>Track 2: Self-Hosted</h3>
-                        <p>On-premises installation. Air-gapped capability. Customer-managed keys. Zero platform access. Bring your own LLM.</p>
-                    </div>
-                </div>
+    <section class="section" id="technical">
+      <h2>Technical Architecture</h2>
+      
+      <div class="highlight">
+        <span class="badge">Deployment Model</span>
+        <h3>Standard SaaS Web Application</h3>
+        <p>Access via web browser only. No installation required.</p>
+      </div>
 
-                <button class="expand-button" onclick="toggleSection('security')">See Technical Architecture</button>
-            </div>
-
-            <div class="full-content" id="security-content">
-                <div class="full-content-inner">
-                    <h3>MVP Security Architecture</h3>
-                    
-                    <h4>Encryption</h4>
-                    <ul>
-                        <li><strong>At Rest:</strong> Full-disk encryption (LUKS) for PostgreSQL and Qdrant storage volumes</li>
-                        <li><strong>In Transit:</strong> TLS 1.3 for all client-server and server-LLM communications</li>
-                        <li><strong>Performance Impact:</strong> <100ms overhead, imperceptible to users</li>
-                    </ul>
-
-                    <h4>Access Controls</h4>
-                    <ul>
-                        <li>Role-based access for platform operators (read-only, admin, developer)</li>
-                        <li>Principle of least privilege for team members</li>
-                        <li>Multi-factor authentication for all admin accounts</li>
-                    </ul>
-
-                    <h4>Audit Logging</h4>
-                    <ul>
-                        <li>Immutable audit trail of all database access</li>
-                        <li>Tracks: who accessed what data, when, from where, why</li>
-                        <li>90-day retention for MVP, 7-year retention for enterprise</li>
-                    </ul>
-
-                    <h4>Data Governance</h4>
-                    <ul>
-                        <li>Users can export complete conversation history (JSON, Markdown)</li>
-                        <li>Users can delete all data (hard delete, not soft)</li>
-                        <li>Clear Terms of Service regarding platform operator access rights</li>
-                        <li>No data used for model training without explicit opt-in</li>
-                    </ul>
-
-                    <h3>Phase 2: Two-Track Security Strategy</h3>
-                    
-                    <h4>Track 1: Enhanced Hosted Service</h4>
-                    <p>For teams prioritizing convenience + compliance:</p>
-                    <ul>
-                        <li>Client-side encryption with user-controlled keys</li>
-                        <li>Platform operators cannot decrypt user data</li>
-                        <li>Browser-based encryption/decryption using Web Crypto API</li>
-                        <li>SOC 2 Type II, HIPAA-ready deployment</li>
-                        <li>Data residency options: EU, US, or region-specific hosting</li>
-                    </ul>
-
-                    <h4>Track 2: Self-Hosted Deployment</h4>
-                    <p>For organizations requiring absolute data sovereignty:</p>
-                    <ul>
-                        <li>DYNAMO runs entirely on customer infrastructure</li>
-                        <li>Air-gapped capability with no external network dependencies</li>
-                        <li>Customer controls all encryption keys</li>
-                        <li>Zero platform access by DYNAMO operators</li>
-                        <li>Bring your own LLM on customer GPUs</li>
-                    </ul>
-
-                    <h4>Target Markets by Track</h4>
-                    <ul>
-                        <li><strong>Track 1:</strong> Healthcare, education, regulated industries needing compliance + convenience</li>
-                        <li><strong>Track 2:</strong> Military, government, intelligence agencies requiring absolute sovereignty</li>
-                    </ul>
-
-                    <h3>Technology Stack</h3>
-                    <p><strong>Frontend:</strong> React + TypeScript, Zustand, Tailwind CSS, WebSocket</p>
-                    <p><strong>Backend:</strong> FastAPI (Python), PostgreSQL, Qdrant, Redis, LiteLLM</p>
-                    <p><strong>AI/ML:</strong> Ollama (Llama 3.1 70B), Nomic Embed v1.5, bge-reranker-base</p>
-                    <p><strong>Infrastructure:</strong> VPS + GPU VM, Nginx, Docker, Grafana monitoring</p>
-
-                    <h3>Performance Requirements</h3>
-                    <ul>
-                        <li>Council response: <10s (target: 8s)</li>
-                        <li>Memory search: <3s (target: 1-2s)</li>
-                        <li>System uptime: >99%</li>
-                        <li>Scale: 5-15 concurrent MVP users</li>
-                    </ul>
-
-                    <button class="collapse-button" onclick="toggleSection('security')">Collapse</button>
-                </div>
-            </div>
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Infrastructure (Hybrid Option 2)</h3>
+          <span class="arrow">▼</span>
         </div>
+        <div class="expandable-content">
+          <h4>VPS (Hostinger - $40/month) - Always on 24/7</h4>
+          <ul>
+            <li>Nginx, FastAPI, PostgreSQL, Qdrant, Redis</li>
+            <li>Embedding generation (Nomic v1.5 on CPU)</li>
+            <li>Reranking (bge-reranker-base on CPU)</li>
+            <li>Frontend static files</li>
+          </ul>
+
+          <h4>GPU VM (RunPod/Vast - $400-600/month)</h4>
+          <ul>
+            <li>Ollama server running Llama 3.1 70B</li>
+            <li>Council deliberation (all 5 agents)</li>
+            <li>Response time: ~8s for full council</li>
+            <li>Smart scheduling: on during active hours, shutdown during idle</li>
+          </ul>
+
+          <h4>API Providers (Together.ai/Fireworks - $50-150/month fallback)</h4>
+          <ul>
+            <li>Used ONLY when GPU VM unavailable</li>
+            <li>Clearly marked [External API Used ⚠️]</li>
+            <li>User can disable in settings</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Request Flow</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <div class="code-block">
+<strong>Normal (95% of queries):</strong><br>
+Browser → VPS FastAPI → GPU VM (5 agents, 8s) → VPS (save to DB, queue embedding) → Browser<br><br>
+
+<strong>Fallback (5% of queries):</strong><br>
+Browser → VPS → GPU timeout → API fallback → VPS → Browser (marked as external)<br><br>
+
+<strong>Memory Search (no GPU):</strong><br>
+Browser → VPS (generate embedding, search Qdrant, rerank, <1s) → Browser
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Technology Stack</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <h4>Frontend</h4>
+          <p style="color: var(--text-muted);">React + TypeScript, Zustand, Tailwind CSS, WebSocket</p>
+
+          <h4>Backend</h4>
+          <p style="color: var(--text-muted);">FastAPI (Python), PostgreSQL, Qdrant, Redis, LiteLLM</p>
+
+          <h4>AI/ML</h4>
+          <p style="color: var(--text-muted);">Ollama (Llama 3.1 70B), Nomic Embed v1.5, bge-reranker-base</p>
+
+          <h4>Infrastructure</h4>
+          <p style="color: var(--text-muted);">VPS + GPU VM, Nginx, Docker, Grafana monitoring</p>
+
+          <h4>WebSocket Implementation</h4>
+          <ul>
+            <li>One connection per user</li>
+            <li>One channel per thread</li>
+            <li>Broadcast fanout from backend</li>
+            <li>No per-user presence stream</li>
+          </ul>
+
+          <h4>Database Schema</h4>
+          <p style="color: var(--text-muted);">users, threads, thread_members, messages, decisions. Avoid extra tables.</p>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Backend Infrastructure</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <h4>User Authentication and Authorization</h4>
+          <ul>
+            <li>Email/password registration</li>
+            <li>Session management with Redis</li>
+            <li>JWT tokens for API access</li>
+          </ul>
+
+          <h4>PostgreSQL for Structured Data</h4>
+          <ul>
+            <li>User accounts and profiles</li>
+            <li>Conversation metadata</li>
+            <li>Community threads and memberships</li>
+            <li>Agent configurations</li>
+          </ul>
+
+          <h4>Qdrant Vector Database</h4>
+          <ul>
+            <li>Per-user vector collections</li>
+            <li>Semantic embeddings for all conversations</li>
+            <li>Metadata filtering support</li>
+          </ul>
+
+          <h4>Redis for Operational State</h4>
+          <ul>
+            <li>Session caching</li>
+            <li>Job queues for async tasks</li>
+            <li>Rate limiting</li>
+          </ul>
+
+          <h4>FastAPI REST API</h4>
+          <ul>
+            <li>All client-server communication</li>
+            <li>WebSocket support for real-time features</li>
+            <li>OpenAPI documentation</li>
+          </ul>
+
+          <h4>LiteLLM Routing Layer</h4>
+          <ul>
+            <li>Primary: Ollama on GPU VM (self-hosted Llama 3.1 70B)</li>
+            <li>Fallback: Together.ai/Fireworks.ai APIs</li>
+            <li>Automatic failover logic</li>
+            <li>Health monitoring</li>
+          </ul>
+
+          <h4>Automated Background Processes</h4>
+          <ul>
+            <li>Embedding generation (Nomic v1.5 on VPS CPU)</li>
+            <li>Meta-tagging extraction</li>
+            <li>Vector storage in Qdrant</li>
+            <li>Usage monitoring and alerts</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="highlight">
+        <h3>Performance Requirements</h3>
+        <ul>
+          <li>Council response: <10s (target: 8s)</li>
+          <li>Memory search: <3s (target: 1-2s)</li>
+          <li>System uptime: >99%</li>
+          <li>Scale: 5-15 concurrent MVP users</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- CTA Section -->
-    <div class="cta-section">
-        <div class="container">
-            <h2>Ready to Build the Future of Human+AI Collaboration?</h2>
-            <p>Let's discuss how DYNAMO transforms AI from disposable tool to developmental partner.</p>
-            <a href="mailto:contact@yourdomain.com" class="cta-button">Get In Touch</a>
+    <section class="section" id="security">
+      <h2>Security Architecture</h2>
+      
+      <div class="two-column">
+        <div class="card">
+          <h3>MVP Security</h3>
+          
+          <h4>Encryption</h4>
+          <ul>
+            <li><strong>At Rest:</strong> Full-disk encryption (LUKS) for PostgreSQL and Qdrant storage volumes</li>
+            <li><strong>In Transit:</strong> TLS 1.3 for all client-server and server-LLM communications</li>
+            <li><strong>Performance Impact:</strong> <100ms overhead, imperceptible to users</li>
+          </ul>
+          
+          <h4>Access Controls</h4>
+          <ul>
+            <li>Role-based access for platform operators (read-only, admin, developer)</li>
+            <li>Principle of least privilege for team members</li>
+            <li>Multi-factor authentication for all admin accounts</li>
+          </ul>
+          
+          <h4>Audit Logging</h4>
+          <ul>
+            <li>Immutable audit trail of all database access</li>
+            <li>Logs stored separately from primary database</li>
+            <li>Tracks: who accessed what data, when, from where, why (ticket/incident reference)</li>
+            <li>90-day retention for MVP, 7-year retention for enterprise (Phase 2)</li>
+          </ul>
+          
+          <h4>Data Governance</h4>
+          <ul>
+            <li>Users can export complete conversation history (JSON, Markdown)</li>
+            <li>Users can delete all data (hard delete, not soft)</li>
+            <li>Clear Terms of Service regarding platform operator access rights</li>
+            <li>No data used for model training without explicit opt-in</li>
+          </ul>
+
+          <div class="callout" style="margin-top: 1rem;">
+            <p><strong>MVP Trust Model:</strong> Platform operators maintain operational access for system administration, debugging, and user support. All access is logged and auditable.</p>
+          </div>
         </div>
+        
+        <div class="card">
+          <h3>Phase 2: Two-Track Security</h3>
+          
+          <h4>Track 1: Enhanced Hosted Service</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">For teams prioritizing convenience</p>
+          <ul>
+            <li><strong>End-to-End Encryption:</strong> Client-side encryption with user-controlled keys (platform operators cannot decrypt user data)</li>
+            <li><strong>Zero-Knowledge Architecture:</strong> Browser-based encryption/decryption using Web Crypto API</li>
+            <li><strong>Compliance Certifications:</strong> SOC 2 Type II, HIPAA-ready deployment</li>
+            <li><strong>Advanced Audit:</strong> Real-time security monitoring, intrusion detection</li>
+            <li><strong>Data Residency Options:</strong> EU, US, or region-specific hosting</li>
+          </ul>
+          
+          <h4>Track 2: Self-Hosted Deployment</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">For organizations requiring complete sovereignty</p>
+          <ul>
+            <li><strong>On-Premises Installation:</strong> DYNAMO runs entirely on customer infrastructure</li>
+            <li><strong>Air-Gapped Capability:</strong> No external network dependencies</li>
+            <li><strong>Customer-Managed Keys:</strong> Organization controls all encryption keys</li>
+            <li><strong>Zero Platform Access:</strong> DYNAMO operators have no data access</li>
+            <li><strong>Bring Your Own LLM:</strong> Self-hosted models on customer GPUs</li>
+          </ul>
+          
+          <div class="callout" style="margin-top: 1rem;">
+            <p><strong>Target Markets by Track:</strong></p>
+            <p style="margin-top: 0.5rem;">Track 1: Healthcare, education, regulated industries needing compliance + convenience</p>
+            <p style="margin-top: 0.5rem;">Track 2: Military, government, intelligence agencies requiring absolute data sovereignty</p>
+            <p style="margin-top: 0.5rem;"><strong>Both tracks eliminate "trust us" model</strong> - either through cryptographic guarantees (Track 1) or complete infrastructure control (Track 2).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="use-cases">
+      <h2>Strategic Use Cases: High-Value Verticals</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Where data sovereignty, compliance guardrails, and role-based AI agents solve critical unmet needs</p>
+      
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Military and Defense</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <p>DYNAMO's rank-based agent hierarchy maps directly to military chain of command (E-1 Private through O-10 General, W-1 through W-5 Warrant Officers), with each service member receiving AI agents appropriate to their rank, clearance level, and mission role.</p>
+          
+          <h4>Key Features</h4>
+          <ul>
+            <li><strong>Rank-Appropriate Agents:</strong> Private's agent provides field manual guidance and basic protocol compliance checking; Colonel's agent coordinates theater-level operations with access to classified intelligence and strategic doctrine</li>
+            <li><strong>RAG Document Libraries:</strong> Field manuals, joint publications, technical orders, ROE, UCMJ with automatic guardrails</li>
+            <li><strong>Compliance Guardrails:</strong> Prevents classification spillage, OPSEC violations, Geneva Convention breaches</li>
+            <li><strong>Mission Planning:</strong> Living Threads where O-6 commanders, O-4 intelligence officers, W-4 aviation specialists, and E-9 senior NCOs coordinate with shared context and decision ledgers tracking approval chains</li>
+            <li><strong>Air-Gapped Deployment:</strong> SIPRNET/JWICS deployment with zero corporate dependencies, solving the critical problem that prevents military personnel from using ChatGPT or Claude for mission-critical work</li>
+          </ul>
+          
+          <h4>Revenue Potential</h4>
+          <ul>
+            <li>$5M initial pilot contract (single brigade)</li>
+            <li>$50M Army-wide deployment</li>
+            <li>$140M/year across all DoD services (1.4M personnel × $100/year)</li>
+            <li>$500M+ expansion to NATO and allied nations</li>
+          </ul>
+          
+          <div class="callout">
+            <p><strong>First-mover advantage is decisive:</strong> No competitor offers sovereign conversational AI with rank-aware guardrails and compliance built-in.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>K-12 Education</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <p>Schools deploy DYNAMO with role-specific agents for every position—Principal, Vice Principal, Department Heads, Teachers, Counselors, School Psychologists, Nurses, Special Ed Coordinators, ELL staff, IT, Facilities, Food Service—each trained on institutional knowledge (student information systems, handbooks, IEP documentation, curriculum standards, safety protocols, FERPA/IDEA/Title IX compliance).</p>
+          
+          <h4>Key Features</h4>
+          <ul>
+            <li><strong>Teacher Agent:</strong> Drafts differentiated lesson plans and IEP accommodations while ensuring FERPA compliance</li>
+            <li><strong>Special Ed Coordinator Agent:</strong> Tracks legally required timelines and auto-generates prior-written notices</li>
+            <li><strong>Principal Agent:</strong> Synthesizes discipline data patterns and drafts board reports</li>
+            <li><strong>Nurse Agent:</strong> Creates health plans and flags immunization gaps</li>
+            <li><strong>Cross-Functional Coordination:</strong> Living Threads where staff collaborate on student interventions with persistent context that survives personnel turnover—when teachers leave mid-year, replacements inherit complete student history</li>
+            <li><strong>Multilingual Communication:</strong> Event flyers, progress reports in 50+ languages</li>
+            <li><strong>Compliance Tracking:</strong> IEP evaluations, safety inspections, certification renewals proactively tracked</li>
+            <li><strong>Role-Based Access:</strong> Immutable audit trails for privacy regulations</li>
+          </ul>
+          
+          <h4>Impact</h4>
+          <ul>
+            <li>10-20 hours/week saved per administrator through automated meeting prep, incident documentation, and reporting</li>
+            <li>$200K+ in additional staff costs eliminated</li>
+            <li>Complete student history preservation across staff changes</li>
+          </ul>
+          
+          <h4>Revenue Potential</h4>
+          <ul>
+            <li>130,000+ US K-12 schools</li>
+            <li>3.5M+ teachers and staff</li>
+            <li>$50-100/user/year = $175M-350M/year addressable market</li>
+            <li>$50K-500K/year enterprise tier for large districts</li>
+          </ul>
+
+          <div class="callout">
+            <p><strong>Critical Barrier Addressed:</strong> Self-hosted deployment solves the problem preventing schools from using corporate AI tools with sensitive student data.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Healthcare Systems</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <p>Hospitals and health systems deploy DYNAMO with role-specific agents spanning the entire care delivery and operational hierarchy—from C-suite executives (CEO, CMO, CNO, COO, CIO) through clinical teams (hospitalists, surgeons, emergency physicians, intensivists, anesthesiologists, primary care), nursing staff (nurse managers, bedside nurses, advanced practice providers), diagnostics and therapeutics (pharmacy, laboratory, radiology, rehab therapies, respiratory therapy), care coordination (case management, social work), perioperative services, and operations (admitting, revenue cycle, supply chain, facilities, environmental services, food service, security, clinical engineering, IT).</p>
+          
+          <h4>Role-Specific RAG Document Libraries</h4>
+          <ul>
+            <li><strong>Hospitalist Agent:</strong> Accesses discharge templates, readmission reduction checklists, formulary guides</li>
+            <li><strong>CMO Agent:</strong> Reviews medical staff bylaws, credentialing policies, clinical practice guidelines</li>
+            <li><strong>Pharmacy Agent:</strong> References formulary restrictions, antimicrobial stewardship protocols, prior authorization templates</li>
+            <li><strong>Case Manager Agent:</strong> Queries payer criteria, discharge planning workflows, DME vendor directories</li>
+          </ul>
+
+          <h4>Clinical Team Coordination</h4>
+          <ul>
+            <li><strong>Multidisciplinary Rounds:</strong> Living Threads where attending physician + bedside nurse + pharmacist + case manager + social worker share patient context</li>
+            <li><strong>Decision Ledgers:</strong> Track care plan changes</li>
+            <li><strong>Question Ledgers:</strong> Surface unresolved issues requiring specialist consults or ethics committee review</li>
+            <li><strong>Institutional Memory:</strong> Complete patient narratives, pending tests, family communication history across shift changes—when hospitalists rotate off service, incoming providers inherit complete context</li>
+          </ul>
+
+          <h4>Compliance Automation</h4>
+          <ul>
+            <li>Agents track Joint Commission standards, CMS conditions of participation, state regulations</li>
+            <li>Auto-generate required documentation (informed consents, incident reports, quality improvement plans)</li>
+            <li>Flag policy violations before they occur</li>
+          </ul>
+
+          <h4>Clinical Decision Support</h4>
+          <ul>
+            <li>Bedside nurse asking about medication administration receives dosing guidance, monitoring parameters, potential drug interactions</li>
+            <li>ED physician querying sepsis protocols gets latest evidence-based pathway with order sets pre-populated</li>
+          </ul>
+          
+          <h4>Administrative Efficiency Gains</h4>
+          <ul>
+            <li>10-15 hours/week saved per clinician through automated progress note drafting, discharge summary generation, patient education material creation</li>
+            <li>Revenue cycle improvements from AI-assisted coding gap identification and denial appeal letter generation</li>
+            <li>Quality metric tracking with automated chart abstraction for core measures</li>
+          </ul>
+          
+          <h4>Revenue Potential</h4>
+          <ul>
+            <li>6,000+ US hospitals</li>
+            <li>1M+ physicians, 3M+ nurses and clinical staff, 2M+ administrative and support staff</li>
+            <li>$100-150/user/year = $600M-900M/year addressable market</li>
+            <li>$500K-5M/year enterprise contracts for integrated health systems with multiple facilities requiring centralized governance, standardized clinical pathways, and consolidated compliance tracking across 10-50 hospitals</li>
+          </ul>
+          
+          <div class="callout">
+            <p><strong>Critical Advantage:</strong> Self-hosted architecture ensures HIPAA compliance with patient data never leaving hospital infrastructure, role-based access controls limiting clinicians to their assigned patients, and immutable audit logs for regulatory review. Healthcare systems gain conversational AI capabilities that corporate platforms cannot provide due to HIPAA restrictions, patient privacy concerns, and need for integration with electronic health records, laboratory systems, and radiology PACS.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="budget">
+      <h2>Financial Impact and Strategic Alignment</h2>
+      
+      <div class="two-column">
+        <div class="card">
+          <h3>MVP Budget: $200,000 (10-12 months)</h3>
+          <ul>
+            <li><strong>Development:</strong> $180K (primary developer 18 months × $10K/month)</li>
+            <li><strong>Support:</strong> $20K (professional dev engineer for consultation)</li>
+            <li><strong>Operating Costs:</strong> $6,000-9,000 (VPS $40/mo + GPU VM $200-570/mo + APIs $50-150/mo)</li>
+          </ul>
+
+          <h4 style="margin-top: 1.5rem;">MVP ROI</h4>
+          <ul>
+            <li>Technical validation: Proof multi-agent + memory works</li>
+            <li>Market validation: 5-15 beta users confirm value</li>
+            <li>Funding narrative: Case studies for $2-5M raise</li>
+            <li>Methodology proof: Maestro-Driven Development validated</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Strategic Opportunity</h3>
+          <ul>
+            <li>Not competing with ChatGPT Plus ($20/month)</li>
+            <li>Competing with Slack + Notion + Linear ($500-2000/month team collaboration)</li>
+            <li>If executed: $1B+ outcome as category-defining platform</li>
+          </ul>
+
+          <h4 style="margin-top: 1.5rem;">Phase 2 Funding Allocation ($2-5M)</h4>
+          <ul>
+            <li>Self-hosted LLM infrastructure: $800K</li>
+            <li>Team expansion: $1.2M (5-10 engineers, PM, designer)</li>
+            <li>Feature development: $600K</li>
+            <li>Security & compliance: $400K (SOC 2, HIPAA readiness)</li>
+            <li>Marketing & user acquisition: $500K</li>
+            <li>Operations & runway: $500K (24-month buffer)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="assumptions">
+      <h2>Constraints and Assumptions</h2>
+      
+      <div class="two-column">
+        <div class="card">
+          <h3>Constraints</h3>
+          <ul>
+            <li><strong>Budget:</strong> $200K total, cannot exceed</li>
+            <li><strong>Team:</strong> Solo developer + occasional support engineer</li>
+            <li><strong>Timeline:</strong> 10-12 months to working MVP</li>
+            <li><strong>Infrastructure:</strong> Must use GPU VM + API fallback (cannot afford redundancy)</li>
+            <li><strong>User Acquisition:</strong> Organic only, no marketing budget</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Key Assumptions TO VALIDATE</h3>
+          
+          <h4>Technical</h4>
+          <ul>
+            <li>✅ Llama 3.1 70B on A40 delivers <10s response time</li>
+            <li>✅ Sequential agents produce coherent synthesis</li>
+            <li>✅ CPU embeddings fast enough (<300ms per turn)</li>
+            <li>✅ Qdrant handles 15 users with 10K vectors each</li>
+            <li>✅ LiteLLM provides reliable routing</li>
+          </ul>
+
+          <h4>UX</h4>
+          <ul>
+            <li>✅ 8-second response time acceptable (vs. 2-3s ChatGPT)</li>
+            <li>✅ Users value multi-agent deliberation enough to tolerate delay</li>
+            <li>✅ Users engage with Full Ledger transparency</li>
+            <li>✅ 40% of queries use memory retrieval</li>
+          </ul>
+
+          <h4>User</h4>
+          <ul>
+            <li>✅ 5-15 beta testers reachable through networks</li>
+            <li>✅ Beta users test unpaid for 10-12 months</li>
+            <li>✅ Beta users provide qualitative feedback</li>
+            <li>✅ "Sovereignty" messaging resonates</li>
+          </ul>
+
+          <h4>Market</h4>
+          <ul>
+            <li>✅ Post-ChatGPT moment creates demand for sovereign alternatives</li>
+            <li>✅ Users frustrated with memory fragmentation</li>
+            <li>✅ Gov/military/healthcare/education need sovereign solutions</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="risks">
+      <h2>Risks and Mitigation</h2>
+      
+      <div class="grid">
+        <div class="card">
+          <h3>1. GPU VM Reliability</h3>
+          <p><strong>Risk:</strong> Crashes, preemption, unavailability</p>
+          <p><strong>Impact:</strong> High (system unusable)</p>
+          <p><strong>Mitigation:</strong> API fallback, health monitoring, auto-restart, upgrade to reserved if needed</p>
+        </div>
+
+        <div class="card">
+          <h3>2. AI-Agent Quality</h3>
+          <p><strong>Risk:</strong> Incoherent synthesis, repetitive responses</p>
+          <p><strong>Impact:</strong> High (core value fails)</p>
+          <p><strong>Mitigation:</strong> Extensive prompt engineering, Full Ledger debugging, user feedback, bypass option</p>
+        </div>
+
+        <div class="card">
+          <h3>3. User Acquisition Failure</h3>
+          <p><strong>Risk:</strong> Cannot reach 5-15 beta testers</p>
+          <p><strong>Impact:</strong> Very High (MVP fails)</p>
+          <p><strong>Mitigation:</strong> Start recruiting Month 6, compelling demo, leverage networks, lower to 5 minimum</p>
+        </div>
+
+        <div class="card">
+          <h3>4. Cost Overruns</h3>
+          <p><strong>Risk:</strong> Operating costs exceed $650/month</p>
+          <p><strong>Impact:</strong> Medium (reduces runway)</p>
+          <p><strong>Mitigation:</strong> Budget caps, auto-shutdown, monitoring, can increase API fallback temporarily</p>
+        </div>
+
+        <div class="card">
+          <h3>5. Scope Creep</h3>
+          <p><strong>Risk:</strong> MVP expands beyond timeline</p>
+          <p><strong>Impact:</strong> High (delays funding)</p>
+          <p><strong>Mitigation:</strong> Ruthless prioritization, Phase 2 stays grayed out, weekly reviews, support dev enforces discipline</p>
+        </div>
+
+        <div class="card">
+          <h3>6. Phase 2 Funding Failure</h3>
+          <p><strong>Risk:</strong> Cannot raise $2-5M</p>
+          <p><strong>Impact:</strong> High (cannot scale)</p>
+          <p><strong>Mitigation:</strong> Focus on compelling narrative, case studies, testimonials, multiple paths (VC/acquisition/bootstrap)</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <h2>Development Roadmap</h2>
+      
+      <div class="timeline">
+        <div class="timeline-item">
+          <h3>Month 1-2: Foundation</h3>
+          <ul>
+            <li>Infrastructure setup (VPS, GPU VM, databases)</li>
+            <li>FastAPI skeleton with authentication</li>
+            <li>React conversion from HTML mockup</li>
+            <li>Test Ollama inference speed</li>
+          </ul>
+          <p style="color: var(--success); margin-top: 0.5rem;"><strong>Milestone:</strong> User can login, GPU responds in <10s</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>Month 3-4: Core Council Logic</h3>
+          <ul>
+            <li>Implement 5 AI agents (Authority, Iconoclast, Strategist, Archivist, Secretariat)</li>
+            <li>Sequential pipeline end-to-end</li>
+            <li>Dual-ledger system</li>
+            <li>Conversation saving + embedding generation</li>
+          </ul>
+          <p style="color: var(--success); margin-top: 0.5rem;"><strong>Milestone:</strong> Full council working, <10s response time</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>Month 5-6: Memory Features</h3>
+          <ul>
+            <li>Memory Retrieval Dashboard</li>
+            <li>Semantic search with hybrid retrieval</li>
+            <li>Reranking implementation</li>
+            <li>Export functionality (.txt, .doc, .pdf)</li>
+            <li>Usage gauges</li>
+          </ul>
+          <p style="color: var(--success); margin-top: 0.5rem;"><strong>Milestone:</strong> Memory search <3s, export working</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>Month 7-8: Basic Community</h3>
+          <ul>
+            <li>Multi-user auth (2-3 users)</li>
+            <li>Project/thread create + membership (owner + members)</li>
+            <li>One shared thread per project, no subthreads</li>
+            <li>WebSocket chat, text only</li>
+            <li>Council runs in shared thread context</li>
+            <li>Living Thread views: Dialogue, Synthesis, Decisions, Questions (simple filters)</li>
+          </ul>
+          <p style="color: var(--success); margin-top: 0.5rem;"><strong>Milestone:</strong> "Two users coordinate in one shared thread. Each posts ≥3 messages. Council returns a synthesis visible to both in ≤10s."</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>Month 9-10: Testing & Polish</h3>
+          <ul>
+            <li>Performance optimization (database, caching)</li>
+            <li>Security audit and fixes</li>
+            <li>Load testing (5-15 concurrent users)</li>
+            <li>Onboarding tutorial</li>
+            <li>Beta tester recruitment</li>
+          </ul>
+          <p style="color: var(--success); margin-top: 0.5rem;"><strong>Milestone:</strong> System ready for beta, 3-5 testers recruited</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>Month 11-12: Beta & Validation</h3>
+          <ul>
+            <li>Active beta testing (5-15 users)</li>
+            <li>Iterative improvements based on feedback</li>
+            <li>Case study collection</li>
+            <li>Technical documentation</li>
+            <li>Phase 2 planning and funding preparation</li>
+          </ul>
+          <p style="color: var(--success); margin-top: 0.5rem;"><strong>Milestone:</strong> MVP validated, compelling narrative for $2-5M raise</p>
+        </div>
+      </div>
+
+      <div class="highlight" style="margin-top: 2rem;">
+        <h3>Phase 2: Platform Scaling (18-24 months, $2-5M)</h3>
+        <ul>
+          <li>AI-Agent Packs fully operational (PM, Scrum Master, Research, Marketing)</li>
+          <li>Complete migration to self-hosted LLMs (VPU virtual machines)</li>
+          <li>Two-track security (E2E encryption + self-hosted deployment)</li>
+          <li>Mobile applications (iOS, Android)</li>
+          <li>Enterprise features (SOC 2, HIPAA, SSO, audit logs)</li>
+          <li>Voice input/output</li>
+          <li>Custom council member configuration interface</li>
+        </ul>
+        
+        <h4 style="margin-top: 1.5rem;">Business Model Launch</h4>
+        <ul>
+          <li>Individual tier: $20/month</li>
+          <li>Team tier: $200-500/month (5-50 users)</li>
+          <li>Enterprise tier: Custom pricing (50+ users, SSO, compliance)</li>
+          <li>Self-hosted licensing: Annual subscription</li>
+        </ul>
+      </div>
+
+      <div class="highlight" style="margin-top: 1rem;">
+        <h3>Phase 3: Category Dominance (Year 3+)</h3>
+        <p>DYNAMO as Platform Standard for human+AI collaboration competing with Slack + Notion + Linear + GitHub combined. Thousands of certified Maestros, enterprise adoption, marketplace for AI-Agent Packs.</p>
+        <p style="margin-top: 0.5rem;"><strong>Long-Term Vision:</strong> Infrastructure for new paradigm where AI agents are first-class team members, humans are Maestros orchestrating AI, projects ship 10x faster at 10% cost. If executed: $1B+ category-creating platform.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Target Markets</h2>
+      
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>MVP Beta Testers (5-15 people)</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <h4>Profile</h4>
+          <ul>
+            <li>Value data privacy and security in AI interactions</li>
+            <li>Tech-savvy enough for web application usage (no installation required)</li>
+            <li>Interested in AI as developmental tool, not just productivity hack</li>
+            <li>Willing to test without payment during 10-12 month proof-of-concept phase</li>
+            <li>Able to provide qualitative feedback on transformational value</li>
+          </ul>
+
+          <h4>Current Behavior</h4>
+          <ul>
+            <li>Using ChatGPT/Claude but frustrated by memory fragmentation</li>
+            <li>Re-contextualizing AI repeatedly on same topics</li>
+            <li>Copying conversations to personal notes for continuity</li>
+            <li>Seeking alternatives to corporate AI platforms</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Personal Tier ($20/month)</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <ul>
+            <li>Knowledge workers requiring continuity in AI conversations</li>
+            <li>Thinkers valuing intellectual challenge over flattery</li>
+            <li>Users protecting data privacy and sovereignty</li>
+            <li>People tracking personal evolution and development</li>
+            <li>Writers, researchers, students with long-term projects</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Team Tier ($200-500/month)</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <ul>
+            <li>Startups building products with human+AI teams (Maestro methodology)</li>
+            <li>Research groups conducting long-term investigations</li>
+            <li>Design/creative teams coordinating complex projects</li>
+            <li>Small businesses managing operations with AI partners</li>
+            <li>Consulting teams coordinating client work</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Enterprise Tier (Custom Pricing)</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <ul>
+            <li>Companies adopting Maestro-Driven Development (10x productivity)</li>
+            <li>Departments requiring institutional memory across personnel changes</li>
+            <li>Teams needing sovereign AI without corporate dependencies</li>
+            <li>Organizations with compliance requirements (HIPAA, SOC 2)</li>
+            <li>Government agencies requiring air-gapped deployment</li>
+          </ul>
+
+          <h4>Underserved Communities (Phase 2 focus)</h4>
+          <ul>
+            <li><strong>Families:</strong> Household planning, educational support, care coordination, memory archive</li>
+            <li><strong>Friend Groups:</strong> Trip planning, shared learning, gift coordination, preference tracking</li>
+            <li><strong>Research Teams:</strong> Literature review, experimental design, data analysis, publication drafting</li>
+            <li><strong>Government Agencies:</strong> Policy development, cross-department coordination, institutional memory</li>
+            <li><strong>Learning Communities:</strong> Study groups with AI tutors, skill development, peer learning</li>
+            <li><strong>Military/Defense:</strong> Secure planning, mission coordination, classified information sovereignty</li>
+            <li><strong>Schools/Universities:</strong> Student data privacy, educational support, research collaboration</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="highlight" style="text-align: center; padding: 3rem;">
+      <h2 style="margin-bottom: 1rem;">Ready to Transform How You Work with AI?</h2>
+      <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
+        Join the beta waitlist and be among the first to experience sovereign AI collaboration.
+      </p>
+      <button class="cta-button" style="font-size: 1.1rem; padding: 1rem 2rem;" onclick="window.location.href='mailto:dynamoai.tech@gmail.com'">
+        Join Beta Waitlist
+      </button>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 DYNAMO. Building AI infrastructure for sovereign collaboration.</p>
-        </div>
-    </footer>
+  <footer>
+    <p>&copy; 2025 DYNAMO. Building the infrastructure for human+AI collaboration.</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">Version 3.0 | October 2, 2025 | Ready for PRD Development</p>
+  </footer>
 
-    <script>
-        function toggleSection(sectionId) {
-            const content = document.getElementById(sectionId + '-content');
-            content.classList.toggle('expanded');
-            
-            // Smooth scroll to section if expanding
-            if (content.classList.contains('expanded')) {
-                setTimeout(() => {
-                    content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
-            }
-        }
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
+  <script>
+    function toggleSection(header) {
+      const content = header.nextElementSibling;
+      const arrow = header.querySelector('.arrow');
+      
+      content.classList.toggle('open');
+      arrow.classList.toggle('open');
+    }
+  </script>
 </body>
 </html>

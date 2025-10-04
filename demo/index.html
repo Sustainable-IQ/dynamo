@@ -523,10 +523,11 @@ const recentThreadContent = {
     chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
   }
 
-  // Define seedChat function (was missing)
-//   function seedChat() {
- //    addAssistant('DYNAMO Council Interface');
- //  }
+  // Define seedChat function
+  function seedChat() {
+    // Initial chat can be empty or contain welcome message
+    // addAssistant('DYNAMO Council Interface');
+  }
 
   function renderGauges(){
     gauges.forEach(g => {
@@ -855,15 +856,24 @@ const recentThreadContent = {
     try {
       const KEY = 'dynamo:previewImport';
       const raw = sessionStorage.getItem(KEY);
+
+      console.log('Checking for memory import...', raw ? 'Found data' : 'No data');
+
       if (!raw) return;
 
       const payload = JSON.parse(raw);
+      console.log('Parsed payload:', payload);
+
       sessionStorage.removeItem(KEY);
 
-      if (payload?.type !== 'preview_import') return;
+      if (payload?.type !== 'preview_import') {
+        console.warn('Invalid payload type:', payload?.type);
+        return;
+      }
 
       // Display summary and context in chat
       const itemCount = payload.items?.length || 0;
+      console.log('Importing', itemCount, 'records with summary:', payload.summary);
 
       // Add imported summary to chat
       addAssistant(`<hr class="hr"><h3 style="color:#76aaea">Imported Memory Context</h3><p><strong>Summary:</strong> ${escapeHtml(payload.summary)}</p>`);

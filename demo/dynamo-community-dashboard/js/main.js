@@ -117,6 +117,14 @@ function initEventHandlers() {
     document.getElementById('helpBtn').addEventListener('click', () => {
         showHelpModal();
     });
+
+    // Go To DYNAMO Council Chat button
+    document.getElementById('showAllCommsBtn').addEventListener('click', () => {
+        console.log('Go To DYNAMO Council Chat clicked');
+        showToast('Opening Council Chat...');
+        // navigate to index.html
+        window.location.href = "../index.html";
+    });
 }
 
 // ===========================
@@ -557,6 +565,45 @@ function showHelpModal() {
     `;
     
     UI.showModal('helpModal');
+}
+
+// ===========================
+// UTILITY FUNCTIONS
+// ===========================
+
+function showToast(message, duration = 3000) {
+    // Create toast element if it doesn't exist
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(6, 182, 212, 0.95);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        `;
+        document.body.appendChild(toast);
+    }
+
+    // Set message and show
+    toast.textContent = message;
+    toast.style.opacity = '1';
+
+    // Hide after duration
+    setTimeout(() => {
+        toast.style.opacity = '0';
+    }, duration);
 }
 
 // ===========================

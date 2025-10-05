@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYNAMO Community Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="#" class="dynamo-logo">DYNAMO</a>
+            <div class="workspace-selector">
+                <select id="workspaceSelect">
+                    <option value="ws1">Default Workspace</option>
+                </select>
+            </div>
+            <div class="project-selector">
+                <select id="projectSelect">
+                    <option value="">Select Project...</option>
+                </select>
+            </div>
+        </div>
+        <div class="nav-center">
+            <h2 class="tagline">Community Intelligence Console</h2>
+        </div>
+        <div class="nav-right">
+            <button class="btn-icon" id="helpBtn" title="Help & Commands">?</button>
+            <button class="btn-icon" id="settingsBtn" title="Settings">⚙</button>
+            <button class="login-btn" id="userMenuBtn">User Menu</button>
+        </div>
+    </nav>
+
+    <!-- Main Application Grid -->
+    <div class="app-container">
+        <!-- LEFT PANEL: Navigation & Context -->
+        <aside class="left-panel panel">
+            <section class="panel-section">
+                <h3 class="section-title">Project Navigator</h3>
+                <div id="projectNav" class="project-nav">
+                    <p class="empty-state">Select a project from the top menu</p>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- ADD THIS NEW SECTION -->
+            <section class="panel-section">
+                <h3 class="section-title">Project Workflow</h3>
+                <div id="workflowTracker" class="workflow-tracker-container">
+                    <p class="empty-state">No workflow defined</p>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="panel-section">
+                <h3 class="section-title">Agent Pack Library</h3>
+                <div id="packLibrary" class="pack-library">
+                    <p class="empty-state">No packs available</p>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="panel-section">
+                <h3 class="section-title">Threads</h3>
+                <button class="btn btn-primary btn-small" id="newThreadBtn">+ New Thread</button>
+                <div id="threadList" class="thread-list">
+                    <p class="empty-state">No threads yet</p>
+                </div>
+            </section>
+        </aside>
+
+        <!-- CENTER PANEL: Living Thread Workspace -->
+        <main class="center-panel panel">
+            <div class="thread-header">
+                <div class="thread-info">
+                    <h2 id="threadTitle" class="thread-title">Select a thread</h2>
+                    <div id="threadMeta" class="thread-meta">
+                        <span class="meta-item">No thread selected</span>
+                    </div>
+                </div>
+                <div class="lens-tabs" role="tablist">
+                    <button class="tab active" data-lens="dialogue" role="tab">Dialogue</button>
+                    <button class="tab" data-lens="synthesis" role="tab">Synthesis</button>
+                    <button class="tab" data-lens="decisions" role="tab">Decisions</button>
+                    <button class="tab" data-lens="questions" role="tab">Questions</button>
+                </div>
+            </div>
+
+            <!-- Lens Views -->
+            <div class="lens-container">
+                <div id="lensDialogue" class="lens active" role="tabpanel">
+                    <p class="empty-state">No messages yet</p>
+                </div>
+                <div id="lensSynthesis" class="lens" role="tabpanel">
+                    <p class="empty-state">No synthesis available</p>
+                </div>
+                <div id="lensDecisions" class="lens" role="tabpanel">
+                    <p class="empty-state">No decisions yet</p>
+                </div>
+                <div id="lensQuestions" class="lens" role="tabpanel">
+                    <p class="empty-state">No questions yet</p>
+                </div>
+            </div>
+
+            <!-- Two-Lane Composer -->
+            <div class="composer-container">
+                <div class="composer-header">
+                    <div class="lane-toggle">
+                        <button class="lane-btn active" data-lane="human">Human Lane</button>
+                        <button class="lane-btn" data-lane="agent">Agent Lane</button>
+                    </div>
+                    <div class="composer-info">
+                        <span id="composerMode" class="mode-indicator">Human Communication</span>
+                    </div>
+                </div>
+
+                <!-- Human Lane -->
+                <div id="humanLane" class="composer-lane active">
+                    <textarea 
+                        id="humanInput" 
+                        placeholder="Type your message to the team..."
+                        rows="3"
+                    ></textarea>
+                    <div class="composer-actions">
+                        <button class="btn btn-primary" id="sendHumanBtn">Send Message</button>
+                    </div>
+                </div>
+
+                <!-- Agent Lane -->
+                <div id="agentLane" class="composer-lane">
+                    <div class="command-input-container">
+                        <input 
+                            type="text" 
+                            id="commandInput" 
+                            placeholder="Type / to see available commands..."
+                            autocomplete="off"
+                        />
+                        <div id="commandAutocomplete" class="command-autocomplete hidden"></div>
+                    </div>
+                    <div id="commandForm" class="command-form hidden">
+                        <!-- Dynamic command form will appear here -->
+                    </div>
+                    <div class="composer-actions">
+                        <button class="btn btn-secondary" id="cancelCommandBtn">Cancel</button>
+                        <button class="btn btn-primary" id="submitCommandBtn" disabled>Submit Command</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL: Artefacts & Audit -->
+        <aside class="right-panel panel">
+            <section class="panel-section">
+                <h3 class="section-title">Active Agent Pack</h3>
+                <div id="activePackInfo" class="active-pack-info">
+                    <p class="empty-state">No pack active</p>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="panel-section">
+                <h3 class="section-title">Artefacts</h3>
+                <div id="artefactsList" class="artefacts-list">
+                    <p class="empty-state">No artefacts yet</p>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="panel-section collapsible">
+                <div class="section-header" id="ledgerHeader">
+                    <h3 class="section-title">Action Ledger</h3>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div id="actionLedger" class="action-ledger">
+                    <p class="empty-state">No actions logged</p>
+                </div>
+            </section>
+        </aside>
+    </div>
+
+    <!-- Modals (initially hidden) -->
+    <div id="modalOverlay" class="modal-overlay hidden"></div>
+    
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal hidden">
+        <div class="modal-header">
+            <h2>Command Reference</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Help content will load here...</p>
+        </div>
+    </div>
+
+    <!-- Audit Trail Modal -->
+    <div id="auditModal" class="modal hidden">
+        <div class="modal-header">
+            <h2>Audit Trail</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body" id="auditModalBody">
+            <p>Audit details will load here...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/mockData.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

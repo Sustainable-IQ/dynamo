@@ -125,6 +125,16 @@ function initEventHandlers() {
         // navigate to index.html
         window.location.href = "../index.html";
     });
+
+    // Create project button
+    document.getElementById('createProjectBtn').addEventListener('click', () => {
+        showCreateProjectModal();
+    });
+
+    // Create project next button
+    document.getElementById('createProjectNextBtn').addEventListener('click', () => {
+        createNewProject();
+    });
 }
 
 // ===========================
@@ -518,6 +528,73 @@ function generateSynthesis(threadId) {
     if (AppState.currentLens === CONFIG.LENSES.SYNTHESIS) {
         UI.renderSynthesisLens();
     }
+}
+
+// ===========================
+// PROJECT CREATION
+// ===========================
+
+function showCreateProjectModal() {
+    // Clear previous inputs
+    document.getElementById('projectNameInput').value = '';
+    document.querySelectorAll('input[name="projectUser"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    UI.showModal('createProjectModal');
+}
+
+function createNewProject() {
+    const projectName = document.getElementById('projectNameInput').value.trim();
+    const selectedUsers = Array.from(document.querySelectorAll('input[name="projectUser"]:checked'))
+        .map(checkbox => ({
+            userId: checkbox.value,
+            role: CONFIG.ROLES.OWNER // Default role
+        }));
+
+    // Validation
+    if (!projectName) {
+        alert('Please enter a project name');
+        return;
+    }
+
+    if (selectedUsers.length === 0) {
+        alert('Please select at least one team member');
+        return;
+    }
+
+    // Create new project
+    const newProject = {
+        id: generateId('proj'),
+        workspaceId: 'ws1',
+        name: projectName,
+        description: `Project created by ${AppState.currentUser.name}`,
+        created: getTimestamp(),
+        installedPacks: [],
+        members: selectedUsers,
+        workflow: [],
+        currentPhaseIndex: 0
+    };
+
+    // Add to mock projects
+    MOCK_PROJECTS.push(newProject);
+
+    // Log to ledger
+    AppState.addLedgerEntry({
+        action: 'project_created',
+        details: `Created project "${projectName}" with ${selectedUsers.length} members`,
+        projectId: newProject.id,
+        userId: AppState.currentUser.id
+    });
+
+    // Update project selector dropdown
+    UI.renderProjectSelector();
+
+    // Close modal
+    UI.hideModal();
+
+    // Show success message
+    showToast(`Project "${projectName}" created successfully!`);
 }
 
 // ===========================

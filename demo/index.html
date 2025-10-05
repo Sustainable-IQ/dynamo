@@ -261,6 +261,7 @@
       <div id="memoryList" style="display:flex;flex-direction:column;gap:10px"></div>
     </div>
     <button class="btn primary" id="addToChatBtn">Add to Chat</button>
+    <button class="btn" id="deleteChatBtn" style="background:transparent;border:1px solid rgba(255,100,100,0.3);color:rgba(255,150,150,0.7);width:fit-content;margin-top:8px;">Delete Chat</button>
     <div style="flex-grow:1;"></div>
     <div class="hr"></div>
     <div>
@@ -790,6 +791,29 @@ const recentThreadContent = {
     showToast(`LLM switched to ${selectedLLM}`);
   });
   document.getElementById('addToChatBtn').addEventListener('click', addMemoryToChat);
+  document.getElementById('deleteChatBtn').addEventListener('click', ()=>{
+    if(selectedMemoryIndex === -1) {
+      alert("Please select a Memory Thread in the boxes above before Deleting a Chat");
+      return;
+    }
+
+    const selectedMemory = memory[selectedMemoryIndex];
+    const deletedTitle = selectedMemory.title;
+
+    // Remove the memory item from the array
+    memory.splice(selectedMemoryIndex, 1);
+
+    // Clear selection
+    selectedMemoryIndex = -1;
+
+    // Re-render the memory list
+    renderMemory();
+    updateAddToChatButton();
+
+    // Log the action
+    log(`Deleted memory "${deletedTitle}"`);
+    showToast(`Memory thread deleted`);
+  });
   document.getElementById('bypassToggle').addEventListener('change', (e)=>{
     const isChecked = e.target.checked;
     log(`Bypass External LLM ${isChecked ? 'enabled' : 'disabled'}`);

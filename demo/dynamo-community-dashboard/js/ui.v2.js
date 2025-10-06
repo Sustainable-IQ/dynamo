@@ -58,12 +58,29 @@ const UI = {
                 <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
                     ${this.escapeHtml(project.description)}
                 </p>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
                     ${project.installedPacks.map(packId => {
                         const pack = getPackById(packId);
                         return `<span class="chip chip-small">${pack ? pack.name : packId}</span>`;
                     }).join('')}
                 </div>
+                ${project.members && project.members.length > 0 ? `
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-subtle);">
+                        <h5 style="font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">TEAM MEMBERS</h5>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            ${project.members.map(member => {
+                                const user = AppState.users.find(u => u.userId === member.userId);
+                                return `
+                                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                                        <span style="color: var(--accent-purple);">●</span>
+                                        <span style="color: var(--text-primary);">${user ? this.escapeHtml(user.name) : member.userId}</span>
+                                        <span style="color: var(--text-muted); font-size: 10px;">(${member.role})</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                ` : ''}
             </div>
         `;
     },

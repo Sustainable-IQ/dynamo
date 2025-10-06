@@ -27,6 +27,8 @@
   }
   .login-btn{background:transparent;border:1px solid rgba(255,255,255,0.2);padding:8px 16px;border-radius:6px;color:#e6eef6;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.3s;}
   .login-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);}
+  .security-btn{background:transparent;border:1px solid rgba(255,100,100,0.3);padding:8px 16px;border-radius:6px;color:#ff2f2f;;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.3s;width:fit-content;}
+  .security-btn:hover{background:rgba(255,100,100,0.1);border-color:rgba(255,100,100,0.4);}
   .app{
     display:grid;
     grid-template-columns: 300px 1.8fr 300px; /* give the center more space */
@@ -174,7 +176,10 @@
 <div class="top-nav">
   <a href="https://dynamo-ai.tech/" class="dynamo-logo" target="_blank">DYNAMO - Mock Demo</a>
   <div class="tagline">The Dynamic AI Memory Organizer Platform</div>
-  <button class="login-btn" id="loginBtn">LOG IN</button>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <button class="security-btn" id="securityBtn">Security</button>
+    <button class="login-btn" id="loginBtn">LOG IN</button>
+  </div>
 </div>
 
 <div class="app">
@@ -399,6 +404,43 @@
     <div class="modal-buttons">
       <button class="btn modal-send" id="modalSendBtn">Send</button>
       <button class="btn modal-cancel" id="modalCancelBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Security Modal -->
+<div class="modal-overlay" id="securityModal" style="display:none;">
+  <div class="modal-content" style="max-width:800px;">
+    <h3 style="color:#ff2f2f;margin-bottom:20px;">CURRENT SECURITY DEPLOYED</h3>
+
+    <h4 style="color:#eef2ff;margin:16px 0 12px 0;">MVP Security Model (Track 0)</h4>
+
+    <h5 style="color:#eef2ff;margin:16px 0 8px 0;">Encryption</h5>
+
+    <div style="margin-bottom:16px;">
+      <strong style="color:#76aaea;">At Rest:</strong>
+      <ul style="margin:8px 0;padding-left:20px;color:#e6eef6;">
+        <li style="margin-bottom:6px;">Full-disk encryption (LUKS) for PostgreSQL and Qdrant storage volumes</li>
+        <li style="margin-bottom:6px;">AES-256 encryption for all stored data</li>
+        <li style="margin-bottom:6px;">Encrypted backups to S3-compatible storage</li>
+      </ul>
+      <p style="margin:8px 0;color:var(--muted);font-size:13px;"><strong>What this protects:</strong> Physical theft of hard drives, unauthorized server access, unskilled attacks</p>
+      <p style="margin:8px 0;color:var(--muted);font-size:13px;"><strong>What this means:</strong> Data on disk is scrambled gibberish without decryption keys</p>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <strong style="color:#76aaea;">In Transit:</strong>
+      <ul style="margin:8px 0;padding-left:20px;color:#e6eef6;">
+        <li style="margin-bottom:6px;">TLS 1.3 for all client-server communications</li>
+        <li style="margin-bottom:6px;">TLS 1.3 for all server-LLM communications</li>
+        <li style="margin-bottom:6px;">VPN or SSH tunnel for GPU VM to VPS communication</li>
+      </ul>
+      <p style="margin:8px 0;color:var(--muted);font-size:13px;"><strong>What this protects:</strong> Network interception, man-in-the-middle attacks, WiFi sniffing</p>
+      <p style="margin:8px 0;color:var(--muted);font-size:13px;"><strong>What this means:</strong> Data flowing over networks is encrypted and unreadable to interceptors</p>
+    </div>
+
+    <div class="modal-buttons">
+      <button class="btn modal-cancel" id="securityCloseBtn">Close</button>
     </div>
   </div>
 </div>
@@ -874,6 +916,25 @@ const recentThreadContent = {
   document.getElementById('threadNameInput').addEventListener('keypress', (e)=>{
     if(e.key === 'Enter') {
       document.getElementById('modalSendBtn').click();
+    }
+  });
+
+  // Security modal handlers
+  document.getElementById('securityBtn').addEventListener('click', ()=>{
+    document.getElementById('securityModal').style.display = 'flex';
+    log('Security information opened');
+  });
+
+  document.getElementById('securityCloseBtn').addEventListener('click', ()=>{
+    document.getElementById('securityModal').style.display = 'none';
+    log('Security modal closed');
+  });
+
+  // Close security modal when clicking outside
+  document.getElementById('securityModal').addEventListener('click', (e)=>{
+    if(e.target.id === 'securityModal') {
+      document.getElementById('securityModal').style.display = 'none';
+      log('Security modal closed');
     }
   });
   document.getElementById('showAllCommsBtn').addEventListener('click', ()=>{

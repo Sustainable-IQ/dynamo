@@ -49,6 +49,7 @@
   .btn.primary:hover{transform:translateY(-1px); box-shadow:0 10px 24px rgba(124,58,237,0.35);}
   .btn.secondary{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15);}
   .btn.large{padding:14px 24px; font-size:16px;}
+  #bulkDelete{color:#ff6b6b;}
   .link-btn{background:none; border:none; color:var(--accent); cursor:pointer; text-decoration:underline; font-size:12px; padding:2px 4px;}
   .link-btn:hover{color:var(--accent-2);}
 
@@ -595,6 +596,7 @@
           <button class="btn secondary" id="bulkPreview">Add to Details & Actions</button>
           <button class="btn secondary" id="bulkExport">Export</button>
           <button class="btn secondary" id="bulkCopy">Copy as Markdown</button>
+          <button class="btn secondary" id="bulkDelete">Delete</button>
         </div>
       </div>
 
@@ -1955,6 +1957,7 @@ function initializeBulkActions() {
   const bulkPreviewBtn = document.getElementById('bulkPreview');
   const bulkExportBtn = document.getElementById('bulkExport');
   const bulkCopyBtn = document.getElementById('bulkCopy');
+  const bulkDeleteBtn = document.getElementById('bulkDelete');
 
   selectAllPageBtn.addEventListener('click', () => {
     appState.ui.currentResults.forEach(result => {
@@ -2010,6 +2013,33 @@ bulkPreviewBtn.addEventListener('click', () => {
       return;
     }
     copySelectedAsMarkdown();
+  });
+
+  bulkDeleteBtn.addEventListener('click', () => {
+    const selectedCount = appState.selection.selectedRecordIds.length;
+    if (selectedCount === 0) {
+      showToast('No items selected');
+      return;
+    }
+
+    // Confirmation dialog
+    if (!confirm(`Are you sure you want to delete ${selectedCount} selected item${selectedCount > 1 ? 's' : ''}?`)) {
+      return;
+    }
+
+    // Remove selected items from currentResults
+    const selectedIds = [...appState.selection.selectedRecordIds];
+    appState.ui.currentResults = appState.ui.currentResults.filter(result => {
+      const recordId = `${result.ledger.ledgerId}_${result.exchange.exchangeId}`;
+      return !selectedIds.includes(recordId);
+    });
+
+    // Clear selection
+    appState.selection.selectedRecordIds = [];
+
+    // Re-render results
+    renderResults(appState.ui.currentResults);
+    updateBulkBar();
   });
 }
 

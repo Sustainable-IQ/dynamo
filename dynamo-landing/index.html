@@ -904,76 +904,338 @@ Browser → VPS (generate embedding, search Qdrant, rerank, <1s) → Browser
 
     <section class="section" id="security">
       <h2>Security Architecture</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Transparent security model with clear upgrade paths to sovereignty</p>
       
-      <div class="two-column">
-        <div class="card">
-          <h3>MVP Security</h3>
-          
+      <div class="highlight" style="margin-bottom: 2rem;">
+        <span class="badge">Security Philosophy</span>
+        <h3>Transparency Over Theater</h3>
+        <p>DYNAMO's security approach prioritizes honest disclosure over marketing promises. Each track serves different user needs with clear trade-offs.</p>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>MVP Security Model (Track 0)</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
           <h4>Encryption</h4>
+          <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>At Rest:</strong></p>
           <ul>
-            <li><strong>At Rest:</strong> Full-disk encryption (LUKS) for PostgreSQL and Qdrant storage volumes</li>
-            <li><strong>In Transit:</strong> TLS 1.3 for all client-server and server-LLM communications</li>
-            <li><strong>Performance Impact:</strong> <100ms overhead, imperceptible to users</li>
+            <li>Full-disk encryption (LUKS) for PostgreSQL and Qdrant storage volumes</li>
+            <li>AES-256 encryption for all stored data</li>
+            <li>Encrypted backups to S3-compatible storage</li>
+            <li><strong>What this protects:</strong> Physical theft of hard drives, unauthorized server access, unskilled attacks</li>
+            <li><strong>What this means:</strong> Data on disk is scrambled gibberish without decryption keys</li>
           </ul>
-          
-          <h4>Access Controls</h4>
+
+          <p style="color: var(--text-muted); margin: 1rem 0 0.75rem 0;"><strong>In Transit:</strong></p>
           <ul>
-            <li>Role-based access for platform operators (read-only, admin, developer)</li>
-            <li>Principle of least privilege for team members</li>
-            <li>Multi-factor authentication for all admin accounts</li>
-          </ul>
-          
-          <h4>Audit Logging</h4>
-          <ul>
-            <li>Immutable audit trail of all database access</li>
-            <li>Logs stored separately from primary database</li>
-            <li>Tracks: who accessed what data, when, from where, why (ticket/incident reference)</li>
-            <li>90-day retention for MVP, 7-year retention for enterprise (Phase 2)</li>
-          </ul>
-          
-          <h4>Data Governance</h4>
-          <ul>
-            <li>Users can export complete conversation history (JSON, Markdown)</li>
-            <li>Users can delete all data (hard delete, not soft)</li>
-            <li>Clear Terms of Service regarding platform operator access rights</li>
-            <li>No data used for model training without explicit opt-in</li>
+            <li>TLS 1.3 for all client-server communications</li>
+            <li>TLS 1.3 for all server-LLM communications</li>
+            <li>VPN or SSH tunnel for GPU VM to VPS communication</li>
+            <li><strong>What this protects:</strong> Network interception, man-in-the-middle attacks, WiFi sniffing</li>
+            <li><strong>What this means:</strong> Data flowing over networks is encrypted and unreadable to interceptors</li>
           </ul>
 
           <div class="callout" style="margin-top: 1rem;">
-            <p><strong>MVP Trust Model:</strong> Platform operators maintain operational access for system administration, debugging, and user support. All access is logged and auditable.</p>
+            <p><strong>Performance Impact:</strong> Less than 100ms total overhead, imperceptible to users during 8-second council deliberations.</p>
+          </div>
+
+          <h4>Access Controls</h4>
+          <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>Platform Team:</strong></p>
+          <ul>
+            <li>Role-based access for platform operators (read-only, admin, developer)</li>
+            <li>Principle of least privilege for all team members</li>
+            <li>Multi-factor authentication for all admin accounts</li>
+            <li>IP whitelist restrictions for administrative access</li>
+          </ul>
+
+          <p style="color: var(--text-muted); margin: 1rem 0 0.75rem 0;"><strong>User Authentication:</strong></p>
+          <ul>
+            <li>JWT tokens with 15-minute expiry plus refresh tokens</li>
+            <li>Secure password hashing (bcrypt)</li>
+            <li>Rate limiting: 60 queries per hour per user (burst to 100)</li>
+            <li>Session management with Redis</li>
+          </ul>
+
+          <p style="color: var(--text-muted); margin: 1rem 0 0.75rem 0;"><strong>Why operational access is necessary:</strong></p>
+          <ul>
+            <li>Debugging user-reported issues requires examining actual conversations</li>
+            <li>Performance optimization needs analysis of real query patterns</li>
+            <li>Data recovery from backups requires access to restore specific conversations</li>
+            <li>Abuse detection and moderation require reviewing flagged content</li>
+            <li>Quality assurance for council responses requires inspecting agent outputs</li>
+          </ul>
+
+          <h4>Audit Logging</h4>
+          <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>What is logged:</strong></p>
+          <ul>
+            <li>Every database access with full metadata</li>
+            <li>Every API call with user ID, message ID, agent ID, provider, model, cost, latency</li>
+            <li>Every administrative action with operator ID, timestamp, justification</li>
+            <li>Every suspicious query pattern flagged for review</li>
+          </ul>
+
+          <p style="color: var(--text-muted); margin: 1rem 0 0.75rem 0;"><strong>Audit trail includes:</strong></p>
+          <ul>
+            <li>Who accessed what data</li>
+            <li>When the access occurred</li>
+            <li>From where (IP address, session ID)</li>
+            <li>Why (support ticket reference, incident number)</li>
+            <li>What actions were taken</li>
+          </ul>
+
+          <p style="color: var(--text-muted); margin: 1rem 0 0.75rem 0;"><strong>Storage and retention:</strong></p>
+          <ul>
+            <li>Immutable logs stored separately from primary database</li>
+            <li>90-day retention for MVP</li>
+            <li>7-year retention for enterprise (Phase 2)</li>
+            <li>Available for user inspection on request</li>
+          </ul>
+
+          <h4>Data Governance</h4>
+          <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>User Rights:</strong></p>
+          <ul>
+            <li>Export complete conversation history (JSON, Markdown, CSV formats)</li>
+            <li>Hard delete all data from all systems (PostgreSQL, Qdrant, backups)</li>
+            <li>Granular consent for sharing memories with community</li>
+            <li>Data portability between DYNAMO instances</li>
+          </ul>
+
+          <p style="color: var(--text-muted); margin: 1rem 0 0.75rem 0;"><strong>Platform Commitments:</strong></p>
+          <ul>
+            <li>No data used for model training without explicit opt-in consent</li>
+            <li>Clear Terms of Service regarding platform operator access rights and limitations</li>
+            <li>API providers (Together.ai/Fireworks.ai) contractually prohibited from retaining conversation data</li>
+            <li>No telemetry or analytics without explicit user consent</li>
+            <li>Users can request and review all audit logs of their data access</li>
+          </ul>
+
+          <h4>Attack Surface & Defenses</h4>
+          <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>Threat Vectors:</strong></p>
+          <ul>
+            <li>Prompt injection attempts to extract other users' data</li>
+            <li>Jailbreaking to bypass safety guardrails</li>
+            <li>Memory poisoning via malicious embeddings</li>
+            <li>Multi-agent manipulation to reveal system prompts</li>
+            <li>Community thread cross-contamination</li>
+          </ul>
+
+          <p style="color: var(--text-muted); margin: 1rem 0 0.75rem 0;"><strong>MVP Protections:</strong></p>
+
+          <p style="color: var(--text-muted); font-style: italic; margin: 0.5rem 0;">Context Isolation:</p>
+          <ul>
+            <li>Strict user ID filtering on all memory retrieval operations</li>
+            <li>Agent prompts include immutable system instruction boundaries</li>
+            <li>No cross-user data access in any code path</li>
+            <li>Community threads enforce project membership verification</li>
+          </ul>
+
+          <p style="color: var(--text-muted); font-style: italic; margin: 0.5rem 0;">Input Validation:</p>
+          <ul>
+            <li>SQL injection prevention through parameterized queries only</li>
+            <li>Input sanitization on all API endpoints using Pydantic models</li>
+            <li>Suspicious pattern detection and audit logging</li>
+            <li>Automated alerts on repeated attack attempts</li>
+          </ul>
+
+          <p style="color: var(--text-muted); font-style: italic; margin: 0.5rem 0;">Output Filtering:</p>
+          <ul>
+            <li>Agent responses validated to prevent system prompt exposure</li>
+            <li>Cross-user data leakage detection before returning responses</li>
+            <li>Dangerous code execution pattern blocking</li>
+            <li>Manual review of flagged interactions</li>
+          </ul>
+
+          <p style="color: var(--text-muted); font-style: italic; margin: 0.5rem 0;">Network Security:</p>
+          <ul>
+            <li>Firewall rules expose only ports 80, 443, 22 (SSH)</li>
+            <li>Fail2ban for brute-force protection</li>
+            <li>No plaintext secrets (environment variables plus Vault)</li>
+            <li>Regular security audits</li>
+          </ul>
+
+          <div class="highlight" style="margin-top: 1.5rem;">
+            <span class="badge">MVP Trust Model</span>
+            <h3>Honest Disclosure</h3>
+            <p>Platform operators maintain operational access to all data for system administration, debugging, and user support. This is necessary for resolving technical issues, optimizing performance, recovering lost data, investigating abuse, and ensuring AI council quality.</p>
+            <p style="margin-top: 0.75rem;"><strong>All operational access is:</strong> Logged with full audit trail, justified with ticket or incident references, limited to minimum necessary personnel, and subject to internal review and accountability.</p>
+            <p style="margin-top: 0.75rem;"><strong>This is a "trust us" model:</strong> Platform operators technically can access user data, but commit not to without operational necessity, and maintain transparent audit logs proving compliance.</p>
+          </div>
+
+          <div class="two-column" style="margin-top: 1.5rem;">
+            <div>
+              <h4>Who this works for:</h4>
+              <ul>
+                <li>Individual users and small teams prioritizing convenience and functionality</li>
+                <li>Beta testers evaluating AI council capabilities</li>
+                <li>Educational institutions meeting basic FERPA requirements</li>
+                <li>Startups and small businesses with standard privacy needs</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Who needs Phase 2 security:</h4>
+              <ul>
+                <li>Healthcare organizations (HIPAA compliance requires demonstrating inability to access PHI)</li>
+                <li>Military and defense (air-gapped deployment requirements)</li>
+                <li>Government agencies (data sovereignty mandates)</li>
+                <li>Financial institutions (regulatory compliance and audit requirements)</li>
+              </ul>
+            </div>
           </div>
         </div>
-        
-        <div class="card">
-          <h3>Phase 2: Two-Track Security</h3>
-          
-          <h4>Track 1: Enhanced Hosted Service</h4>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">For teams prioritizing convenience</p>
-          <ul>
-            <li><strong>End-to-End Encryption:</strong> Client-side encryption with user-controlled keys (platform operators cannot decrypt user data)</li>
-            <li><strong>Zero-Knowledge Architecture:</strong> Browser-based encryption/decryption using Web Crypto API</li>
-            <li><strong>Compliance Certifications:</strong> SOC 2 Type II, HIPAA-ready deployment</li>
-            <li><strong>Advanced Audit:</strong> Real-time security monitoring, intrusion detection</li>
-            <li><strong>Data Residency Options:</strong> EU, US, or region-specific hosting</li>
-          </ul>
-          
-          <h4>Track 2: Self-Hosted Deployment</h4>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">For organizations requiring complete sovereignty</p>
-          <ul>
-            <li><strong>On-Premises Installation:</strong> DYNAMO runs entirely on customer infrastructure</li>
-            <li><strong>Air-Gapped Capability:</strong> No external network dependencies</li>
-            <li><strong>Customer-Managed Keys:</strong> Organization controls all encryption keys</li>
-            <li><strong>Zero Platform Access:</strong> DYNAMO operators have no data access</li>
-            <li><strong>Bring Your Own LLM:</strong> Self-hosted models on customer GPUs</li>
-          </ul>
-          
-          <div class="callout" style="margin-top: 1rem;">
-            <p><strong>Target Markets by Track:</strong></p>
-            <p style="margin-top: 0.5rem;">Track 1: Healthcare, education, regulated industries needing compliance + convenience</p>
-            <p style="margin-top: 0.5rem;">Track 2: Military, government, intelligence agencies requiring absolute data sovereignty</p>
-            <p style="margin-top: 0.5rem;"><strong>Both tracks eliminate "trust us" model</strong> - either through cryptographic guarantees (Track 1) or complete infrastructure control (Track 2).</p>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header" onclick="toggleSection(this)">
+          <h3>Phase 2: Three-Track Security Strategy</h3>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="expandable-content">
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Different sovereignty requirements demand different approaches. Phase 2 offers three distinct security tracks.</p>
+
+          <div class="card" style="margin-bottom: 1.5rem;">
+            <span class="badge">Track 1</span>
+            <h3>Enhanced Hosted Service</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;"><em>For teams prioritizing compliance with managed convenience</em></p>
+
+            <h4>End-to-End Encryption</h4>
+            <ul>
+              <li>Client-side encryption with user-controlled keys</li>
+              <li>Browser-based encryption/decryption using Web Crypto API</li>
+              <li>Zero-knowledge architecture—platform operators literally cannot decrypt conversation content</li>
+              <li>User password derives encryption key (never transmitted to server)</li>
+            </ul>
+
+            <div class="callout" style="margin: 1rem 0;">
+              <p><strong>Trade-off:</strong> If user loses password, data is permanently unrecoverable. No backdoor means no password reset with data access.</p>
+            </div>
+
+            <h4>Compliance Certifications</h4>
+            <ul>
+              <li>SOC 2 Type II certification</li>
+              <li>HIPAA-ready deployment with Business Associate Agreements</li>
+              <li>GDPR compliance with data residency options</li>
+              <li>Regular third-party security audits</li>
+            </ul>
+
+            <h4>Advanced Capabilities</h4>
+            <ul>
+              <li>Real-time security monitoring and intrusion detection</li>
+              <li>Data residency options (EU, US, Asia-Pacific regional hosting)</li>
+              <li>Dedicated guardrail LLM for prompt injection detection</li>
+              <li>Integration with commercial prompt security APIs</li>
+              <li>Automated attack response and account protection</li>
+            </ul>
+
+            <h4>Target Markets</h4>
+            <ul>
+              <li>Healthcare systems requiring HIPAA compliance</li>
+              <li>Educational institutions with student privacy mandates</li>
+              <li>Regulated industries needing compliance certification</li>
+              <li>European organizations with strict GDPR interpretation</li>
+              <li>Financial services with audit requirements</li>
+            </ul>
+
+            <p style="margin-top: 1rem;"><strong>Pricing:</strong> Premium tier at $500-2,000/month for teams, enterprise custom pricing</p>
+          </div>
+
+          <div class="card" style="margin-bottom: 1.5rem;">
+            <span class="badge">Track 1.5</span>
+            <h3>Dedicated Hosted Instance</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;"><em>For organizations requiring isolation without full infrastructure ownership</em></p>
+
+            <h4>Single-Tenant Deployment</h4>
+            <ul>
+              <li>Dedicated VPS and GPU VM exclusively for one organization</li>
+              <li>No multi-tenant data mixing or cross-contamination</li>
+              <li>Dedicated encryption keys per instance</li>
+              <li>Can be air-gapped from public internet (VPN-only access)</li>
+            </ul>
+
+            <h4>Security Advantages</h4>
+            <ul>
+              <li>Eliminates cross-organization prompt injection risks</li>
+              <li>No accidental data leakage to other organizations</li>
+              <li>Customer can require deletion of operator admin access post-deployment</li>
+              <li>Independent security audits of isolated instance</li>
+              <li>Custom compliance configurations per organization</li>
+            </ul>
+
+            <h4>Managed Service Benefits</h4>
+            <ul>
+              <li>DYNAMO team handles maintenance, updates, scaling</li>
+              <li>Guaranteed uptime and support SLAs</li>
+              <li>Lower technical burden than Track 2 self-hosting</li>
+              <li>Faster deployment than building internal infrastructure</li>
+            </ul>
+
+            <h4>Target Markets</h4>
+            <ul>
+              <li>Mid-size organizations (50-500 employees)</li>
+              <li>Regulated industries requiring isolation but not full control</li>
+              <li>Companies with compliance requirements but limited DevOps capacity</li>
+              <li>International organizations requiring specific data residency</li>
+              <li>Government agencies with moderate security requirements</li>
+            </ul>
+
+            <p style="margin-top: 1rem;"><strong>Pricing:</strong> $2,000-5,000/month for dedicated managed instance</p>
+          </div>
+
+          <div class="card">
+            <span class="badge">Track 2</span>
+            <h3>Self-Hosted Deployment</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;"><em>For organizations requiring absolute data sovereignty</em></p>
+
+            <h4>Complete Infrastructure Control</h4>
+            <ul>
+              <li>DYNAMO software installed entirely on customer's servers</li>
+              <li>Customer owns and controls all hardware</li>
+              <li>Air-gapped capability with zero external network dependencies</li>
+              <li>Customer-managed encryption keys—DYNAMO operators have zero access</li>
+              <li>Bring Your Own LLM—self-hosted models on customer GPUs</li>
+            </ul>
+
+            <h4>What DYNAMO Provides</h4>
+            <ul>
+              <li>Software licensing and installation packages</li>
+              <li>Technical documentation and deployment guides</li>
+              <li>Setup assistance and training</li>
+              <li>Software updates and security patches (customer controls when to apply)</li>
+              <li>Optional ongoing support contracts</li>
+            </ul>
+
+            <h4>What Customer Controls</h4>
+            <ul>
+              <li>All hardware, networking, and infrastructure</li>
+              <li>All data storage and backups</li>
+              <li>All encryption keys and certificates</li>
+              <li>All user authentication and access policies</li>
+              <li>All compliance and audit procedures</li>
+            </ul>
+
+            <h4>Target Markets</h4>
+            <ul>
+              <li>Military and defense (SIPRNET/JWICS deployment)</li>
+              <li>Intelligence agencies (classified information sovereignty)</li>
+              <li>Large enterprises with mature IT operations</li>
+              <li>Government agencies with air-gap requirements</li>
+              <li>Healthcare systems with on-premises mandates</li>
+              <li>Financial institutions requiring complete control</li>
+            </ul>
+
+            <p style="margin-top: 1rem;"><strong>Pricing:</strong> $50,000-500,000 one-time deployment cost plus annual software licensing and support contracts</p>
           </div>
         </div>
+      </div>
+
+      <div class="highlight" style="margin-top: 2rem;">
+        <h3>Security Philosophy Summary</h3>
+        <p><strong>MVP (Track 0):</strong> We acknowledge operational access exists, commit to transparent audit logging, and serve users who prioritize functionality over absolute privacy.</p>
+        <p style="margin-top: 0.5rem;"><strong>Phase 2 Track 1:</strong> We eliminate our ability to access data through cryptographic guarantees, accepting the trade-off of unrecoverable data if users lose passwords.</p>
+        <p style="margin-top: 0.5rem;"><strong>Phase 2 Track 1.5:</strong> We provide isolation and managed sovereignty, balancing security with operational convenience.</p>
+        <p style="margin-top: 0.5rem;"><strong>Phase 2 Track 2:</strong> We provide software and exit entirely—customers achieve complete sovereignty by controlling infrastructure.</p>
+        <p style="margin-top: 1rem; font-style: italic;">Each track serves different user needs. We refuse to oversell MVP security to customers who need Phase 2 capabilities, and we design clear upgrade paths as organizational requirements evolve.</p>
       </div>
     </section>
 

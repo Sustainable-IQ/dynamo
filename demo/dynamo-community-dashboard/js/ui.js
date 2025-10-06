@@ -5,20 +5,39 @@
 
 const UI = {
     // ===========================
-    // PROJECT & NAVIGATION
+    // WORKSPACE & PROJECT & NAVIGATION
     // ===========================
-    
+
+    renderWorkspaceSelector() {
+        const select = document.getElementById('workspaceSelect');
+        select.innerHTML = '<option value="">Select a Workspace...</option>';
+
+        AppState.workspaces.forEach(workspace => {
+            const option = document.createElement('option');
+            option.value = workspace.id;
+            option.textContent = workspace.name;
+            select.appendChild(option);
+        });
+
+        if (AppState.currentWorkspace) {
+            select.value = AppState.currentWorkspace;
+        }
+    },
+
     renderProjectSelector() {
         const select = document.getElementById('projectSelect');
         select.innerHTML = '<option value="">Select Project...</option>';
-        
-        AppState.projects.forEach(project => {
+
+        // Only show projects from selected workspace
+        const projects = AppState.getWorkspaceProjects();
+
+        projects.forEach(project => {
             const option = document.createElement('option');
             option.value = project.id;
             option.textContent = project.name;
             select.appendChild(option);
         });
-        
+
         if (AppState.currentProject) {
             select.value = AppState.currentProject;
         }
@@ -662,9 +681,37 @@ const UI = {
     closeQuestion(questionId) {
         const thread = AppState.getCurrentThread();
         if (!thread) return;
-        
+
         AppState.updateQuestionStatus(thread.id, questionId, 'closed');
         this.renderQuestionsLens();
+    },
+
+    // ===========================
+    // USER MANAGEMENT
+    // ===========================
+
+    renderUserCheckboxes(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = AppState.users.map(user => `
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-primary);">
+                <input type="checkbox" name="workspaceUser" value="${user.userId}" style="width: 18px; height: 18px; cursor: pointer;">
+                <span>${this.escapeHtml(user.name)}</span>
+            </label>
+        `).join('');
+    },
+
+    updateProjectUserCheckboxes() {
+        const container = document.getElementById('userCheckboxList');
+        if (!container) return;
+
+        container.innerHTML = AppState.users.map(user => `
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-primary);">
+                <input type="checkbox" name="projectUser" value="${user.userId}" style="width: 18px; height: 18px; cursor: pointer;">
+                <span>${this.escapeHtml(user.name)}</span>
+            </label>
+        `).join('');
     }
 };
 

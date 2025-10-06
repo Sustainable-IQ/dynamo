@@ -3,12 +3,33 @@
  * Sample data structures for demonstration
  */
 
+// Users (Team Members)
+const MOCK_USERS = [
+    { userId: 'user_sarah', name: 'Sarah Chen' },
+    { userId: 'user_mike', name: 'Mike Torres' },
+    { userId: 'user_jessica', name: 'Jessica Park' },
+    { userId: 'user_marcus', name: 'Marcus Wu' }
+];
+
 // Workspaces
 const MOCK_WORKSPACES = [
     {
         id: 'ws1',
-        name: 'Default Workspace',
-        created: '2025-01-15'
+        name: 'Luc & Son LLC - Legal Team',
+        created: '2025-01-15',
+        members: [
+            { userId: 'user_sarah', role: CONFIG.ROLES.OWNER },
+            { userId: 'user_mike', role: CONFIG.ROLES.DECISION_APPROVER }
+        ]
+    },
+    {
+        id: 'ws2',
+        name: 'America Bank - Web Design Team',
+        created: '2025-01-20',
+        members: [
+            { userId: 'user_jessica', role: CONFIG.ROLES.OWNER },
+            { userId: 'user_marcus', role: CONFIG.ROLES.AGENT_INVOKER }
+        ]
     }
 ];
 
@@ -36,7 +57,7 @@ const MOCK_PROJECTS = [
     },
     {
         id: 'proj_agile_001',
-        workspaceId: 'ws1',
+        workspaceId: 'ws2',
         name: 'Mobile Banking App Redesign',
         description: 'Agile project for mobile banking UX overhaul',
         created: '2025-01-29',

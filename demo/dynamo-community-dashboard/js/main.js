@@ -8,10 +8,32 @@
 // ===========================
 
 function initEventHandlers() {
+    // Workspace selector
+    document.getElementById('workspaceSelect').addEventListener('change', (e) => {
+        const workspaceId = e.target.value;
+        if (workspaceId) {
+            AppState.setWorkspace(workspaceId);
+            UI.renderProjectSelector(); // Update project dropdown with workspace projects
+            // Clear project-related UI
+            UI.renderProjectNav();
+            UI.renderWorkflowTracker();
+            UI.renderPackLibrary();
+            UI.renderThreadList();
+            UI.renderThreadHeader();
+            UI.renderCurrentLens();
+        }
+    });
+
     // Project selector
     document.getElementById('projectSelect').addEventListener('change', (e) => {
         const projectId = e.target.value;
         if (projectId) {
+            // Check if workspace is selected
+            if (!AppState.currentWorkspace) {
+                alert('Please Select or Create a New Workspace');
+                e.target.value = ''; // Reset selection
+                return;
+            }
             AppState.setProject(projectId);
             UI.renderProjectNav();
             UI.renderWorkflowTracker();
@@ -134,6 +156,23 @@ function initEventHandlers() {
     // Create project next button
     document.getElementById('createProjectNextBtn').addEventListener('click', () => {
         createNewProject();
+    });
+
+    // Create workspace button
+    document.getElementById('createWorkspaceBtn').addEventListener('click', () => {
+        showCreateWorkspaceModal();
+    });
+
+    // Create workspace next button
+    document.getElementById('createWorkspaceNextBtn').addEventListener('click', () => {
+        createNewWorkspace();
+    });
+
+    // Email sent close button
+    document.getElementById('emailSentCloseBtn').addEventListener('click', () => {
+        UI.hideModal();
+        // Also hide the workspace modal if it's open
+        document.getElementById('createWorkspaceModal').classList.add('hidden');
     });
 }
 
@@ -552,6 +591,12 @@ function createNewProject() {
             role: CONFIG.ROLES.OWNER // Default role
         }));
 
+    // Validation: check if workspace is selected
+    if (!AppState.currentWorkspace) {
+        alert('Please select or create a workspace first');
+        return;
+    }
+
     // Validation
     if (!projectName) {
         alert('Please enter a project name');
@@ -566,7 +611,7 @@ function createNewProject() {
     // Create new project
     const newProject = {
         id: generateId('proj'),
-        workspaceId: 'ws1',
+        workspaceId: AppState.currentWorkspace,
         name: projectName,
         description: `Project created by ${AppState.currentUser.name}`,
         created: getTimestamp(),
@@ -587,14 +632,140 @@ function createNewProject() {
         userId: AppState.currentUser.id
     });
 
+    // Automatically select the newly created project
+    AppState.setProject(newProject.id);
+
     // Update project selector dropdown
     UI.renderProjectSelector();
+
+    // Update the project navigation panel to show the new project
+    UI.renderProjectNav();
+    UI.renderWorkflowTracker();
+    UI.renderPackLibrary();
+    UI.renderThreadList();
 
     // Close modal
     UI.hideModal();
 
     // Show success message
     showToast(`Project "${projectName}" created successfully!`);
+}
+
+// ===========================
+// WORKSPACE CREATION
+// ===========================
+
+function showCreateWorkspaceModal() {
+    // Clear previous inputs
+    document.getElementById('workspaceNameInput').value = '';
+    document.getElementById('newMemberNameInput').value = '';
+    document.getElementById('newMemberEmailInput').value = '';
+
+    // Render user checkboxes dynamically
+    UI.renderUserCheckboxes('workspaceUserCheckboxList');
+
+    // Uncheck all checkboxes
+    document.querySelectorAll('input[name="workspaceUser"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    UI.showModal('createWorkspaceModal');
+}
+
+function createNewWorkspace() {
+    const workspaceName = document.getElementById('workspaceNameInput').value.trim();
+    const selectedUsers = Array.from(document.querySelectorAll('input[name="workspaceUser"]:checked'))
+        .map(checkbox => ({
+            userId: checkbox.value,
+            role: CONFIG.ROLES.OWNER
+        }));
+
+    const newMemberName = document.getElementById('newMemberNameInput').value.trim();
+    const newMemberEmail = document.getElementById('newMemberEmailInput').value.trim();
+
+    // Validation: workspace name is required (minimum 1 character)
+    if (!workspaceName || workspaceName.length < 1) {
+        alert('Please enter a workspace name (minimum 1 character)');
+        return;
+    }
+
+    // Validation: if new member info is provided, both fields are required
+    if ((newMemberName && !newMemberEmail) || (!newMemberName && newMemberEmail)) {
+        alert('Please provide both name and email for the new team member, or leave both empty');
+        return;
+    }
+
+    let emailSent = false;
+
+    // If new member is being invited
+    if (newMemberName && newMemberEmail) {
+        // Generate new user ID
+        const newUserId = generateId('user');
+
+        // Add to global users list
+        MOCK_USERS.push({
+            userId: newUserId,
+            name: newMemberName
+        });
+
+        // Add to selected users for this workspace
+        selectedUsers.push({
+            userId: newUserId,
+            role: CONFIG.ROLES.OWNER
+        });
+
+        // Simulate sending email
+        console.log(`[EMAIL SIMULATION] Sending invitation to ${newMemberEmail}`);
+        console.log(`Subject: Invitation to join DYNAMO workspace "${workspaceName}"`);
+        console.log(`Body: Hi ${newMemberName}, you have been invited to join the ${workspaceName} workspace on DYNAMO.`);
+
+        emailSent = true;
+
+        // Update user checkboxes in both modals
+        UI.renderUserCheckboxes('workspaceUserCheckboxList');
+        UI.updateProjectUserCheckboxes();
+    }
+
+    // Create new workspace
+    const newWorkspace = {
+        id: generateId('ws'),
+        name: workspaceName,
+        created: getTimestamp(),
+        members: selectedUsers
+    };
+
+    // Add to workspaces
+    MOCK_WORKSPACES.push(newWorkspace);
+
+    // Log to ledger
+    AppState.addLedgerEntry({
+        action: 'workspace_created',
+        details: `Created workspace "${workspaceName}" with ${selectedUsers.length} members`,
+        workspaceId: newWorkspace.id,
+        userId: AppState.currentUser.id
+    });
+
+    // Automatically select the newly created workspace
+    AppState.setWorkspace(newWorkspace.id);
+
+    // Update workspace selector dropdown
+    UI.renderWorkspaceSelector();
+
+    // Update project selector dropdown (now that workspace is selected)
+    UI.renderProjectSelector();
+
+    // If email was sent, show confirmation modal
+    if (emailSent) {
+        // Hide workspace modal first
+        document.getElementById('createWorkspaceModal').classList.add('hidden');
+        // Show email confirmation
+        UI.showModal('emailSentModal');
+    } else {
+        // Just close the modal
+        UI.hideModal();
+        // Show success message
+        showToast(`Workspace "${workspaceName}" created successfully!`);
+    }
 }
 
 // ===========================
@@ -691,6 +862,7 @@ function initializeApp() {
     console.log('Initializing DYNAMO Community Dashboard...');
 
     // Render initial UI
+    UI.renderWorkspaceSelector();
     UI.renderProjectSelector();
     UI.renderWorkflowTracker();
     UI.renderPackLibrary();
@@ -705,7 +877,7 @@ function initializeApp() {
     initEventHandlers();
 
     console.log('✓ Dashboard initialized');
-    console.log('Select a project from the dropdown to get started');
+    console.log('Select a workspace first, then a project to get started');
 }
 
 // ===========================

@@ -5,12 +5,12 @@
 
 const AppState = {
     // Current selections
-    currentWorkspace: CONFIG.DEFAULT_WORKSPACE,
+    currentWorkspace: null,
     currentProject: null,
     currentThread: null,
     currentLens: CONFIG.LENSES.DIALOGUE,
     currentLane: CONFIG.LANES.HUMAN,
-    
+
     // Current user (mock)
     currentUser: {
         id: 'user_sarah',
@@ -18,18 +18,35 @@ const AppState = {
         email: 'sarah@firm.com',
         role: CONFIG.ROLES.OWNER
     },
-    
+
     // UI state
     activeModal: null,
     pendingCommand: null,
-    
+
     // Data references
+    workspaces: MOCK_WORKSPACES,
     projects: MOCK_PROJECTS,
     threads: MOCK_THREADS,
     packs: MOCK_AGENT_PACKS,
     ledgerEntries: MOCK_LEDGER_ENTRIES,
-    
+    users: MOCK_USERS,
+
     // Methods
+    setWorkspace(workspaceId) {
+        this.currentWorkspace = workspaceId;
+        this.currentProject = null; // Reset project when workspace changes
+        this.currentThread = null; // Reset thread when workspace changes
+    },
+
+    getCurrentWorkspace() {
+        return this.workspaces.find(w => w.id === this.currentWorkspace);
+    },
+
+    getWorkspaceProjects() {
+        if (!this.currentWorkspace) return [];
+        return this.projects.filter(p => p.workspaceId === this.currentWorkspace);
+    },
+
     setProject(projectId) {
         this.currentProject = projectId;
         this.currentThread = null; // Reset thread when project changes

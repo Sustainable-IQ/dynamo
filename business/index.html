@@ -352,12 +352,41 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         @supports ((-webkit-background-clip: text) or (background-clip: text)) {
             .section-title {
                 color: transparent;
             }
+        }
+
+        /* Animated underline for section titles */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 2px;
+            transform-origin: left center;
+            transform: translateX(-50%) scaleX(0);
+            transition: transform 0.8s ease 0.3s;
+        }
+
+        .section-title.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title.animate-in::after {
+            transform: translateX(-50%) scaleX(1);
         }
 
         .section-subtitle {
@@ -1320,6 +1349,24 @@
 
         document.querySelectorAll('.section').forEach(section => {
             observer.observe(section);
+        });
+
+        // Intersection Observer for h2 section title animations
+        const titleObserverOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const titleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, titleObserverOptions);
+
+        document.querySelectorAll('.section-title').forEach(title => {
+            titleObserver.observe(title);
         });
 
         // Smooth scroll for anchor links

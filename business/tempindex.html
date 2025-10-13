@@ -352,12 +352,37 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            padding-bottom: 1rem;
         }
 
         @supports ((-webkit-background-clip: text) or (background-clip: text)) {
             .section-title {
                 color: transparent;
             }
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
+            transition: width 1s ease 0.5s;
+        }
+
+        .section-title.visible::after {
+            width: 100%;
         }
 
         .section-subtitle {
@@ -1320,6 +1345,22 @@
 
         document.querySelectorAll('.section').forEach(section => {
             observer.observe(section);
+        });
+
+        // Section Title Animation Observer
+        const titleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '0px'
+        });
+
+        document.querySelectorAll('.section-title').forEach(title => {
+            titleObserver.observe(title);
         });
 
         // Smooth scroll for anchor links
